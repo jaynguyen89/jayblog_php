@@ -1,278 +1,396 @@
-<?php
-/**
- * CakePHP(tm) : Rapid Development Framework (https://cakephp.org)
- * Copyright (c) Cake Software Foundation, Inc. (https://cakefoundation.org)
- *
- * Licensed under The MIT License
- * For full copyright and license information, please see the LICENSE.txt
- * Redistributions of files must retain the above copyright notice.
- *
- * @copyright     Copyright (c) Cake Software Foundation, Inc. (https://cakefoundation.org)
- * @link          https://cakephp.org CakePHP(tm) Project
- * @since         0.10.0
- * @license       https://opensource.org/licenses/mit-license.php MIT License
- */
-use Cake\Cache\Cache;
-use Cake\Core\Configure;
-use Cake\Core\Plugin;
-use Cake\Datasource\ConnectionManager;
-use Cake\Error\Debugger;
-use Cake\Network\Exception\NotFoundException;
+<div class="container">
+    <!-- Breadcrumb navigation pane -->
+    <ul class="breadcrumb">
+        <li><a href="#">Home</a></li>
+        <li><a href="#">Pictures</a></li>
+        <li><a href="#">Summer 15</a></li>
+        <li>Italy</li>
+    </ul>
+    <!-- End breadcrumb -->
 
-$this->layout = false;
-
-if (!Configure::read('debug')) :
-    throw new NotFoundException(
-        'Please replace src/Template/Pages/home.ctp with your own version or re-enable debug mode.'
-    );
-endif;
-
-$cakeDescription = 'CakePHP: the rapid development PHP framework';
-?>
-<!DOCTYPE html>
-<html>
-<head>
-    <?= $this->Html->charset() ?>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>
-        <?= $cakeDescription ?>
-    </title>
-
-    <?= $this->Html->meta('icon') ?>
-    <?= $this->Html->css('base.css') ?>
-    <?= $this->Html->css('cake.css') ?>
-    <?= $this->Html->css('home.css') ?>
-    <link href="https://fonts.googleapis.com/css?family=Raleway:500i|Roboto:300,400,700|Roboto+Mono" rel="stylesheet">
-</head>
-<body class="home">
-
-<header class="row">
-    <div class="header-image"><?= $this->Html->image('cake.logo.svg') ?></div>
-    <div class="header-title">
-        <h1>Welcome to CakePHP <?= Configure::version() ?> Red Velvet. Build fast. Grow solid.</h1>
-    </div>
-</header>
-
-<div class="row">
-    <div class="columns large-12">
-        <div class="ctp-warning alert text-center">
-            <p>Please be aware that this page will not be shown if you turn off debug mode unless you replace src/Template/Pages/home.ctp with your own version.</p>
+    <!-- Section contains introductory information about the blog -->
+    <section id="content-1-9" class="content-1-9 content-block">
+        <!-- Section title -->
+        <div class="underlined-title">
+            <h1>About this blog</h1>
+            <hr>
+            <p class="lead">Jay Blog is developed by the inspiration of myself in the field of IT after finishing my degree.
+                I wish to, through this blog, share the story of my past study and future further self-improvements. I am continuing to dig deeper in what I have learned, keep practising them, and
+                explore new IT aspects. To pace along my side, this blog is commissioned to reflect the progress and the outcomes of my work. Please don't hesitate to see through my blog and leave me a
+                message if you find something interesting. Welcome to Jay's Blog!</p>
         </div>
-        <div id="url-rewriting-warning" class="alert url-rewriting">
-            <ul>
-                <li class="bullet problem">
-                    URL rewriting is not properly configured on your server.<br />
-                    1) <a target="_blank" href="https://book.cakephp.org/3.0/en/installation.html#url-rewriting">Help me configure it</a><br />
-                    2) <a target="_blank" href="https://book.cakephp.org/3.0/en/development/configuration.html#general-configuration">I don't / can't use URL rewriting</a>
-                </li>
-            </ul>
+        <!-- End section title -->
+
+        <!-- Section contents -->
+        <div class="row">
+            <div class="col-md-4 col-sm-12 col-xs-12 pad25">
+                <div class="col-xs-2">
+                    <span class="fab fa-audible fa-3x" style="color: #3498DB;"></span>
+                </div>
+                <div class="col-xs-10">
+                    <h4>Review</h4>
+                    <p>Reflection of Jay's reviews in Programming, Frameworks, Agile Development Models, Testing and more.</p>
+                </div>
+            </div>
+            <div class="col-md-4 col-sm-12 col-xs-12 pad25">
+                <div class="col-xs-2">
+                    <span class="fas fa-magic fa-3x" style="color: #3498DB;"></span>
+                </div>
+                <div class="col-xs-10">
+                    <h4>Research</h4>
+                    <p>Expand prior IT knowledge, explore new areas of IT theories, tools and techniques. Getting out of comfort zone.</p>
+                </div>
+            </div>
+            <div class="col-md-4 col-sm-12 col-xs-12 pad25">
+                <div class="col-xs-2">
+                    <span class="fab fa-hotjar fa-3x" style="color: #3498DB;"></span>
+                </div>
+                <div class="col-xs-10">
+                    <h4>Practice</h4>
+                    <p>Consolidate and develop new skills. Better to understand in deep with personal projects.</p>
+                </div>
+            </div>
+            <div class="col-md-4 col-sm-12 col-xs-12 pad25">
+                <div class="col-xs-2">
+                    <span class="fas fa-redo-alt fa-3x" style="color: #3498DB;"></span>
+                </div>
+                <div class="col-xs-10">
+                    <h4>Agile</h4>
+                    <p>Projects will be developed in Scrum model, be controlled by Git, and be monitored on Trello.</p>
+                </div>
+            </div>
+            <div class="col-md-4 col-sm-12 col-xs-12 pad25">
+                <div class="col-xs-2">
+                    <span class="fas fa-check fa-3x" style="color: #3498DB;"></span>
+                </div>
+                <div class="col-xs-10">
+                    <h4>Update</h4>
+                    <p>Testing will be done using Selenium in Python (later in Java). Update is based on the completion of a Git branch.</p>
+                </div>
+            </div>
+            <div class="col-md-4 col-sm-12 col-xs-12 pad25">
+                <div class="col-xs-2">
+                    <span class="far fa-handshake fa-3x" style="color: #3498DB;"></span>
+                </div>
+                <div class="col-xs-10">
+                    <h4>Connect</h4>
+                    <p>Widen knowledge. Improve skills. Increase employability. </p>
+                </div>
+            </div>
         </div>
-        <?php Debugger::checkSecurityKeys(); ?>
-    </div>
+        <!-- End section contents -->
+    </section>
+    <!-- End introductory section -->
+
+
+    <!-- Section contains suggested navigations -->
+    <section id="content-1-9" class="content-1-9 content-block" style="padding-bottom: 10px;">
+        <!-- Section title -->
+        <div class="container">
+            <div class="underlined-title">
+                <h1>Find out more</h1>
+                <hr>
+                <p class="lead">Feel free to navigate across the site and take a look at my work, or see below for the most recent ones.</p>
+            </div>
+        </div>
+        <!-- End section title -->
+
+        <div class="row" style="margin: 5px;">
+            <div class="row">
+                <div class="col-sm-6 col-xs-12">
+                    <div class="row">
+                        <div class="col-xs-6"><h4><b>My Interests</b></h4></div>
+                        <div class="col-xs-6 text-right"><a href="#">See more</a></div>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table bg-offwhite" style="border-radius: 10px;">
+                            <thead>
+                            <tr><th>#</th><th>Type</th><th>Title</th></tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <th scope="row">1</th>
+                                <td>icon</td>
+                                <td>Project Title</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">2</th>
+                                <td>icon</td>
+                                <td>Project Title</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">2</th>
+                                <td>icon</td>
+                                <td>Project Title</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="col-sm-6 col-xs-12">
+                    <div class="row">
+                        <div class="col-xs-6"><h4><b>Personal Projects</b></h4></div>
+                        <div class="col-xs-6 text-right"><a href="#">See more</a></div>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table bg-offwhite" style="border-radius: 10px;">
+                            <thead>
+                            <tr><th>#</th><th>Type</th><th>title</th></tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <th scope="row">1</th>
+                                <td>icon</td>
+                                <td>Project Title</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">2</th>
+                                <td>icon</td>
+                                <td>Project Title</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="row" style="margin-top: 20px;">
+                <div class="col-sm-6 col-xs-12">
+                    <div class="row">
+                        <div class="col-xs-6"><h4><b>Other Studies</b></h4></div>
+                        <div class="col-xs-6 text-right"><a href="#">See more</a></div>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table bg-offwhite" style="border-radius: 10px;">
+                            <thead>
+                            <tr><th>#</th><th>Type</th><th>Title</th></tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <th scope="row">1</th>
+                                <td>icon</td>
+                                <td>Project Title</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">2</th>
+                                <td>icon</td>
+                                <td>Project Title</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">2</th>
+                                <td>icon</td>
+                                <td>Project Title</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">2</th>
+                                <td>icon</td>
+                                <td>Project Title</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="col-sm-6 col-xs-12">
+                    <h4><b>Proposed Readings</b></h4>
+                    <div class="table-responsive">
+                        <table class="table bg-offwhite" style="border-radius: 10px;">
+                            <thead>
+                            <tr><th>#</th><th>Type</th><th>Title</th></tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <th scope="row">1</th>
+                                <td>icon</td>
+                                <td>Project Title</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">2</th>
+                                <td>icon</td>
+                                <td>Project Title</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- /.row -->
+
+        <div class="container">
+            <div class="underlined-title">
+                <hr>
+            </div>
+        </div>
+    </section>
+    <!-- End section -->
+
+    <!-- Section contains About Me -->
+    <section id="content-2-8" class="content-2-8 content-block-nopad">
+        <!-- The outer row contains the whole section contents -->
+        <div class="row">
+            <!-- The image container taking 3 cols of the outer row -->
+            <div class="image-container col-md-4 pull-left">
+                <?= $this->Html->image('myphoto.jpg', ['class' => 'background-image-holder']); ?>
+            </div>
+            <!-- End image container -->
+
+            <!-- The content container taking the rest 9 cols of the outer row -->
+            <div class="col-md-8 pull-right">
+                <!-- The row wrapping the contents -->
+                <div class="row">
+                    <!-- Content No.1 About me -->
+                    <div class="col-md-8">
+                        <div style="margin: 10px;">
+                            <h1>About me</h1>
+                            <p class="medium">Jay has finished Bachelor of Information Technology at RMIT University. During his study, he achieved Golden Key International Honour Society Certificate, and
+                                RMIT LEAD recognition for contribution to Academic Mentoring Program in the Faculty of IT. His areas of expertise include:</p>
+
+                            <div class="row pad10">
+                                <div class="col-xs-1">
+                                    <span class="far fa-hand-point-right fa-2x" style="color: #3498DB;"></span>
+                                </div>
+                                <div class="col-xs-11">
+                                    <h4 style="margin-top: 0;">Agile Development</h4>
+                                    <p>Familiar with Git for continuous development, testing and deployment. Experiences in Scrum, XP and Lean processes.
+                                        Knowledge in formal testing and test documentation.</p>
+                                </div>
+                            </div>
+
+                            <div class="row pad10">
+                                <div class="col-xs-1">
+                                    <span class="far fa-hand-point-right fa-2x" style="color: #3498DB;"></span>
+                                </div>
+                                <div class="col-xs-11">
+                                    <h4 style="margin-top: 0;">Web Application Development</h4>
+                                    <p>CakePHP, ASP.NET, Rails, Bootstrap, JS, JQuery, AJAX, Web APIs, AWS, CPanel, other front-end and back-end libraries/plugins.</p>
+                                </div>
+                            </div>
+
+                            <div class="row pad10">
+                                <div class="col-xs-1">
+                                    <span class="far fa-hand-point-right fa-2x" style="color: #3498DB;"></span>
+                                </div>
+                                <div class="col-xs-11">
+                                    <h4 style="margin-top: 0;">Problem Analysis & Solving</h4>
+                                    <p>Knowledge in algorithms, program profiling, data structure and design patterns for code optimization.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- End about me -->
+
+                    <!-- Content No.2 Contact me -->
+                    <div class="col-md-4">
+                        <div style="margin: 10px;">
+                            <h1>Highlighted</h1>
+                            <div class="row">
+                                <div class="panel-group" id="accordion">
+                                    <div class="panel panel-default">
+                                        <div class="panel-heading">
+                                            <h4 class="panel-title">
+                                                <a data-toggle="collapse" data-parent="#accordion" href="#collapse1">Creative Thinking</a>
+                                            </h4>
+                                        </div>
+                                        <div id="collapse1" class="panel-collapse collapse in">
+                                            <div class="panel-body">Jay usually looks at things in his life in a way that perhaps no one does.
+                                                At the age of 10, he asked his dad: <i><q>Why heart keeps beating</q></i> or <i><q>Why air is transparent</q></i>.
+                                                He is keen on critical thinking and never accepts a hasty solution.</div>
+                                        </div>
+                                    </div>
+                                    <div class="panel panel-default">
+                                        <div class="panel-heading">
+                                            <h4 class="panel-title">
+                                                <a data-toggle="collapse" data-parent="#accordion" href="#collapse2">Flexibility</a>
+                                            </h4>
+                                        </div>
+                                        <div id="collapse2" class="panel-collapse collapse">
+                                            <div class="panel-body">Jay is attentive and always goes with a forecast.
+                                                So he is able to change to quickly adapt with new conditions. He is a considerate person
+                                                in whatever he proposes or is assigned to do.</div>
+                                        </div>
+                                    </div>
+                                    <div class="panel panel-default">
+                                        <div class="panel-heading">
+                                            <h4 class="panel-title">
+                                                <a data-toggle="collapse" data-parent="#accordion" href="#collapse3">Communication</a>
+                                            </h4>
+                                        </div>
+                                        <div id="collapse3" class="panel-collapse collapse">
+                                            <div class="panel-body">Jay is kind, friendly and humorous. He loves working in an interactive and supportive team although
+                                                he can also work independently. He always takes great effort to increase the team's productivity. He prefers to be a team leader.</div>
+                                        </div>
+                                    </div>
+                                    <div class="panel panel-default">
+                                        <div class="panel-heading">
+                                            <h4 class="panel-title">
+                                                <a data-toggle="collapse" data-parent="#accordion" href="#collapse4">Negotiation</a>
+                                            </h4>
+                                        </div>
+                                        <div id="collapse4" class="panel-collapse collapse">
+                                            <div class="panel-body">With 2-year working as a Bank Teller in Vietnam, he earned sufficient skills in negotiation and persuasion.
+                                                His strength is to deal with hard situations in a professional manner. Yet he also welcomes honest feedback from eveybody.</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!--end of row-->
+                        </div>
+                    </div>
+                    <!-- End contact me -->
+                </div>
+                <!-- End wrapper row -->
+            </div>
+            <!-- End content container -->
+        </div>
+        <!-- End outer row -->
+    </section>
+    <!-- End section -->
+
+    <section id="content-1-7" class="content-1-7 content-block">
+        <!-- Section title -->
+        <div class="container">
+            <div class="underlined-title">
+                <h1>Contact me</h1>
+                <hr>
+                <p class="lead">Jay is willing and ready to contribute to your business right now.<br/>Please let him know your interest and get his response in no time.</p>
+            </div>
+        </div>
+        <!-- End section title -->
+
+        <!-- The form container -->
+        <div id="contact" class="form-container">
+            <fieldset style="border-color: #FFF0DD; padding-bottom: 0;">
+                <div id="message"></div>
+                <form method="post" action="js/contact-form.php" name="contactform" id="contactform">
+                    <div class="row">
+                        <div class="col-sm-4 col-xs-12">
+                            <div class="form-group">
+                                <input name="name" id="name" type="text" value="" placeholder="Name" class="form-control" />
+                            </div>
+                        </div>
+                        <div class="col-sm-4 col-xs-12">
+                            <div class="form-group">
+                                <input name="email" id="email" type="text" value="" placeholder="Email" class="form-control" />
+                            </div>
+                        </div>
+                        <div class="col-sm-4 col-xs-12">
+                            <div class="form-group">
+                                <input name="phone" id="phone" type="text" value="" placeholder="Phone" class="form-control" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <textarea name="comments" id="comments" class="form-control" rows="3" placeholder="Message" id="textArea"></textarea>
+                        <div class="editContent">
+                            <p class="small text-muted"><span class="guardsman">* All fields are required.</span> Once we receive your message we will respond as soon as possible.</p>
+                            <a href="#" class="btn btn-outline btn-outline-lg outline-dark">Send</a>
+                        </div>
+                    </div>
+                </form>
+            </fieldset>
+        </div>
+        <!-- End form container -->
+    </section>
 </div>
 
-<div class="row">
-    <div class="columns large-6">
-        <h4>Environment</h4>
-        <ul>
-        <?php if (version_compare(PHP_VERSION, '5.6.0', '>=')) : ?>
-            <li class="bullet success">Your version of PHP is 5.6.0 or higher (detected <?= PHP_VERSION ?>).</li>
-        <?php else : ?>
-            <li class="bullet problem">Your version of PHP is too low. You need PHP 5.6.0 or higher to use CakePHP (detected <?= PHP_VERSION ?>).</li>
-        <?php endif; ?>
-
-        <?php if (extension_loaded('mbstring')) : ?>
-            <li class="bullet success">Your version of PHP has the mbstring extension loaded.</li>
-        <?php else : ?>
-            <li class="bullet problem">Your version of PHP does NOT have the mbstring extension loaded.</li>;
-        <?php endif; ?>
-
-        <?php if (extension_loaded('openssl')) : ?>
-            <li class="bullet success">Your version of PHP has the openssl extension loaded.</li>
-        <?php elseif (extension_loaded('mcrypt')) : ?>
-            <li class="bullet success">Your version of PHP has the mcrypt extension loaded.</li>
-        <?php else : ?>
-            <li class="bullet problem">Your version of PHP does NOT have the openssl or mcrypt extension loaded.</li>
-        <?php endif; ?>
-
-        <?php if (extension_loaded('intl')) : ?>
-            <li class="bullet success">Your version of PHP has the intl extension loaded.</li>
-        <?php else : ?>
-            <li class="bullet problem">Your version of PHP does NOT have the intl extension loaded.</li>
-        <?php endif; ?>
-        </ul>
-    </div>
-    <div class="columns large-6">
-        <h4>Filesystem</h4>
-        <ul>
-        <?php if (is_writable(TMP)) : ?>
-            <li class="bullet success">Your tmp directory is writable.</li>
-        <?php else : ?>
-            <li class="bullet problem">Your tmp directory is NOT writable.</li>
-        <?php endif; ?>
-
-        <?php if (is_writable(LOGS)) : ?>
-            <li class="bullet success">Your logs directory is writable.</li>
-        <?php else : ?>
-            <li class="bullet problem">Your logs directory is NOT writable.</li>
-        <?php endif; ?>
-
-        <?php $settings = Cache::getConfig('_cake_core_'); ?>
-        <?php if (!empty($settings)) : ?>
-            <li class="bullet success">The <em><?= $settings['className'] ?>Engine</em> is being used for core caching. To change the config edit config/app.php</li>
-        <?php else : ?>
-            <li class="bullet problem">Your cache is NOT working. Please check the settings in config/app.php</li>
-        <?php endif; ?>
-        </ul>
-    </div>
-    <hr />
-</div>
-
-<div class="row">
-    <div class="columns large-6">
-        <h4>Database</h4>
-        <?php
-        try {
-            $connection = ConnectionManager::get('default');
-            $connected = $connection->connect();
-        } catch (Exception $connectionError) {
-            $connected = false;
-            $errorMsg = $connectionError->getMessage();
-            if (method_exists($connectionError, 'getAttributes')) :
-                $attributes = $connectionError->getAttributes();
-                if (isset($errorMsg['message'])) :
-                    $errorMsg .= '<br />' . $attributes['message'];
-                endif;
-            endif;
-        }
-        ?>
-        <ul>
-        <?php if ($connected) : ?>
-            <li class="bullet success">CakePHP is able to connect to the database.</li>
-        <?php else : ?>
-            <li class="bullet problem">CakePHP is NOT able to connect to the database.<br /><?= $errorMsg ?></li>
-        <?php endif; ?>
-        </ul>
-    </div>
-    <div class="columns large-6">
-        <h4>DebugKit</h4>
-        <ul>
-        <?php if (Plugin::loaded('DebugKit')) : ?>
-            <li class="bullet success">DebugKit is loaded.</li>
-        <?php else : ?>
-            <li class="bullet problem">DebugKit is NOT loaded. You need to either install pdo_sqlite, or define the "debug_kit" connection name.</li>
-        <?php endif; ?>
-        </ul>
-    </div>
-    <hr />
-</div>
-
-<div class="row">
-    <div class="columns large-6">
-        <h3>Editing this Page</h3>
-        <ul>
-            <li class="bullet cutlery">To change the content of this page, edit: src/Template/Pages/home.ctp.</li>
-            <li class="bullet cutlery">You can also add some CSS styles for your pages at: webroot/css/.</li>
-        </ul>
-    </div>
-    <div class="columns large-6">
-        <h3>Getting Started</h3>
-        <ul>
-            <li class="bullet book"><a target="_blank" href="https://book.cakephp.org/3.0/en/">CakePHP 3.0 Docs</a></li>
-            <li class="bullet book"><a target="_blank" href="https://book.cakephp.org/3.0/en/tutorials-and-examples/bookmarks/intro.html">The 15 min Bookmarker Tutorial</a></li>
-            <li class="bullet book"><a target="_blank" href="https://book.cakephp.org/3.0/en/tutorials-and-examples/blog/blog.html">The 15 min Blog Tutorial</a></li>
-            <li class="bullet book"><a target="_blank" href="https://book.cakephp.org/3.0/en/tutorials-and-examples/cms/installation.html">The 15 min CMS Tutorial</a></li>
-        </ul>
-    </div>
-</div>
-
-<div class="row">
-    <div class="columns large-12 text-center">
-        <h3 class="more">More about Cake</h3>
-        <p>
-            CakePHP is a rapid development framework for PHP which uses commonly known design patterns like Front Controller and MVC.<br />
-            Our primary goal is to provide a structured framework that enables PHP users at all levels to rapidly develop robust web applications, without any loss to flexibility.
-        </p>
-    </div>
-    <hr/>
-</div>
-
-<div class="row">
-    <div class="columns large-4">
-        <i class="icon support">P</i>
-        <h3>Help and Bug Reports</h3>
-        <ul>
-            <li class="bullet cutlery">
-                <a href="irc://irc.freenode.net/cakephp">irc.freenode.net #cakephp</a>
-                <ul><li>Live chat about CakePHP</li></ul>
-            </li>
-            <li class="bullet cutlery">
-                <a href="http://cakesf.herokuapp.com/">Slack</a>
-                <ul><li>CakePHP Slack support</li></ul>
-            </li>
-            <li class="bullet cutlery">
-                <a href="https://github.com/cakephp/cakephp/issues">CakePHP Issues</a>
-                <ul><li>CakePHP issues and pull requests</li></ul>
-            </li>
-            <li class="bullet cutlery">
-                <a href="http://discourse.cakephp.org/">CakePHP Forum</a>
-                <ul><li>CakePHP official discussion forum</li></ul>
-            </li>
-        </ul>
-    </div>
-    <div class="columns large-4">
-        <i class="icon docs">r</i>
-        <h3>Docs and Downloads</h3>
-        <ul>
-            <li class="bullet cutlery">
-                <a href="https://api.cakephp.org/3.0/">CakePHP API</a>
-                <ul><li>Quick Reference</li></ul>
-            </li>
-            <li class="bullet cutlery">
-                <a href="https://book.cakephp.org/3.0/en/">CakePHP Documentation</a>
-                <ul><li>Your Rapid Development Cookbook</li></ul>
-            </li>
-            <li class="bullet cutlery">
-                <a href="https://bakery.cakephp.org">The Bakery</a>
-                <ul><li>Everything CakePHP</li></ul>
-            </li>
-            <li class="bullet cutlery">
-                <a href="https://plugins.cakephp.org">CakePHP plugins repo</a>
-                <ul><li>A comprehensive list of all CakePHP plugins created by the community</li></ul>
-            </li>
-            <li class="bullet cutlery">
-                <a href="https://github.com/cakephp/">CakePHP Code</a>
-                <ul><li>For the Development of CakePHP Git repository, Downloads</li></ul>
-            </li>
-            <li class="bullet cutlery">
-                <a href="https://github.com/FriendsOfCake/awesome-cakephp">CakePHP Awesome List</a>
-                <ul><li>A curated list of amazingly awesome CakePHP plugins, resources and shiny things.</li></ul>
-            </li>
-            <li class="bullet cutlery">
-                <a href="https://www.cakephp.org">CakePHP</a>
-                <ul><li>The Rapid Development Framework</li></ul>
-            </li>
-        </ul>
-    </div>
-    <div class="columns large-4">
-        <i class="icon training">s</i>
-        <h3>Training and Certification</h3>
-        <ul>
-            <li class="bullet cutlery">
-                <a href="https://cakefoundation.org/">Cake Software Foundation</a>
-                <ul><li>Promoting development related to CakePHP</li></ul>
-            </li>
-            <li class="bullet cutlery">
-                <a href="https://training.cakephp.org/">CakePHP Training</a>
-                <ul><li>Learn to use the CakePHP framework</li></ul>
-            </li>
-            <li class="bullet cutlery">
-                <a href="https://certification.cakephp.org/">CakePHP Certification</a>
-                <ul><li>Become a certified CakePHP developer</li></ul>
-            </li>
-        </ul>
-    </div>
-</div>
-
-</body>
-</html>
