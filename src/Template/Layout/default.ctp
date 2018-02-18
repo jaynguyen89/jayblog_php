@@ -59,23 +59,20 @@ $cakeDescription = 'Jay\'s Blog - Dare to step';
                 <div class="collapse navbar-collapse" id="navbar-collapse">
                     <ul class="nav navbar-nav navbar-right">
                         <li class="nav-item active"><?= $this->Html->link(__('Home'), ['controller' => 'Pages', 'action' => 'display'], ['class' => 'nav-link']); ?></li>
-                        <li class="nav-item">
-                            <a href="#content-2-8">About Me</a>
-                        </li>
                         <!-- Dropdown menu for Interests -->
                         <li class="nav-item dropdown">
                             <a class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-delay="0" data-close-others="false" href="#">Interests <i class="fa fa-angle-down"></i></a>
                             <ul class="dropdown-menu" style="background-color: grey">
-                                <li>
+                                <li class="nav-item">
                                     <a href="#"><i class="fas fa-code" style="margin-right: 10px;"></i>Programming Languages</a>
                                 </li>
-                                <li>
+                                <li class="nav-item">
                                     <a href="#"><i class="fas fa-th-large" style="margin-right: 10px;"></i>Frameworks</a>
                                 </li>
-                                <li>
+                                <li class="nav-item">
                                     <a href="#"><i class="fas fa-cogs" style="margin-right: 10px;"></i>APIs</a>
                                 </li>
-                                <li>
+                                <li class="nav-item">
                                     <a href="#"><i class="fas fa-object-group" style="margin-right: 10px;"></i>Tools & Software</a>
                                 </li>
                             </ul>
@@ -86,25 +83,31 @@ $cakeDescription = 'Jay\'s Blog - Dare to step';
                         <li class="nav-item dropdown">
                             <a class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-delay="0" data-close-others="false" href="#">Personal Projects <i class="fa fa-angle-down"></i></a>
                             <ul class="dropdown-menu" style="background-color: grey">
-                                <li>
+                                <li class="nav-item">
                                     <a href="#"><i class="fab fa-chrome" style="margin-right: 10px;"></i>Web Apps</a>
                                 </li>
-                                <li>
+                                <li class="nav-item">
                                     <a href="#"><i class="fas fa-laptop" style="margin-right: 10px;"></i>Computer Apps</a>
                                 </li>
-                                <!-- Nested dropdown inside the outer dropdown menu -->
+                                <li class="nav-item">
+                                    <a href="#"><i class="fab fa-app-store-ios" style="margin-right: 10px;"></i>iOS Apps</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="#"><i class="fab fa-android" style="margin-right: 10px;"></i>Android Apps</a>
+                                </li>
+                                <!-- Nested dropdown inside the outer dropdown menu
                                 <li class="nav-item dropdown">
                                     <a class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-delay="0" data-close-others="false" href="#"><i class="fas fa-mobile" style="margin-right: 10px;"></i>Mobile Apps <i class="fa fa-angle-down"></i></a>
                                     <ul class="dropdown-menu bg-asbestos">
-                                        <li>
+                                        <li class="nav-item">
                                             <a href="#" class="text-right"><i class="fab fa-app-store-ios" style="margin-right: 10px;"></i>iOS</a>
                                         </li>
-                                        <li>
+                                        <li class="nav-item">
                                             <a href="#" class="text-right"><i class="fab fa-android" style="margin-right: 10px;"></i>Android</a>
                                         </li>
                                     </ul>
                                 </li>
-                                <!-- End nested dropdown -->
+                                -->
                             </ul>
                         </li>
                         <!-- End dropdown -->
@@ -113,17 +116,18 @@ $cakeDescription = 'Jay\'s Blog - Dare to step';
                         <li class="nav-item dropdown">
                             <a class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-delay="0" data-close-others="false" href="#">Others <i class="fa fa-angle-down"></i></a>
                             <ul class="dropdown-menu" style="background-color: grey">
-                                <li><a href="#"><i class="fas fa-cloud-upload-alt" style="margin-right: 10px;"></i>Web Server & Clouds</a></li>
-                                <li><a href="#"><i class="fas fa-code-branch" style="margin-right: 10px;"></i>Version Control</a></li>
-                                <li>
+                                <li class="nav-item"><a href="#"><i class="fas fa-cloud-upload-alt" style="margin-right: 10px;"></i>Web Server & Clouds</a></li>
+                                <li class="nav-item"><a href="#"><i class="fas fa-code-branch" style="margin-right: 10px;"></i>Version Control</a></li>
+                                <li class="nav-item">
                                     <a href="#"><i class="far fa-newspaper" style="margin-right: 10px;"></i>IT News</a>
                                 </li>
-                                <li>
+                                <li class="nav-item">
                                     <a href="#"><i class="far fa-lightbulb" style="margin-right: 10px;"></i>Tips & Tricks</a>
                                 </li>
                             </ul>
                         </li>
                         <!-- End dropdown -->
+                        <li class="nav-item"><?= $this->Html->link(__('Contact'), ['controller' => 'Pages', 'action' => 'contact']); ?></li>
                         <li class="nav-item" style="display: none;">
                             <a href="#" style="color: coral" onmouseover="this.style.color='orangered'" onmouseout="this.style.color='coral'" ><i class="fa fa-user-circle" style="font-size: larger"></i> Admin Login</a>
                         </li>
@@ -136,7 +140,7 @@ $cakeDescription = 'Jay\'s Blog - Dare to step';
     </header>
 
     <?= $this->Flash->render() ?>
-    <div class="container clearfix">
+    <div class="container clearfix"><br/><br/><br/><br/><br/>
         <?= $this->fetch('content') ?>
     </div>
 
@@ -165,7 +169,7 @@ $cakeDescription = 'Jay\'s Blog - Dare to step';
                 <!-- /.social -->
             </div>
             <div class="col-md-4 pull-right">
-                <p><i class="fas fa-bomb pomegranate"></i> Got an idea? Suggest me</p>
+                <p><i class="fas fa-bomb pomegranate"></i> Got an idea? Suggest a project</p>
                 <div class="row">
                     <div class="col-sm-10"><textarea name="comments" id="comments" class="form-control" rows="3" placeholder="Message" id="textArea" style="height: 60px;"></textarea></div>
                     <div class="col-sm-2"><a href="#" class="btn btn-outline btn-outline-sm outline-dark">Send</a></div>
@@ -185,5 +189,20 @@ $cakeDescription = 'Jay\'s Blog - Dare to step';
     <?= $this->Html->script('bootstrap.min.js'); ?>
     <?= $this->Html->script('plugins.js'); ?>
     <?= $this->Html->script('bskit-scripts.js'); ?>
+
+    <!-- Piece of javascript code to disable right click
+    <script language="javascript">
+        document.onmousedown=disableclick;
+        status="Right Click Disabled";
+        function disableclick(event)
+        {
+            if(event.button == 2)
+            {
+                alert(status);
+                return false;
+            }
+        }
+    </script>
+    -->
 </body>
 </html>
