@@ -23,7 +23,7 @@
                     <!-- Row containing general project information -->
                     <div class="row">
                         <div class="col-md-7 col-sm-7 col-xs-12">
-                            <img src="https://placeholdit.imgix.net/~text?txtsize=38&txt=400%C3%97400&w=400&h=400" class="img-responsive">
+                            <?= $this->Html->image('pending.jpeg', ['class' => 'img-responsive']); ?>
                         </div>
                         <div class="col-md-5 col-sm-5 col-xs-12">
                             <ul class="list-group list-group-flush">
@@ -31,7 +31,12 @@
                                 <li class="list-group-item">Updated: <b class="pull-right">dd/mm/yyyy</b></li>
                                 <li class="list-group-item">Comments: <b class="pull-right">1</b></li>
                                 <li class="list-group-item">Likes: <b class="pull-right">1</b></li>
-                                <li class="list-group-item">Type: <a data-toggle="tooltip" title="Web Application"><i class="fab fa-chrome"></i></a></li>
+                                <li class="list-group-item">Type:
+                                    <div class="pull-right">
+                                        <a data-toggle="tooltip" title="Web Application"><i class="fab fa-chrome fa-2x"></i></a>
+                                        <a data-toggle="tooltip" title="Web Application"><i class="fab fa-chrome fa-2x"></i></a>
+                                        <a data-toggle="tooltip" title="Web Application"><i class="fab fa-chrome fa-2x"></i></a>
+                                    </div></li>
                             </ul>
                             <p class="small">Please help me improve this app by <a href="#">suggest</a> me an idea. Thanks!</p>
 
