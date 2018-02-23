@@ -18,6 +18,7 @@
         <thead>
             <tr>
                 <th scope="col"><?= $this->Paginator->sort('id') ?></th>
+                <th scope="col"><?= $this->Paginator->sort('type') ?></th>
                 <th scope="col"><?= $this->Paginator->sort('title') ?></th>
                 <th scope="col"><?= $this->Paginator->sort('description') ?></th>
                 <th scope="col"><?= $this->Paginator->sort('note') ?></th>
@@ -28,6 +29,7 @@
             <?php foreach ($categories as $category): ?>
             <tr>
                 <td><?= $this->Number->format($category->id) ?></td>
+                <td><?= $this->Number->format($category->type) ?></td>
                 <td><?= h($category->title) ?></td>
                 <td><?= h($category->description) ?></td>
                 <td><?= h($category->note) ?></td>

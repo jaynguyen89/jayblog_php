@@ -33,6 +33,8 @@
             echo $this->Form->control('note');
             echo $this->Form->control('created_on');
             echo $this->Form->control('updated_on');
+            echo $this->Form->control('task_total');
+            echo $this->Form->control('task_done');
         ?>
     </fieldset>
     <?= $this->Form->button(__('Submit')) ?>

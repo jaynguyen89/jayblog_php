@@ -32,5 +32,9 @@
             <th scope="row"><?= __('Id') ?></th>
             <td><?= $this->Number->format($distribution->id) ?></td>
         </tr>
+        <tr>
+            <th scope="row"><?= __('Main') ?></th>
+            <td><?= $distribution->main ? __('Yes') : __('No'); ?></td>
+        </tr>
     </table>
 </div>

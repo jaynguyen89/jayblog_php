@@ -22,6 +22,7 @@
                 <th scope="col"><?= $this->Paginator->sort('id') ?></th>
                 <th scope="col"><?= $this->Paginator->sort('post_id') ?></th>
                 <th scope="col"><?= $this->Paginator->sort('category_id') ?></th>
+                <th scope="col"><?= $this->Paginator->sort('main') ?></th>
                 <th scope="col" class="actions"><?= __('Actions') ?></th>
             </tr>
         </thead>
@@ -31,6 +32,7 @@
                 <td><?= $this->Number->format($distribution->id) ?></td>
                 <td><?= $distribution->has('post') ? $this->Html->link($distribution->post->title, ['controller' => 'Posts', 'action' => 'view', $distribution->post->id]) : '' ?></td>
                 <td><?= $distribution->has('category') ? $this->Html->link($distribution->category->title, ['controller' => 'Categories', 'action' => 'view', $distribution->category->id]) : '' ?></td>
+                <td><?= h($distribution->main) ?></td>
                 <td class="actions">
                     <?= $this->Html->link(__('View'), ['action' => 'view', $distribution->id]) ?>
                     <?= $this->Html->link(__('Edit'), ['action' => 'edit', $distribution->id]) ?>

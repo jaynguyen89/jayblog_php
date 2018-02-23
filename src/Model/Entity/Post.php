@@ -17,6 +17,8 @@ use Cake\ORM\Entity;
  * @property string $note
  * @property \Cake\I18n\FrozenTime $created_on
  * @property \Cake\I18n\FrozenTime $updated_on
+ * @property int $task_total
+ * @property int $task_done
  *
  * @property \App\Model\Entity\Comment[] $comments
  * @property \App\Model\Entity\Distribution[] $distributions
@@ -46,6 +48,8 @@ class Post extends Entity
         'note' => true,
         'created_on' => true,
         'updated_on' => true,
+        'task_total' => true,
+        'task_done' => true,
         'comments' => true,
         'distributions' => true,
         'files' => true,

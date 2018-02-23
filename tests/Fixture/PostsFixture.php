@@ -28,6 +28,8 @@ class PostsFixture extends TestFixture
         'note' => ['type' => 'string', 'length' => 250, 'null' => true, 'default' => null, 'collate' => 'latin1_swedish_ci', 'comment' => '', 'precision' => null, 'fixed' => null],
         'created_on' => ['type' => 'datetime', 'length' => null, 'null' => false, 'default' => 'CURRENT_TIMESTAMP', 'comment' => '', 'precision' => null],
         'updated_on' => ['type' => 'datetime', 'length' => null, 'null' => false, 'default' => 'CURRENT_TIMESTAMP', 'comment' => '', 'precision' => null],
+        'task_total' => ['type' => 'tinyinteger', 'length' => 2, 'unsigned' => false, 'null' => false, 'default' => '0', 'comment' => '', 'precision' => null],
+        'task_done' => ['type' => 'tinyinteger', 'length' => 2, 'unsigned' => false, 'null' => false, 'default' => '0', 'comment' => '', 'precision' => null],
         '_constraints' => [
             'primary' => ['type' => 'primary', 'columns' => ['id'], 'length' => []],
         ],
@@ -54,8 +56,10 @@ class PostsFixture extends TestFixture
             'down_vote' => 1,
             'status' => 1,
             'note' => 'Lorem ipsum dolor sit amet',
-            'created_on' => '2018-02-19 04:27:50',
-            'updated_on' => '2018-02-19 04:27:50'
+            'created_on' => '2018-02-19 10:20:49',
+            'updated_on' => '2018-02-19 10:20:49',
+            'task_total' => 1,
+            'task_done' => 1
         ],
     ];
 }

@@ -53,6 +53,10 @@ class CategoriesTable extends Table
             ->allowEmpty('id', 'create');
 
         $validator
+            ->requirePresence('type', 'create')
+            ->notEmpty('type');
+
+        $validator
             ->scalar('title')
             ->maxLength('title', 100)
             ->requirePresence('title', 'create')

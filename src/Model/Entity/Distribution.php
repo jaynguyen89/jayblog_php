@@ -9,6 +9,7 @@ use Cake\ORM\Entity;
  * @property int $id
  * @property int $post_id
  * @property int $category_id
+ * @property bool $main
  *
  * @property \App\Model\Entity\Post $post
  * @property \App\Model\Entity\Category $category
@@ -28,6 +29,7 @@ class Distribution extends Entity
     protected $_accessible = [
         'post_id' => true,
         'category_id' => true,
+        'main' => true,
         'post' => true,
         'category' => true
     ];

@@ -67,7 +67,7 @@ $cakeDescription = 'Jay\'s Blog - Dare to step';
                                     <a href="#"><i class="fas fa-code" style="margin-right: 10px;"></i>Programming Languages</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="#"><i class="fas fa-th-large" style="margin-right: 10px;"></i>Frameworks</a>
+                                    <a href="#"><i class="fas fa-puzzle-piece" style="margin-right: 10px;"></i>Frameworks</a>
                                 </li>
                                 <li class="nav-item">
                                     <a href="#"><i class="fas fa-cogs" style="margin-right: 10px;"></i>APIs</a>
@@ -116,7 +116,7 @@ $cakeDescription = 'Jay\'s Blog - Dare to step';
                         <li class="nav-item dropdown">
                             <a class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-delay="0" data-close-others="false" href="#">Others <i class="fa fa-angle-down"></i></a>
                             <ul class="dropdown-menu" style="background-color: grey">
-                                <li class="nav-item"><a href="#"><i class="fas fa-cloud-upload-alt" style="margin-right: 10px;"></i>Web Server & Clouds</a></li>
+                                <li class="nav-item"><a href="#"><i class="fas fa-cloud-upload-alt" style="margin-right: 10px;"></i>Servers & Clouds</a></li>
                                 <li class="nav-item"><a href="#"><i class="fas fa-code-branch" style="margin-right: 10px;"></i>Version Control</a></li>
                                 <li class="nav-item">
                                     <a href="#"><i class="far fa-newspaper" style="margin-right: 10px;"></i>IT News</a>
@@ -129,7 +129,7 @@ $cakeDescription = 'Jay\'s Blog - Dare to step';
                         <!-- End dropdown -->
                         <li class="nav-item"><?= $this->Html->link(__('Contact'), ['controller' => 'Pages', 'action' => 'contact']); ?></li>
                         <li class="nav-item" style="display: none;">
-                            <a href="#" style="color: coral" onmouseover="this.style.color='orangered'" onmouseout="this.style.color='coral'" ><i class="fa fa-user-circle" style="font-size: larger"></i> Admin Login</a>
+                            <a href="#" style="color: coral" onmouseover="this.style.color='orangered'" onmouseout="this.style.color='coral'"><i class="fa fa-user-circle" style="font-size: larger"></i> Admin Login</a>
                         </li>
                     </ul>
                 </div>

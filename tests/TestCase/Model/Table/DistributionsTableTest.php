@@ -27,6 +27,7 @@ class DistributionsTableTest extends TestCase
         'app.distributions',
         'app.posts',
         'app.comments',
+        'app.replies',
         'app.files',
         'app.messages',
         'app.categories'

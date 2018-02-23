@@ -21,6 +21,7 @@
         <?php
             echo $this->Form->control('post_id', ['options' => $posts]);
             echo $this->Form->control('category_id', ['options' => $categories]);
+            echo $this->Form->control('main');
         ?>
     </fieldset>
     <?= $this->Form->button(__('Submit')) ?>

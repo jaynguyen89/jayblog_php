@@ -17,7 +17,12 @@ class CategoriesControllerTest extends IntegrationTestCase
      */
     public $fixtures = [
         'app.categories',
-        'app.distributions'
+        'app.distributions',
+        'app.posts',
+        'app.comments',
+        'app.replies',
+        'app.files',
+        'app.messages'
     ];
 
     /**

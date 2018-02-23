@@ -23,6 +23,7 @@
     <fieldset>
         <legend><?= __('Edit Category') ?></legend>
         <?php
+            echo $this->Form->control('type');
             echo $this->Form->control('title');
             echo $this->Form->control('description');
             echo $this->Form->control('note');

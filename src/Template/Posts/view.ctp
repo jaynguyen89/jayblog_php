@@ -57,6 +57,14 @@
             <td><?= $this->Number->format($post->status) ?></td>
         </tr>
         <tr>
+            <th scope="row"><?= __('Task Total') ?></th>
+            <td><?= $this->Number->format($post->task_total) ?></td>
+        </tr>
+        <tr>
+            <th scope="row"><?= __('Task Done') ?></th>
+            <td><?= $this->Number->format($post->task_done) ?></td>
+        </tr>
+        <tr>
             <th scope="row"><?= __('Created On') ?></th>
             <td><?= h($post->created_on) ?></td>
         </tr>

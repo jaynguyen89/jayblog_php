@@ -34,6 +34,10 @@
             <th scope="row"><?= __('Id') ?></th>
             <td><?= $this->Number->format($category->id) ?></td>
         </tr>
+        <tr>
+            <th scope="row"><?= __('Type') ?></th>
+            <td><?= $this->Number->format($category->type) ?></td>
+        </tr>
     </table>
     <div class="related">
         <h4><?= __('Related Distributions') ?></h4>
@@ -43,6 +47,7 @@
                 <th scope="col"><?= __('Id') ?></th>
                 <th scope="col"><?= __('Post Id') ?></th>
                 <th scope="col"><?= __('Category Id') ?></th>
+                <th scope="col"><?= __('Main') ?></th>
                 <th scope="col" class="actions"><?= __('Actions') ?></th>
             </tr>
             <?php foreach ($category->distributions as $distributions): ?>
@@ -50,6 +55,7 @@
                 <td><?= h($distributions->id) ?></td>
                 <td><?= h($distributions->post_id) ?></td>
                 <td><?= h($distributions->category_id) ?></td>
+                <td><?= h($distributions->main) ?></td>
                 <td class="actions">
                     <?= $this->Html->link(__('View'), ['controller' => 'Distributions', 'action' => 'view', $distributions->id]) ?>
                     <?= $this->Html->link(__('Edit'), ['controller' => 'Distributions', 'action' => 'edit', $distributions->id]) ?>

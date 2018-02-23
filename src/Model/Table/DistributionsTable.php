@@ -58,6 +58,11 @@ class DistributionsTable extends Table
         $validator
             ->allowEmpty('id', 'create');
 
+        $validator
+            ->boolean('main')
+            ->requirePresence('main', 'create')
+            ->notEmpty('main');
+
         return $validator;
     }
 

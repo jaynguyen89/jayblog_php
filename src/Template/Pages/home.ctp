@@ -7,7 +7,7 @@
                 <h1>My latest work</h1>
                 <hr>
                 <p class="lead">Find here for the projects and researches that Jay was working on in the last 3 months.<br/>
-                    Some of them may still be in progress if you see a <span class="label label-info">Progressing</span> badge on it.</p>
+                    A project is considered <span class="label label-success">Completed</span> if at least 90% of its product backlog items are completed.</p>
             </div>
         </div>
         <!-- End section title -->
@@ -34,12 +34,11 @@
                                 <li class="list-group-item">Type:
                                     <div class="pull-right">
                                         <a data-toggle="tooltip" title="Web Application"><i class="fab fa-chrome fa-2x"></i></a>
-                                        <a data-toggle="tooltip" title="Web Application"><i class="fab fa-chrome fa-2x"></i></a>
-                                        <a data-toggle="tooltip" title="Web Application"><i class="fab fa-chrome fa-2x"></i></a>
+                                        <a data-toggle="tooltip" title="Web Application"><i class="fab fa-chrome fa-2x" style="color: gray" onmouseover="this.style.color='dimgray'" onmouseout="this.style.color='gray'"></i></a>
+                                        <a data-toggle="tooltip" title="Web Application"><i class="fab fa-chrome fa-2x" style="color: gray" onmouseover="this.style.color='dimgray'" onmouseout="this.style.color='gray'"></i></a>
                                     </div></li>
                             </ul>
                             <p class="small">Please help me improve this app by <a href="#">suggest</a> me an idea. Thanks!</p>
-
                         </div>
                     </div>
                     <!-- End row of general project info -->

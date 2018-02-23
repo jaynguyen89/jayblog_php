@@ -113,6 +113,14 @@ class PostsTable extends Table
             ->requirePresence('updated_on', 'create')
             ->notEmpty('updated_on');
 
+        $validator
+            ->requirePresence('task_total', 'create')
+            ->notEmpty('task_total');
+
+        $validator
+            ->requirePresence('task_done', 'create')
+            ->notEmpty('task_done');
+
         return $validator;
     }
 }
