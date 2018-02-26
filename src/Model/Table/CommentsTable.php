@@ -59,20 +59,17 @@ class CommentsTable extends Table
 
         $validator
             ->dateTime('comment_date')
-            ->requirePresence('comment_date', 'create')
-            ->notEmpty('comment_date');
+            ->allowEmpty('comment_date');
 
         $validator
             ->scalar('commenter_name')
             ->maxLength('commenter_name', 30)
-            ->requirePresence('commenter_name', 'create')
-            ->notEmpty('commenter_name');
+            ->allowEmpty('commenter_name');
 
         $validator
             ->scalar('commenter_email')
             ->maxLength('commenter_email', 50)
-            ->requirePresence('commenter_email', 'create')
-            ->notEmpty('commenter_email');
+            ->allowEmpty('commenter_email');
 
         $validator
             ->scalar('content')

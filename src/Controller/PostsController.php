@@ -64,7 +64,8 @@ class PostsController extends AppController
         $order = ['POSTS.created_on' => 'DESC'];
         $oldPosts = $this->Posts->find('all', [
             'conditions' => ['ABS(DATEDIFF(NOW(), POSTS.created_on)) >' => '90'],
-            'fields' => $oldPostFields
+            'fields' => $oldPostFields,
+            'order' => $order
         ])->toArray();
 
         $oldInterestPosts = array();

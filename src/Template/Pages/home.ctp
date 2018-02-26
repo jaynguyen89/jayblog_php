@@ -14,49 +14,53 @@
 
         <!-- Row containing recent projects -->
         <div class="row" style="margin: 5px;">
-            <div class="col-md-6">
-                <!-- Card containing a single project -->
-                <div class="card">
-                    <!-- Project title -->
-                    <h3 class="card-header"><b>Featured Project Title</b><span class="label label-info pull-right">Progressing</span></h3>
+            <?php foreach($latestPosts as $latestPost): ; ?>
+                <div class="col-md-6">
+                    <!-- Card containing a single project -->
+                    <div class="card">
+                        <!-- Project title -->
+                        <h3 class="card-header"><b><?= $latestPost->title; ?></b><?= ($latestPost->status == 1) ? '<span class="label label-info pull-right">Progressing</span>' : '<span class="label label-success pull-right">Completed</span>' ?></h3>
 
-                    <!-- Row containing general project information -->
-                    <div class="row">
-                        <div class="col-md-7 col-sm-7 col-xs-12">
-                            <?= $this->Html->image('pending.jpeg', ['class' => 'img-responsive']); ?>
-                        </div>
-                        <div class="col-md-5 col-sm-5 col-xs-12">
-                            <ul class="list-group list-group-flush">
-                                <li class="list-group-item">Posted on: <b class="pull-right">dd/mm/yyyy</b></li>
-                                <li class="list-group-item">Updated: <b class="pull-right">dd/mm/yyyy</b></li>
-                                <li class="list-group-item">Comments: <b class="pull-right">1</b></li>
-                                <li class="list-group-item">Likes: <b class="pull-right">1</b></li>
-                                <li class="list-group-item">Type:
-                                    <div class="pull-right">
-                                        <a data-toggle="tooltip" title="Web Application"><i class="fab fa-chrome fa-2x"></i></a>
-                                        <a data-toggle="tooltip" title="Web Application"><i class="fab fa-chrome fa-2x" style="color: gray" onmouseover="this.style.color='dimgray'" onmouseout="this.style.color='gray'"></i></a>
-                                        <a data-toggle="tooltip" title="Web Application"><i class="fab fa-chrome fa-2x" style="color: gray" onmouseover="this.style.color='dimgray'" onmouseout="this.style.color='gray'"></i></a>
-                                    </div></li>
-                            </ul>
-                            <p class="small">Please help me improve this app by <a href="#">suggest</a> me an idea. Thanks!</p>
-                        </div>
-                    </div>
-                    <!-- End row of general project info -->
-
-                    <!-- Row containing brief project introduction -->
-                    <div class="row">
-                        <div class="card-block">
-                            <div class="col-md-10 col-sm-10 col-xs-12">
-                                <p class="card-text">Consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. </p>
+                        <!-- Row containing general project information -->
+                        <div class="row">
+                            <div class="col-md-7 col-sm-7 col-xs-12">
+                                <?= $this->Html->image($latestPost->photo, ['class' => 'img-responsive', 'style' => 'border: 1px groove #3498DB; border-radius: 7px;', 'alt' => 'jayblogpreview']); ?>
                             </div>
-                            <div class="col-md-2 col-sm-2 col-xs-12">
-                            <a href="#" class="btn btn-outline btn-outline-sm outline-dark">Open</a></div>
+                            <div class="col-md-5 col-sm-5 col-xs-12">
+                                <ul class="list-group list-group-flush">
+                                    <li class="list-group-item">Posted on: <b class="pull-right"><?= (new DateTime($latestPost->created_on))->format('d/m/Y H:i'); ?></b></li>
+                                    <li class="list-group-item">Updated: <b class="pull-right"><?= (new DateTime($latestPost->updated_on))->format('d/m/Y H:i'); ?></b></li>
+                                    <li class="list-group-item">Comments: <b class="pull-right"><?= $commentsByPost[$latestPost->id]; ?></b></li>
+                                    <li class="list-group-item">Likes: <b class="pull-right"><?= $likesByPost[$latestPost->id]; ?></b></li>
+                                    <li class="list-group-item">Type:
+                                        <div class="pull-right">
+                                            <?php foreach ($categoriesByPost as $category):
+                                                if ($category[1])
+                                                    echo '<a data-toggle="tooltip" title="'.$category[0]->title.'" style="margin-right: 5px;"><i class="'.$category[0]->description.' fa-2x"></i></a>';
+                                                else
+                                                    echo '<a data-toggle="tooltip" title="'.$category[0]->title.'"><i class="'.$category[0]->description.' fa-2x" style="color: gray; margin-right: 5px;" onmouseover="this.style.color=\'dimgray\'" onmouseout="this.style.color=\'gray\'"></i></a>';
+                                            endforeach; ?>
+                                        </div></li>
+                                </ul>
+                                <p class="small">Please help me improve this app by <a href="#">suggest</a> me an idea. Thanks!</p>
+                            </div>
                         </div>
+                        <!-- End row of general project info -->
+
+                        <!-- Row containing brief project introduction -->
+                        <div class="row">
+                            <div class="card-block">
+                                <div class="col-md-10 col-sm-10 col-xs-12">
+                                    <p class="card-text"><?= $latestPost->description; ?></p>
+                                </div>
+                                <div class="col-md-2 col-sm-2 col-xs-12"><?= $this->Html->link('Open', ['action' => 'view', $latestPost->id], ['class' => 'btn btn-outline btn-outline-sm outline-dark']); ?></div>
+                            </div>
+                        </div>
+                        <!-- End row of brief project intro -->
                     </div>
-                    <!-- End row of brief project intro -->
+                    <!-- End card -->
                 </div>
-                <!-- End card -->
-            </div>
+            <?php endforeach; ?>
         </div>
         <!-- End row of recent projects -->
     </section>
@@ -85,11 +89,15 @@
                         <table class="table bg-offwhite" style="border-radius: 10px;">
                             <thead><tr><th>#</th><th>Type</th><th>Title</th></tr></thead>
                             <tbody>
+                            <?php if (count($oldInterestPosts) == 0)
+                                echo '<tr class="text-center"><td colspan="3" class="text-center">Awaiting update</td></tr>';
+                            else for ($i = 0; $i < count($oldInterestPosts); $i++) { ?>
                                 <tr>
-                                    <th scope="row">1</th>
-                                    <td>icon</td>
-                                    <td>Project Title</td>
+                                    <th scope="row"><?= $i + 1; ?></th>
+                                    <td><?= '<a data-toggle="tooltip" title="'.$oldInterestPosts[$i]->category.'" style="margin-right: 5px;"><i class="'.$oldInterestPosts[$i]->description.'"></i></a>';?></td>
+                                    <td><?= $this->Html->link($oldInterestPosts[$i]->title, ['action' => 'view', $oldInterestPosts[$i]->id]); ?></td>
                                 </tr>
+                            <?php } ?>
                             </tbody>
                         </table>
                     </div>
@@ -104,11 +112,15 @@
                         <table class="table bg-offwhite" style="border-radius: 10px;">
                             <thead><tr><th>#</th><th>Type</th><th>title</th></tr></thead>
                             <tbody>
+                            <?php if (count($oldProjectPosts) == 0)
+                                echo '<tr class="text-center"><td colspan="3" class="text-center">Awaiting update</td></tr>';
+                            else for ($i = 0; $i < count($oldProjectPosts); $i++) { ?>
                                 <tr>
-                                    <th scope="row">1</th>
-                                    <td>icon</td>
-                                    <td>Project Title</td>
+                                    <th scope="row"><?= $i + 1; ?></th>
+                                    <td><?= '<a data-toggle="tooltip" title="'.$oldProjectPosts[$i]->category.'" style="margin-right: 5px;"><i class="'.$oldProjectPosts[$i]->description.'"></i></a>';?></td>
+                                    <td><?= $this->Html->link($oldProjectPosts[$i]->title, ['action' => 'view', $oldProjectPosts[$i]->id]); ?></td>
                                 </tr>
+                            <?php } ?>
                             </tbody>
                         </table>
                     </div>
@@ -124,11 +136,15 @@
                         <table class="table bg-offwhite" style="border-radius: 10px;">
                             <thead><tr><th>#</th><th>Type</th><th>Title</th></tr></thead>
                             <tbody>
+                            <?php if (count($oldOtherPosts) == 0)
+                                echo '<tr class="text-center"><td colspan="3" class="text-center">Awaiting update</td></tr>';
+                            else for ($i = 0; $i < count($oldOtherPosts); $i++) { ?>
                                 <tr>
-                                    <th scope="row">1</th>
-                                    <td>icon</td>
-                                    <td>Project Title</td>
+                                    <th scope="row"><?= $i + 1; ?></th>
+                                    <td><?= '<a data-toggle="tooltip" title="'.$oldOtherPosts[$i]->category.'" style="margin-right: 5px;"><i class="'.$oldOtherPosts[$i]->description.'"></i></a>';?></td>
+                                    <td><?= $this->Html->link($oldOtherPosts[$i]->title, ['action' => 'view', $oldOtherPosts[$i]->id]); ?></td>
                                 </tr>
+                            <?php } ?>
                             </tbody>
                         </table>
                     </div>
@@ -140,11 +156,15 @@
                         <table class="table bg-offwhite" style="border-radius: 10px;">
                             <thead><tr><th>#</th><th>Type</th><th>Title</th></tr></thead>
                             <tbody>
+                            <?php if (count($proposedPosts) == 0)
+                                echo '<tr class="text-center"><td colspan="3" class="text-center">Awaiting update</td></tr>';
+                            else for ($i = 0; $i < count($proposedPosts); $i++) { ?>
                                 <tr>
-                                    <th scope="row">1</th>
-                                    <td>icon</td>
-                                    <td>Project Title</td>
+                                    <th scope="row"><?= $i + 1; ?></th>
+                                    <td><?= '<a data-toggle="tooltip" title="'.$proposedPosts[$i]->category.'" style="margin-right: 5px;"><i class="'.$proposedPosts[$i]->description.'"></i></a>';?></td>
+                                    <td><?= $this->Html->link($proposedPosts[$i]->title, ['action' => 'view', $proposedPosts[$i]->id]); ?></td>
                                 </tr>
+                            <?php } ?>
                             </tbody>
                         </table>
                     </div>

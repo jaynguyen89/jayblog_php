@@ -52,7 +52,7 @@ Router::scope('/', function (RouteBuilder $routes) {
     //$routes->connect('/', ['controller' => 'Pages', 'action' => 'display', 'home']);
 
     // Custom route for the base URL connecting to index.ctp of the Posts controller
-    $routes->connect('/', ['controller' => 'Posts', 'action' => 'index', 'index']);
+    $routes->connect('/', ['controller' => 'Posts', 'action' => 'index', 'home']);
 
     /**
      * ...and connect the rest of 'Pages' controller's URLs.

@@ -19,9 +19,9 @@ class CommentsFixture extends TestFixture
     public $fields = [
         'id' => ['type' => 'smallinteger', 'length' => 5, 'unsigned' => true, 'null' => false, 'default' => null, 'comment' => '', 'precision' => null],
         'post_id' => ['type' => 'smallinteger', 'length' => 5, 'unsigned' => true, 'null' => false, 'default' => null, 'comment' => '', 'precision' => null],
-        'comment_date' => ['type' => 'datetime', 'length' => null, 'null' => false, 'default' => 'CURRENT_TIMESTAMP', 'comment' => '', 'precision' => null],
-        'commenter_name' => ['type' => 'string', 'length' => 30, 'null' => false, 'default' => 'Unknown', 'collate' => 'latin1_swedish_ci', 'comment' => '', 'precision' => null, 'fixed' => null],
-        'commenter_email' => ['type' => 'string', 'length' => 50, 'null' => false, 'default' => 'Unknown', 'collate' => 'latin1_swedish_ci', 'comment' => '', 'precision' => null, 'fixed' => null],
+        'comment_date' => ['type' => 'datetime', 'length' => null, 'null' => true, 'default' => 'CURRENT_TIMESTAMP', 'comment' => '', 'precision' => null],
+        'commenter_name' => ['type' => 'string', 'length' => 30, 'null' => true, 'default' => null, 'collate' => 'latin1_swedish_ci', 'comment' => '', 'precision' => null, 'fixed' => null],
+        'commenter_email' => ['type' => 'string', 'length' => 50, 'null' => true, 'default' => null, 'collate' => 'latin1_swedish_ci', 'comment' => '', 'precision' => null, 'fixed' => null],
         'content' => ['type' => 'string', 'length' => 1000, 'null' => true, 'default' => null, 'collate' => 'latin1_swedish_ci', 'comment' => '', 'precision' => null, 'fixed' => null],
         'photo' => ['type' => 'string', 'length' => 100, 'null' => true, 'default' => null, 'collate' => 'latin1_swedish_ci', 'comment' => '', 'precision' => null, 'fixed' => null],
         'file' => ['type' => 'string', 'length' => 100, 'null' => true, 'default' => null, 'collate' => 'latin1_swedish_ci', 'comment' => '', 'precision' => null, 'fixed' => null],
@@ -48,7 +48,7 @@ class CommentsFixture extends TestFixture
         [
             'id' => 1,
             'post_id' => 1,
-            'comment_date' => '2018-02-19 04:28:29',
+            'comment_date' => '2018-02-25 11:18:42',
             'commenter_name' => 'Lorem ipsum dolor sit amet',
             'commenter_email' => 'Lorem ipsum dolor sit amet',
             'content' => 'Lorem ipsum dolor sit amet',

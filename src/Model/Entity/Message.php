@@ -12,8 +12,9 @@ use Cake\ORM\Entity;
  * @property string $sender_email
  * @property string $sender_phone
  * @property string $content
- * @property int $status
+ * @property int $type
  * @property \Cake\I18n\FrozenTime $recieved_on
+ * @property bool $is_oppened
  *
  * @property \App\Model\Entity\Post $post
  */
@@ -35,8 +36,9 @@ class Message extends Entity
         'sender_email' => true,
         'sender_phone' => true,
         'content' => true,
-        'status' => true,
+        'type' => true,
         'recieved_on' => true,
+        'is_oppened' => true,
         'post' => true
     ];
 }

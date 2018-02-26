@@ -26,6 +26,16 @@ class MessagesControllerTest extends IntegrationTestCase
     ];
 
     /**
+     * Test suggestProject method
+     *
+     * @return void
+     */
+    public function testSuggestProject()
+    {
+        $this->markTestIncomplete('Not implemented yet.');
+    }
+
+    /**
      * Test index method
      *
      * @return void

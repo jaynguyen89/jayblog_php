@@ -26,7 +26,7 @@
         <legend><?= __('Edit Comment') ?></legend>
         <?php
             echo $this->Form->control('post_id', ['options' => $posts]);
-            echo $this->Form->control('comment_date');
+            echo $this->Form->control('comment_date', ['empty' => true]);
             echo $this->Form->control('commenter_name');
             echo $this->Form->control('commenter_email');
             echo $this->Form->control('content');

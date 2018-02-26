@@ -2,6 +2,7 @@
 namespace App\Controller;
 
 use App\Controller\AppController;
+use Cake\Datasource\ConnectionManager;
 
 /**
  * Messages Controller
@@ -12,6 +13,34 @@ use App\Controller\AppController;
  */
 class MessagesController extends AppController
 {
+    public function suggestProject() {
+        $this->autoRender = false;
+        $message = $this->Messages->newEntity();
+
+        if ($this->request->is('post')) {
+            $data = $this->request->getData();
+
+            if ($data['form_id'] == 0) {
+                $data['post_id'] = 1;
+                $data['type'] = 2;
+            }
+            else
+                $data['type'] = 1;
+
+            $message = $this->Messages->patchEntity($message, $data);
+            if ($this->Messages->save($message)) {
+
+                if ($data['form_id'] == 0)
+                    $this->Flash->success(__('Hooray! Your project suggestion has been sent successfully.'));
+                else
+                    $this->Flash->success(__('Hooray! Your feature suggestion has been sent successfully.'));
+
+                return $this->redirect(['controller' => 'Posts', 'action' => 'index']);
+            }
+
+            $this->Flash->error(__('Oops! Something went wrong with the server. Please try again later.'));
+        }
+    }
 
     /**
      * Index method
@@ -49,20 +78,23 @@ class MessagesController extends AppController
      *
      * @return \Cake\Http\Response|null Redirects on successful add, renders view otherwise.
      */
-    public function add()
-    {
+    public function add() {
         $message = $this->Messages->newEntity();
         if ($this->request->is('post')) {
-            $message = $this->Messages->patchEntity($message, $this->request->getData());
-            if ($this->Messages->save($message)) {
-                $this->Flash->success(__('The message has been saved.'));
+            $data = $this->request->getData();
+            $data['type'] = 0;
+            $data['post_id'] = 1;
 
-                return $this->redirect(['action' => 'index']);
+            $message = $this->Messages->patchEntity($message, $data);
+            if ($this->Messages->save($message)) {
+                $this->Flash->success(__('Hooray! Your contact message has been sent successfully.'));
+                return $this->redirect(['action' => 'add']);
             }
-            $this->Flash->error(__('The message could not be saved. Please, try again.'));
+
+            $this->Flash->error(__('Oops! Something went wrong with the server. Please try again later.'));
         }
-        $posts = $this->Messages->Posts->find('list', ['limit' => 200]);
-        $this->set(compact('message', 'posts'));
+
+        $this->set(compact('message'));
     }
 
     /**

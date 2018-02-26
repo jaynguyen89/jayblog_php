@@ -127,7 +127,7 @@ $cakeDescription = 'Jay\'s Blog - Dare to step';
                             </ul>
                         </li>
                         <!-- End dropdown -->
-                        <li class="nav-item"><?= $this->Html->link(__('Contact'), ['controller' => 'Pages', 'action' => 'contact']); ?></li>
+                        <li class="nav-item"><?= $this->Html->link(__('Contact'), ['controller' => 'Messages', 'action' => 'add']); ?></li>
                         <li class="nav-item" style="display: none;">
                             <a href="#" style="color: coral" onmouseover="this.style.color='orangered'" onmouseout="this.style.color='coral'"><i class="fa fa-user-circle" style="font-size: larger"></i> Admin Login</a>
                         </li>
@@ -139,14 +139,16 @@ $cakeDescription = 'Jay\'s Blog - Dare to step';
         </nav>
     </header>
 
-    <?= $this->Flash->render() ?>
     <div class="container clearfix"><br/><br/><br/><br/><br/>
+        <?= $this->Flash->render() ?>
         <?= $this->fetch('content') ?>
     </div>
 
     <section class="content-block-nopad bg-offwhite footer-wrap-1-3">
+        <!-- Section containing footer -->
         <div class="container footer-1-3">
-            <div class="col-md-4 pull-left">
+            <!-- Section containing logo and social links -->
+            <div class="col-md-4 col-sm-4 col-xs-4">
                 <?= $this->Html->image('jaydev.PNG', ['alt' => 'jaydeveloper', 'url' => ['controller' => 'Pages', 'action' => 'display'], 'class' => 'brand-img img-responsive']); ?>
                 <q><i>No pain, no gain</i></q>
                 <ul class="social social-light">
@@ -168,15 +170,37 @@ $cakeDescription = 'Jay\'s Blog - Dare to step';
                 </ul>
                 <!-- /.social -->
             </div>
-            <div class="col-md-4 pull-right">
-                <p><i class="fas fa-bomb pomegranate"></i> Got an idea? Suggest a project</p>
+            <!-- End social links -->
+
+            <!-- Section containing suggest form -->
+            <div class="col-md-8 col-sm-8 col-xs-8">
+                <p><i class="fas fa-bomb pomegranate"></i> Got a project idea? Please suggest me.<br><p id="suggestPostError" class="guardsman small"></p></p>
                 <div class="row">
-                    <div class="col-sm-10"><textarea name="comments" id="comments" class="form-control" rows="3" placeholder="Message" id="textArea" style="height: 60px;"></textarea></div>
-                    <div class="col-sm-2"><a href="#" class="btn btn-outline btn-outline-sm outline-dark">Send</a></div>
+                    <!-- Suggest form -->
+                    <form id="suggestProject" method="post" action="/jayblog/messages/suggestProject">
+                        <input type="hidden" name="form_id" value="0"/>
+                        <div class="col-md-3 col-sm-4 col-xs-12">
+                            <div class="row">
+                                <div class="col-xs-12"><input name="sender_name" id="suggesterName" type="text" placeholder="Name" class="form-control" oninput="checkSuggestProjectForm()" /></div>
+                                <div class="col-xs-12"><input name="sender_email" id="suggesterEmail" type="text" placeholder="Email" class="form-control" oninput="checkSuggestProjectForm()" /></div>
+                            </div>
+                        </div>
+                        <div class="col-md-9 col-sm-8 col-xs-12">
+                            <div class="row">
+                                <div class="col-sm-9 col-xs-12"><textarea name="content" id="projectIdea" class="form-control" rows="3" placeholder="Your project idea ..." style="height: 85px;" oninput="countMessageCharacters()"></textarea></div>
+                                <div class="col-sm-3 col-xs-12">
+                                    <button id="suggestSubmit" type="submit" class="btn btn-outline btn-outline-sm outline-dark" disabled="disabled">Send</button>
+                                    <p id="suggestProjectCount" class="small" style="margin: 0;">1000 Chars Left</p>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                    <!-- End form -->
                 </div>
             </div>
+            <!-- End form section -->
         </div>
-        <!-- /.container -->
+        <!-- End footer -->
     </section>
 
     <div class="copyright-bar-2">
@@ -189,20 +213,6 @@ $cakeDescription = 'Jay\'s Blog - Dare to step';
     <?= $this->Html->script('bootstrap.min.js'); ?>
     <?= $this->Html->script('plugins.js'); ?>
     <?= $this->Html->script('bskit-scripts.js'); ?>
-
-    <!-- Piece of javascript code to disable right click
-    <script language="javascript">
-        document.onmousedown=disableclick;
-        status="Right Click Disabled";
-        function disableclick(event)
-        {
-            if(event.button == 2)
-            {
-                alert(status);
-                return false;
-            }
-        }
-    </script>
-    -->
+    <?= $this->Html->script('jayblog.js'); ?>
 </body>
 </html>

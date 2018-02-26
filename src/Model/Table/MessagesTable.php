@@ -56,14 +56,12 @@ class MessagesTable extends Table
         $validator
             ->scalar('sender_name')
             ->maxLength('sender_name', 100)
-            ->requirePresence('sender_name', 'create')
-            ->notEmpty('sender_name');
+            ->allowEmpty('sender_name');
 
         $validator
             ->scalar('sender_email')
             ->maxLength('sender_email', 100)
-            ->requirePresence('sender_email', 'create')
-            ->notEmpty('sender_email');
+            ->allowEmpty('sender_email');
 
         $validator
             ->scalar('sender_phone')
@@ -75,13 +73,15 @@ class MessagesTable extends Table
             ->allowEmpty('content');
 
         $validator
-            ->requirePresence('status', 'create')
-            ->notEmpty('status');
+            ->allowEmpty('type');
 
         $validator
             ->dateTime('recieved_on')
-            ->requirePresence('recieved_on', 'create')
-            ->notEmpty('recieved_on');
+            ->allowEmpty('recieved_on');
+
+        $validator
+            ->boolean('is_oppened')
+            ->allowEmpty('is_oppened');
 
         return $validator;
     }

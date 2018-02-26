@@ -20,7 +20,7 @@ class DistributionsFixture extends TestFixture
         'id' => ['type' => 'smallinteger', 'length' => 5, 'unsigned' => true, 'null' => false, 'default' => null, 'comment' => '', 'precision' => null],
         'post_id' => ['type' => 'smallinteger', 'length' => 5, 'unsigned' => true, 'null' => false, 'default' => null, 'comment' => '', 'precision' => null],
         'category_id' => ['type' => 'smallinteger', 'length' => 5, 'unsigned' => true, 'null' => false, 'default' => null, 'comment' => '', 'precision' => null],
-        'main' => ['type' => 'boolean', 'length' => null, 'null' => false, 'default' => '0', 'comment' => '', 'precision' => null],
+        'main' => ['type' => 'boolean', 'length' => null, 'null' => true, 'default' => '0', 'comment' => '', 'precision' => null],
         '_indexes' => [
             'distributions_posts_fk' => ['type' => 'index', 'columns' => ['post_id'], 'length' => []],
             'distributions_categories_fk' => ['type' => 'index', 'columns' => ['category_id'], 'length' => []],

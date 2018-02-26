@@ -24,7 +24,7 @@
         <legend><?= __('Edit Reply') ?></legend>
         <?php
             echo $this->Form->control('comment_id', ['options' => $comments]);
-            echo $this->Form->control('reply_date');
+            echo $this->Form->control('reply_date', ['empty' => true]);
             echo $this->Form->control('replier_name');
             echo $this->Form->control('replier_email');
             echo $this->Form->control('content');

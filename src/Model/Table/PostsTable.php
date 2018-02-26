@@ -67,14 +67,12 @@ class PostsTable extends Table
         $validator
             ->scalar('title')
             ->maxLength('title', 250)
-            ->requirePresence('title', 'create')
-            ->notEmpty('title');
+            ->allowEmpty('title');
 
         $validator
             ->scalar('description')
             ->maxLength('description', 500)
-            ->requirePresence('description', 'create')
-            ->notEmpty('description');
+            ->allowEmpty('description');
 
         $validator
             ->scalar('content')
@@ -83,20 +81,22 @@ class PostsTable extends Table
         $validator
             ->scalar('photo')
             ->maxLength('photo', 100)
-            ->requirePresence('photo', 'create')
-            ->notEmpty('photo');
+            ->allowEmpty('photo');
 
         $validator
-            ->requirePresence('up_vote', 'create')
-            ->notEmpty('up_vote');
+            ->allowEmpty('up_vote');
 
         $validator
-            ->requirePresence('down_vote', 'create')
-            ->notEmpty('down_vote');
+            ->allowEmpty('down_vote');
 
         $validator
-            ->requirePresence('status', 'create')
-            ->notEmpty('status');
+            ->allowEmpty('status');
+
+        $validator
+            ->allowEmpty('task_total');
+
+        $validator
+            ->allowEmpty('task_done');
 
         $validator
             ->scalar('note')
@@ -105,21 +105,11 @@ class PostsTable extends Table
 
         $validator
             ->dateTime('created_on')
-            ->requirePresence('created_on', 'create')
-            ->notEmpty('created_on');
+            ->allowEmpty('created_on');
 
         $validator
             ->dateTime('updated_on')
-            ->requirePresence('updated_on', 'create')
-            ->notEmpty('updated_on');
-
-        $validator
-            ->requirePresence('task_total', 'create')
-            ->notEmpty('task_total');
-
-        $validator
-            ->requirePresence('task_done', 'create')
-            ->notEmpty('task_done');
+            ->allowEmpty('updated_on');
 
         return $validator;
     }

@@ -39,12 +39,16 @@
             <td><?= $this->Number->format($message->id) ?></td>
         </tr>
         <tr>
-            <th scope="row"><?= __('Status') ?></th>
-            <td><?= $this->Number->format($message->status) ?></td>
+            <th scope="row"><?= __('Type') ?></th>
+            <td><?= $this->Number->format($message->type) ?></td>
         </tr>
         <tr>
             <th scope="row"><?= __('Recieved On') ?></th>
             <td><?= h($message->recieved_on) ?></td>
+        </tr>
+        <tr>
+            <th scope="row"><?= __('Is Oppened') ?></th>
+            <td><?= $message->is_oppened ? __('Yes') : __('No'); ?></td>
         </tr>
     </table>
     <div class="row">

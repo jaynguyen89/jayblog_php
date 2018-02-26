@@ -18,18 +18,18 @@ class PostsFixture extends TestFixture
     // @codingStandardsIgnoreStart
     public $fields = [
         'id' => ['type' => 'smallinteger', 'length' => 5, 'unsigned' => true, 'null' => false, 'default' => null, 'comment' => '', 'precision' => null],
-        'title' => ['type' => 'string', 'length' => 250, 'null' => false, 'default' => 'Unspecified', 'collate' => 'latin1_swedish_ci', 'comment' => '', 'precision' => null, 'fixed' => null],
-        'description' => ['type' => 'string', 'length' => 500, 'null' => false, 'default' => 'Unspecified', 'collate' => 'latin1_swedish_ci', 'comment' => '', 'precision' => null, 'fixed' => null],
+        'title' => ['type' => 'string', 'length' => 250, 'null' => true, 'default' => null, 'collate' => 'latin1_swedish_ci', 'comment' => '', 'precision' => null, 'fixed' => null],
+        'description' => ['type' => 'string', 'length' => 500, 'null' => true, 'default' => null, 'collate' => 'latin1_swedish_ci', 'comment' => '', 'precision' => null, 'fixed' => null],
         'content' => ['type' => 'text', 'length' => null, 'null' => true, 'default' => null, 'collate' => 'latin1_swedish_ci', 'comment' => '', 'precision' => null],
-        'photo' => ['type' => 'string', 'length' => 100, 'null' => false, 'default' => 'pending.jpeg', 'collate' => 'latin1_swedish_ci', 'comment' => '', 'precision' => null, 'fixed' => null],
-        'up_vote' => ['type' => 'smallinteger', 'length' => 5, 'unsigned' => false, 'null' => false, 'default' => '0', 'comment' => '', 'precision' => null],
-        'down_vote' => ['type' => 'smallinteger', 'length' => 5, 'unsigned' => false, 'null' => false, 'default' => '0', 'comment' => '', 'precision' => null],
-        'status' => ['type' => 'tinyinteger', 'length' => 2, 'unsigned' => false, 'null' => false, 'default' => '0', 'comment' => '', 'precision' => null],
+        'photo' => ['type' => 'string', 'length' => 100, 'null' => true, 'default' => 'pending.jpeg', 'collate' => 'latin1_swedish_ci', 'comment' => '', 'precision' => null, 'fixed' => null],
+        'up_vote' => ['type' => 'smallinteger', 'length' => 5, 'unsigned' => false, 'null' => true, 'default' => '0', 'comment' => '', 'precision' => null],
+        'down_vote' => ['type' => 'smallinteger', 'length' => 5, 'unsigned' => false, 'null' => true, 'default' => '0', 'comment' => '', 'precision' => null],
+        'status' => ['type' => 'tinyinteger', 'length' => 2, 'unsigned' => false, 'null' => true, 'default' => '0', 'comment' => '', 'precision' => null],
+        'task_total' => ['type' => 'tinyinteger', 'length' => 2, 'unsigned' => false, 'null' => true, 'default' => '0', 'comment' => '', 'precision' => null],
+        'task_done' => ['type' => 'tinyinteger', 'length' => 2, 'unsigned' => false, 'null' => true, 'default' => '0', 'comment' => '', 'precision' => null],
         'note' => ['type' => 'string', 'length' => 250, 'null' => true, 'default' => null, 'collate' => 'latin1_swedish_ci', 'comment' => '', 'precision' => null, 'fixed' => null],
-        'created_on' => ['type' => 'datetime', 'length' => null, 'null' => false, 'default' => 'CURRENT_TIMESTAMP', 'comment' => '', 'precision' => null],
-        'updated_on' => ['type' => 'datetime', 'length' => null, 'null' => false, 'default' => 'CURRENT_TIMESTAMP', 'comment' => '', 'precision' => null],
-        'task_total' => ['type' => 'tinyinteger', 'length' => 2, 'unsigned' => false, 'null' => false, 'default' => '0', 'comment' => '', 'precision' => null],
-        'task_done' => ['type' => 'tinyinteger', 'length' => 2, 'unsigned' => false, 'null' => false, 'default' => '0', 'comment' => '', 'precision' => null],
+        'created_on' => ['type' => 'datetime', 'length' => null, 'null' => true, 'default' => 'CURRENT_TIMESTAMP', 'comment' => '', 'precision' => null],
+        'updated_on' => ['type' => 'datetime', 'length' => null, 'null' => true, 'default' => 'CURRENT_TIMESTAMP', 'comment' => '', 'precision' => null],
         '_constraints' => [
             'primary' => ['type' => 'primary', 'columns' => ['id'], 'length' => []],
         ],
@@ -55,11 +55,11 @@ class PostsFixture extends TestFixture
             'up_vote' => 1,
             'down_vote' => 1,
             'status' => 1,
-            'note' => 'Lorem ipsum dolor sit amet',
-            'created_on' => '2018-02-19 10:20:49',
-            'updated_on' => '2018-02-19 10:20:49',
             'task_total' => 1,
-            'task_done' => 1
+            'task_done' => 1,
+            'note' => 'Lorem ipsum dolor sit amet',
+            'created_on' => '2018-02-25 11:20:04',
+            'updated_on' => '2018-02-25 11:20:04'
         ],
     ];
 }

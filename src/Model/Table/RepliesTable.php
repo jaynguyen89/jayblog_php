@@ -55,20 +55,17 @@ class RepliesTable extends Table
 
         $validator
             ->dateTime('reply_date')
-            ->requirePresence('reply_date', 'create')
-            ->notEmpty('reply_date');
+            ->allowEmpty('reply_date');
 
         $validator
             ->scalar('replier_name')
             ->maxLength('replier_name', 30)
-            ->requirePresence('replier_name', 'create')
-            ->notEmpty('replier_name');
+            ->allowEmpty('replier_name');
 
         $validator
             ->scalar('replier_email')
             ->maxLength('replier_email', 50)
-            ->requirePresence('replier_email', 'create')
-            ->notEmpty('replier_email');
+            ->allowEmpty('replier_email');
 
         $validator
             ->scalar('content')

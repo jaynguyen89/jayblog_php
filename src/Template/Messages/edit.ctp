@@ -28,8 +28,9 @@
             echo $this->Form->control('sender_email');
             echo $this->Form->control('sender_phone');
             echo $this->Form->control('content');
-            echo $this->Form->control('status');
+            echo $this->Form->control('type');
             echo $this->Form->control('recieved_on');
+            echo $this->Form->control('is_oppened');
         ?>
     </fieldset>
     <?= $this->Form->button(__('Submit')) ?>
