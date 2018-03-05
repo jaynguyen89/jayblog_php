@@ -1,22 +1,22 @@
 <?php
 namespace App\Test\TestCase\Model\Table;
 
-use App\Model\Table\FilesTable;
+use App\Model\Table\VotesTable;
 use Cake\ORM\TableRegistry;
 use Cake\TestSuite\TestCase;
 
 /**
- * App\Model\Table\FilesTable Test Case
+ * App\Model\Table\VotesTable Test Case
  */
-class FilesTableTest extends TestCase
+class VotesTableTest extends TestCase
 {
 
     /**
      * Test subject
      *
-     * @var \App\Model\Table\FilesTable
+     * @var \App\Model\Table\VotesTable
      */
-    public $Files;
+    public $Votes;
 
     /**
      * Fixtures
@@ -24,12 +24,13 @@ class FilesTableTest extends TestCase
      * @var array
      */
     public $fixtures = [
-        'app.files',
+        'app.votes',
         'app.posts',
         'app.comments',
         'app.replies',
         'app.distributions',
         'app.categories',
+        'app.files',
         'app.messages'
     ];
 
@@ -41,8 +42,8 @@ class FilesTableTest extends TestCase
     public function setUp()
     {
         parent::setUp();
-        $config = TableRegistry::exists('Files') ? [] : ['className' => FilesTable::class];
-        $this->Files = TableRegistry::get('Files', $config);
+        $config = TableRegistry::exists('Votes') ? [] : ['className' => VotesTable::class];
+        $this->Votes = TableRegistry::get('Votes', $config);
     }
 
     /**
@@ -52,7 +53,7 @@ class FilesTableTest extends TestCase
      */
     public function tearDown()
     {
-        unset($this->Files);
+        unset($this->Votes);
 
         parent::tearDown();
     }

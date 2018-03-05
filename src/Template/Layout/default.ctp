@@ -52,13 +52,13 @@ $cakeDescription = 'Jay\'s Blog - Dare to step';
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
-                    <?= $this->Html->image('jaydev.PNG', ['alt' => 'jaydeveloper', 'url' => ['controller' => 'Pages', 'action' => 'display'], 'class' => 'brand-img img-responsive']); ?>
+                    <?= $this->Html->image('jaydev.PNG', ['alt' => 'jaydeveloper', 'url' => '/', 'class' => 'brand-img img-responsive']); ?>
                 </div>
 
                 <!-- Navbar menu containing collapsible items and links -->
                 <div class="collapse navbar-collapse" id="navbar-collapse">
                     <ul class="nav navbar-nav navbar-right">
-                        <li class="nav-item active"><?= $this->Html->link(__('Home'), ['controller' => 'Pages', 'action' => 'display'], ['class' => 'nav-link']); ?></li>
+                        <li class="nav-item active"><?= $this->Html->link(__('Home'), '/', ['class' => 'nav-link']); ?></li>
                         <!-- Dropdown menu for Interests -->
                         <li class="nav-item dropdown">
                             <a class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-delay="0" data-close-others="false" href="#">Interests <i class="fa fa-angle-down"></i></a>
@@ -149,7 +149,7 @@ $cakeDescription = 'Jay\'s Blog - Dare to step';
         <div class="container footer-1-3">
             <!-- Section containing logo and social links -->
             <div class="col-md-4 col-sm-4 col-xs-4">
-                <?= $this->Html->image('jaydev.PNG', ['alt' => 'jaydeveloper', 'url' => ['controller' => 'Pages', 'action' => 'display'], 'class' => 'brand-img img-responsive']); ?>
+                <?= $this->Html->image('jaydev.PNG', ['alt' => 'jaydeveloper', 'url' => '/', 'class' => 'brand-img img-responsive']); ?>
                 <q><i>No pain, no gain</i></q>
                 <ul class="social social-light">
                     <li>

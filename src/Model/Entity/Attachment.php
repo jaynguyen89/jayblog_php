@@ -4,15 +4,17 @@ namespace App\Model\Entity;
 use Cake\ORM\Entity;
 
 /**
- * File Entity
+ * Attachment Entity
  *
  * @property int $id
  * @property int $post_id
  * @property string $file_name
+ * @property string $description
+ * @property int $note
  *
  * @property \App\Model\Entity\Post $post
  */
-class File extends Entity
+class Attachment extends Entity
 {
 
     /**
@@ -27,6 +29,8 @@ class File extends Entity
     protected $_accessible = [
         'post_id' => true,
         'file_name' => true,
+        'description' => true,
+        'note' => true,
         'post' => true
     ];
 }

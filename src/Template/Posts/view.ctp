@@ -1,200 +1,152 @@
-<?php
-/**
- * @var \App\View\AppView $this
- * @var \App\Model\Entity\Post $post
- */
-?>
-<nav class="large-3 medium-4 columns" id="actions-sidebar">
-    <ul class="side-nav">
-        <li class="heading"><?= __('Actions') ?></li>
-        <li><?= $this->Html->link(__('Edit Post'), ['action' => 'edit', $post->id]) ?> </li>
-        <li><?= $this->Form->postLink(__('Delete Post'), ['action' => 'delete', $post->id], ['confirm' => __('Are you sure you want to delete # {0}?', $post->id)]) ?> </li>
-        <li><?= $this->Html->link(__('List Posts'), ['action' => 'index']) ?> </li>
-        <li><?= $this->Html->link(__('New Post'), ['action' => 'add']) ?> </li>
-        <li><?= $this->Html->link(__('List Comments'), ['controller' => 'Comments', 'action' => 'index']) ?> </li>
-        <li><?= $this->Html->link(__('New Comment'), ['controller' => 'Comments', 'action' => 'add']) ?> </li>
-        <li><?= $this->Html->link(__('List Distributions'), ['controller' => 'Distributions', 'action' => 'index']) ?> </li>
-        <li><?= $this->Html->link(__('New Distribution'), ['controller' => 'Distributions', 'action' => 'add']) ?> </li>
-        <li><?= $this->Html->link(__('List Files'), ['controller' => 'Files', 'action' => 'index']) ?> </li>
-        <li><?= $this->Html->link(__('New File'), ['controller' => 'Files', 'action' => 'add']) ?> </li>
-        <li><?= $this->Html->link(__('List Messages'), ['controller' => 'Messages', 'action' => 'index']) ?> </li>
-        <li><?= $this->Html->link(__('New Message'), ['controller' => 'Messages', 'action' => 'add']) ?> </li>
-    </ul>
-</nav>
-<div class="posts view large-9 medium-8 columns content">
-    <h3><?= h($post->title) ?></h3>
-    <table class="vertical-table">
-        <tr>
-            <th scope="row"><?= __('Title') ?></th>
-            <td><?= h($post->title) ?></td>
-        </tr>
-        <tr>
-            <th scope="row"><?= __('Description') ?></th>
-            <td><?= h($post->description) ?></td>
-        </tr>
-        <tr>
-            <th scope="row"><?= __('Photo') ?></th>
-            <td><?= h($post->photo) ?></td>
-        </tr>
-        <tr>
-            <th scope="row"><?= __('Note') ?></th>
-            <td><?= h($post->note) ?></td>
-        </tr>
-        <tr>
-            <th scope="row"><?= __('Id') ?></th>
-            <td><?= $this->Number->format($post->id) ?></td>
-        </tr>
-        <tr>
-            <th scope="row"><?= __('Up Vote') ?></th>
-            <td><?= $this->Number->format($post->up_vote) ?></td>
-        </tr>
-        <tr>
-            <th scope="row"><?= __('Down Vote') ?></th>
-            <td><?= $this->Number->format($post->down_vote) ?></td>
-        </tr>
-        <tr>
-            <th scope="row"><?= __('Status') ?></th>
-            <td><?= $this->Number->format($post->status) ?></td>
-        </tr>
-        <tr>
-            <th scope="row"><?= __('Task Total') ?></th>
-            <td><?= $this->Number->format($post->task_total) ?></td>
-        </tr>
-        <tr>
-            <th scope="row"><?= __('Task Done') ?></th>
-            <td><?= $this->Number->format($post->task_done) ?></td>
-        </tr>
-        <tr>
-            <th scope="row"><?= __('Created On') ?></th>
-            <td><?= h($post->created_on) ?></td>
-        </tr>
-        <tr>
-            <th scope="row"><?= __('Updated On') ?></th>
-            <td><?= h($post->updated_on) ?></td>
-        </tr>
-    </table>
-    <div class="row">
-        <h4><?= __('Content') ?></h4>
-        <?= $this->Text->autoParagraph(h($post->content)); ?>
-    </div>
-    <div class="related">
-        <h4><?= __('Related Comments') ?></h4>
-        <?php if (!empty($post->comments)): ?>
-        <table cellpadding="0" cellspacing="0">
-            <tr>
-                <th scope="col"><?= __('Id') ?></th>
-                <th scope="col"><?= __('Post Id') ?></th>
-                <th scope="col"><?= __('Comment Date') ?></th>
-                <th scope="col"><?= __('Commenter Name') ?></th>
-                <th scope="col"><?= __('Commenter Email') ?></th>
-                <th scope="col"><?= __('Content') ?></th>
-                <th scope="col"><?= __('Photo') ?></th>
-                <th scope="col"><?= __('File') ?></th>
-                <th scope="col" class="actions"><?= __('Actions') ?></th>
-            </tr>
-            <?php foreach ($post->comments as $comments): ?>
-            <tr>
-                <td><?= h($comments->id) ?></td>
-                <td><?= h($comments->post_id) ?></td>
-                <td><?= h($comments->comment_date) ?></td>
-                <td><?= h($comments->commenter_name) ?></td>
-                <td><?= h($comments->commenter_email) ?></td>
-                <td><?= h($comments->content) ?></td>
-                <td><?= h($comments->photo) ?></td>
-                <td><?= h($comments->file) ?></td>
-                <td class="actions">
-                    <?= $this->Html->link(__('View'), ['controller' => 'Comments', 'action' => 'view', $comments->id]) ?>
-                    <?= $this->Html->link(__('Edit'), ['controller' => 'Comments', 'action' => 'edit', $comments->id]) ?>
-                    <?= $this->Form->postLink(__('Delete'), ['controller' => 'Comments', 'action' => 'delete', $comments->id], ['confirm' => __('Are you sure you want to delete # {0}?', $comments->id)]) ?>
-                </td>
-            </tr>
-            <?php endforeach; ?>
-        </table>
-        <?php endif; ?>
-    </div>
-    <div class="related">
-        <h4><?= __('Related Distributions') ?></h4>
-        <?php if (!empty($post->distributions)): ?>
-        <table cellpadding="0" cellspacing="0">
-            <tr>
-                <th scope="col"><?= __('Id') ?></th>
-                <th scope="col"><?= __('Post Id') ?></th>
-                <th scope="col"><?= __('Category Id') ?></th>
-                <th scope="col" class="actions"><?= __('Actions') ?></th>
-            </tr>
-            <?php foreach ($post->distributions as $distributions): ?>
-            <tr>
-                <td><?= h($distributions->id) ?></td>
-                <td><?= h($distributions->post_id) ?></td>
-                <td><?= h($distributions->category_id) ?></td>
-                <td class="actions">
-                    <?= $this->Html->link(__('View'), ['controller' => 'Distributions', 'action' => 'view', $distributions->id]) ?>
-                    <?= $this->Html->link(__('Edit'), ['controller' => 'Distributions', 'action' => 'edit', $distributions->id]) ?>
-                    <?= $this->Form->postLink(__('Delete'), ['controller' => 'Distributions', 'action' => 'delete', $distributions->id], ['confirm' => __('Are you sure you want to delete # {0}?', $distributions->id)]) ?>
-                </td>
-            </tr>
-            <?php endforeach; ?>
-        </table>
-        <?php endif; ?>
-    </div>
-    <div class="related">
-        <h4><?= __('Related Files') ?></h4>
-        <?php if (!empty($post->files)): ?>
-        <table cellpadding="0" cellspacing="0">
-            <tr>
-                <th scope="col"><?= __('Id') ?></th>
-                <th scope="col"><?= __('Post Id') ?></th>
-                <th scope="col"><?= __('File Name') ?></th>
-                <th scope="col" class="actions"><?= __('Actions') ?></th>
-            </tr>
-            <?php foreach ($post->files as $files): ?>
-            <tr>
-                <td><?= h($files->id) ?></td>
-                <td><?= h($files->post_id) ?></td>
-                <td><?= h($files->file_name) ?></td>
-                <td class="actions">
-                    <?= $this->Html->link(__('View'), ['controller' => 'Files', 'action' => 'view', $files->id]) ?>
-                    <?= $this->Html->link(__('Edit'), ['controller' => 'Files', 'action' => 'edit', $files->id]) ?>
-                    <?= $this->Form->postLink(__('Delete'), ['controller' => 'Files', 'action' => 'delete', $files->id], ['confirm' => __('Are you sure you want to delete # {0}?', $files->id)]) ?>
-                </td>
-            </tr>
-            <?php endforeach; ?>
-        </table>
-        <?php endif; ?>
-    </div>
-    <div class="related">
-        <h4><?= __('Related Messages') ?></h4>
-        <?php if (!empty($post->messages)): ?>
-        <table cellpadding="0" cellspacing="0">
-            <tr>
-                <th scope="col"><?= __('Id') ?></th>
-                <th scope="col"><?= __('Post Id') ?></th>
-                <th scope="col"><?= __('Sender Name') ?></th>
-                <th scope="col"><?= __('Sender Email') ?></th>
-                <th scope="col"><?= __('Sender Phone') ?></th>
-                <th scope="col"><?= __('Content') ?></th>
-                <th scope="col"><?= __('Status') ?></th>
-                <th scope="col"><?= __('Recieved On') ?></th>
-                <th scope="col" class="actions"><?= __('Actions') ?></th>
-            </tr>
-            <?php foreach ($post->messages as $messages): ?>
-            <tr>
-                <td><?= h($messages->id) ?></td>
-                <td><?= h($messages->post_id) ?></td>
-                <td><?= h($messages->sender_name) ?></td>
-                <td><?= h($messages->sender_email) ?></td>
-                <td><?= h($messages->sender_phone) ?></td>
-                <td><?= h($messages->content) ?></td>
-                <td><?= h($messages->status) ?></td>
-                <td><?= h($messages->recieved_on) ?></td>
-                <td class="actions">
-                    <?= $this->Html->link(__('View'), ['controller' => 'Messages', 'action' => 'view', $messages->id]) ?>
-                    <?= $this->Html->link(__('Edit'), ['controller' => 'Messages', 'action' => 'edit', $messages->id]) ?>
-                    <?= $this->Form->postLink(__('Delete'), ['controller' => 'Messages', 'action' => 'delete', $messages->id], ['confirm' => __('Are you sure you want to delete # {0}?', $messages->id)]) ?>
-                </td>
-            </tr>
-            <?php endforeach; ?>
-        </table>
-        <?php endif; ?>
-    </div>
+<?php $session = $this->request->session(); ?>
+
+<div class="container">
+    <section id="content-1-9" class="content-1-9 content-block" style="padding-bottom: 10px;">
+        <!-- Section title -->
+        <div class="container">
+            <div class="underlined-title">
+                <h1><?= $post->title; ?></h1><span class="label label-success">Completed</span>
+                <hr>
+                <p class="lead"><?= $post->description; ?></p>
+            </div>
+        </div>
+        <!-- End section title -->
+
+        <div class="row">
+            <div class="col-md-9 col-sm-12 col-xs-12">
+                <div id="myCarousel" class="carousel slide" data-ride="carousel">
+                    <!-- Photo carousel indicator dots -->
+                    <ol class="carousel-indicators">
+                        <?php for ($i = 0; $i < count($photos); $i++)
+                            echo $i ? '<li data-target="#myCarousel" data-slide-to="'.$i.'"></li>' :
+                                      '<li data-target="#myCarousel" data-slide-to="'.$i.'" class="active"></li>'; ?>
+                    </ol>
+                    <!-- End carousel -->
+
+                    <!-- Carousel photos container -->
+                    <div class="carousel-inner">
+                        <?php for ($i = 0; $i < count($photos); $i++) { ?>
+                        <div class="item <?= $i ? '' : 'active'; ?>">
+                            <?= $this->Html->image($photos[$i]->file_name, ['alt' => $post->title, 'style' => 'border: 1px groove #3498DB; border-radius: 7px;']); ?>
+                            <div class="carousel-caption">
+                                <h3 style="font-weight: bold; color: #3498DB;"><?= $photos[$i]->description; ?></h3>
+                            </div>
+                        </div>
+                        <?php } ?>
+                    </div>
+                    <!-- -->
+
+                    <!-- Left and right controls -->
+                    <a class="left carousel-control" href="#myCarousel" data-slide="prev">
+                        <span class="glyphicon glyphicon-chevron-left"></span>
+                        <span class="sr-only">Previous</span>
+                    </a>
+                    <a class="right carousel-control" href="#myCarousel" data-slide="next">
+                        <span class="glyphicon glyphicon-chevron-right"></span>
+                        <span class="sr-only">Next</span>
+                    </a>
+                </div>
+            </div>
+            <div class="col-md-3 col-sm-12 col-xs-12">
+                <div class="row">
+                    <div class="col-xs-12">
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item">Posted on: <b class="pull-right"><?= (new DateTime($post->created_on))->format('d/m/Y H:i'); ?></b></li>
+                            <li class="list-group-item">Updated: <b class="pull-right"><?= (new DateTime($post->updated_on))->format('d/m/Y H:i'); ?></b></li>
+                            <li class="list-group-item">Task total: <b class="pull-right"><?= $post->task_total; ?></b></li>
+                            <li class="list-group-item">Task done: <b class="pull-right"><?= $post->task_done; ?></b></li>
+                            <li class="list-group-item">Type:
+                                <div class="pull-right">
+                                    <?php foreach ($categories as $category):
+                                        if ($category['main'])
+                                            echo '<a data-toggle="tooltip" title="'.$category->title.'" style="margin-right: 5px;"><i class="'.$category->description.' fa-2x"></i></a>';
+                                        else
+                                            echo '<a data-toggle="tooltip" title="'.$category->title.'"><i class="'.$category->description.' fa-2x" style="color: gray; margin-right: 5px;" onmouseover="this.style.color=\'dimgray\'" onmouseout="this.style.color=\'gray\'"></i></a>';
+                                    endforeach; ?>
+                                </div></li>
+                            <li class="list-group-item">Up vote: <b><?= $session->read('Post.up_vote'); ?></b>
+                                <?= $this->Form->postLink(
+                                    $this->Html->tag('i', '', ['class' => 'fas fa-thumbs-up fa-2x pull-right']),
+                                    ['controller' => 'votes', 'action' => 'setVotes', '?' => ['pid' => $post->id, 'sign' => 1]],
+                                    ['role' => 'button', 'escape' => false, 'confirm' => __('Since no login was required, your IP Address may be recorded. This approach is to prevent visitors voting multiple times on 1 post.\n\nNo personal information will be collected. Your IP Address will be securely encrypted.\n\nContinue to vote up for {0}?', $post->title)]); ?></li>
+                            <li class="list-group-item">Down vote: <b><?= $session->read('Post.down_vote'); ?></b>
+                                <?= $this->Form->postLink(
+                                    $this->Html->tag('i', '', ['class' => 'fas fa-thumbs-down fa-2x pull-right']),
+                                    ['controller' => 'votes', 'action' => 'setVotes', '?' => ['pid' => $post->id, 'sign' => 0]],
+                                    ['role' => 'button', 'escape' => false, 'confirm' => __('Since no login was required, your IP Address may be recorded. This approach is to prevent visitors voting multiple times on 1 post.\n\nNo personal information will be collected. Your IP Address will be securely encrypted.\n\nContinue to vote down for {0}?', $post->title)]); ?></li>
+                        </ul>
+                    </div>
+                    <div class="col-xs-12">
+                        <h5><i class="fas fa-pencil-alt" style="color: #3498DB;"></i> Notes</h5>
+                        <p class="small"><?= $post->note ? $this->Text->autoParagraph(h($post->note)) : 'N/A'; ?></p>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="row" style="margin-top: 15px;">
+            <div class="col-md-9 col-sm-9 col-xs-12">
+                <h4><i class="fas fa-clipboard" style="color: #3498DB;"></i> Project Description</h4>
+                <p class="medium"><?= $this->Text->autoParagraph(h($post->content)); ?></p>
+            </div>
+            <div class="col-md-3 col-sm-3 col-xs-12">
+                <h4><i class="fas fa-paperclip" style="color: #3498DB;"></i> File Attachments</h4>
+                <div class="row">
+                    <?php $fileIcons = ['fas fa-file-image', 'fas fa-file-word', 'fas fa-file-excel', 'fas fa-file-powerpoint', 'fas fa-file-archive',
+                        'fas fa-file-code', 'fas fa-file-pdf', 'fas fa-file-video', 'fas fa-file-audio', 'fas fa-file-alt'];
+
+                    foreach ($attachments as $attachment): ?>
+                    <div class="col-md-4 col-sm-6 col-xs-2 center-block" style="margin-top: 10px;">
+                        <a target="_blank" href="<?= $attachment->file_name; ?>" title="<?= $attachment->description; ?>">
+                            <i class="<?= $fileIcons[$attachment->note - 1]; ?> fa-3x"></i>
+                        </a>
+                    </div>
+                    <?php endforeach; ?>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <hr>
+            <h4><i class="fas fa-list-ul" style="color: #3498DB;"></i> Other posts</h4>
+            <?php if (!$suggestedPosts) { ?>
+            <p class="lead text-center">More posts will be updated soon. Please come back tomorrow to see more!</p>
+            <?php } else { ?>
+            <div class="row">
+                <div class="table-responsive">
+                    <table class="table bg-offwhite" style="border-radius: 10px;">
+                        <thead><tr><th>#</th><th>Type</th><th>Title</th><th>Status</th><th>Posted on</th></tr></thead>
+                        <tbody>
+                            <tr><?php for ($i = 0; $i < count($suggestedPosts); $i++) { ?>
+                                <th><?= $i + 1; ?></th>
+                                <td class="small"><a data-toggle="tooltip" title="<?= $suggestedPosts[$i]['ctitle']; ?>" style="margin-right: 5px;"><i class="<?= $suggestedPosts[$i]['description']; ?>"></i></a> <?= $suggestedPosts[$i]['ctitle']; ?></td>
+                                <td><?= $suggestedPosts[$i]['title']; ?></td>
+                                <td><?= $suggestedPosts[$i]['status'] ? '<span class="label label-success">Completed</span>' : '<span class="label label-info">Progressing</span>'; ?></td>
+                                <td><?= (new DateTime($suggestedPosts[$i]['created_on']))->format('d/m/Y H:i'); ?></td>
+                            <?php } ?></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <?php } ?>
+        </div>
+
+        <div class="row">
+            <hr>
+            <h4  style="margin-bottom: 0;"><i class="fas fa-paper-plane" style="color: #3498DB;"></i> Leave a Reply</h4>
+            <p class="small"  style="margin-top: 0;">To respect your privacy, your submitted information will not be published.</p>
+            <div class="row">
+
+            </div>
+        </div>
+
+        <div class="row">
+            <hr>
+            <h4>Comments <i class="fas fa-caret-right" style="color: #3498DB;"></i> 5 Replies</h4>
+            <div class="row">
+
+            </div>
+        </div>
+    </section>
 </div>

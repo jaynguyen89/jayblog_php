@@ -2,7 +2,7 @@
 namespace App\Controller;
 
 use App\Controller\AppController;
-use Cake\Datasource\ConnectionManager;
+use Cake\Mailer\Email;
 
 /**
  * Messages Controller
@@ -29,17 +29,27 @@ class MessagesController extends AppController
 
             $message = $this->Messages->patchEntity($message, $data);
             if ($this->Messages->save($message)) {
+                if ($data['sender_email'])
+                    $this->sendConfirmation(1, $data['sender_email'], ['name' => $data['sender_name'], 'content' => $data['content']]);
 
-                if ($data['form_id'] == 0)
-                    $this->Flash->success(__('Hooray! Your project suggestion has been sent successfully.'));
-                else
-                    $this->Flash->success(__('Hooray! Your feature suggestion has been sent successfully.'));
-
+                $this->Flash->success(__('Hooray! Your '.($data['form_id'] ? 'feature' : 'project').' suggestion has been sent successfully.'));
                 return $this->redirect(['controller' => 'Posts', 'action' => 'index']);
             }
 
             $this->Flash->error(__('Oops! Something went wrong with the server. Please try again later.'));
         }
+    }
+
+    private function sendConfirmation($form = 0, $recipient = null, $data = null) {
+        $email = new Email();
+        $email->transport('gmail')
+            ->template('default')
+            ->emailFormat('html')
+            ->viewVars(['form' => $form, 'receiver' => $data['name'], 'message' => $data['content']])
+            ->from(['nguyen.le.kim.phuc@gmail.com' => 'Jay Developer'])
+            ->to($recipient)
+            ->subject('Thanks for your message!')
+            ->send();
     }
 
     /**
@@ -87,6 +97,8 @@ class MessagesController extends AppController
 
             $message = $this->Messages->patchEntity($message, $data);
             if ($this->Messages->save($message)) {
+                $this->sendConfirmation(0, $data['sender_email'], ['name' => $data['sender_name'], 'content' => $data['content']]);
+
                 $this->Flash->success(__('Hooray! Your contact message has been sent successfully.'));
                 return $this->redirect(['action' => 'add']);
             }

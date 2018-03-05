@@ -1,38 +1,42 @@
 <?php
 /**
  * @var \App\View\AppView $this
- * @var \App\Model\Entity\File[]|\Cake\Collection\CollectionInterface $files
+ * @var \App\Model\Entity\Vote[]|\Cake\Collection\CollectionInterface $votes
  */
 ?>
 <nav class="large-3 medium-4 columns" id="actions-sidebar">
     <ul class="side-nav">
         <li class="heading"><?= __('Actions') ?></li>
-        <li><?= $this->Html->link(__('New File'), ['action' => 'add']) ?></li>
+        <li><?= $this->Html->link(__('New Vote'), ['action' => 'add']) ?></li>
         <li><?= $this->Html->link(__('List Posts'), ['controller' => 'Posts', 'action' => 'index']) ?></li>
         <li><?= $this->Html->link(__('New Post'), ['controller' => 'Posts', 'action' => 'add']) ?></li>
     </ul>
 </nav>
-<div class="files index large-9 medium-8 columns content">
-    <h3><?= __('Files') ?></h3>
+<div class="votes index large-9 medium-8 columns content">
+    <h3><?= __('Votes') ?></h3>
     <table cellpadding="0" cellspacing="0">
         <thead>
             <tr>
                 <th scope="col"><?= $this->Paginator->sort('id') ?></th>
                 <th scope="col"><?= $this->Paginator->sort('post_id') ?></th>
-                <th scope="col"><?= $this->Paginator->sort('file_name') ?></th>
+                <th scope="col"><?= $this->Paginator->sort('vote_date') ?></th>
+                <th scope="col"><?= $this->Paginator->sort('client_ip') ?></th>
+                <th scope="col"><?= $this->Paginator->sort('sign') ?></th>
                 <th scope="col" class="actions"><?= __('Actions') ?></th>
             </tr>
         </thead>
         <tbody>
-            <?php foreach ($files as $file): ?>
+            <?php foreach ($votes as $vote): ?>
             <tr>
-                <td><?= $this->Number->format($file->id) ?></td>
-                <td><?= $file->has('post') ? $this->Html->link($file->post->title, ['controller' => 'Posts', 'action' => 'view', $file->post->id]) : '' ?></td>
-                <td><?= h($file->file_name) ?></td>
+                <td><?= $this->Number->format($vote->id) ?></td>
+                <td><?= $vote->has('post') ? $this->Html->link($vote->post->title, ['controller' => 'Posts', 'action' => 'view', $vote->post->id]) : '' ?></td>
+                <td><?= h($vote->vote_date) ?></td>
+                <td><?= h($vote->client_ip) ?></td>
+                <td><?= h($vote->sign) ?></td>
                 <td class="actions">
-                    <?= $this->Html->link(__('View'), ['action' => 'view', $file->id]) ?>
-                    <?= $this->Html->link(__('Edit'), ['action' => 'edit', $file->id]) ?>
-                    <?= $this->Form->postLink(__('Delete'), ['action' => 'delete', $file->id], ['confirm' => __('Are you sure you want to delete # {0}?', $file->id)]) ?>
+                    <?= $this->Html->link(__('View'), ['action' => 'view', $vote->id]) ?>
+                    <?= $this->Html->link(__('Edit'), ['action' => 'edit', $vote->id]) ?>
+                    <?= $this->Form->postLink(__('Delete'), ['action' => 'delete', $vote->id], ['confirm' => __('Are you sure you want to delete # {0}?', $vote->id)]) ?>
                 </td>
             </tr>
             <?php endforeach; ?>

@@ -11,7 +11,7 @@ function disableclick(event)
 }*/
 
 //The below script is to validate input data for the Project Suggestion Form on footer
-var emailValidator = /^([a-zA-Z0-9_.-])+@(([a-zA-Z0-9-])+.)+([a-zA-Z0-9]{2,4})+$/;
+const emailValidator = /^([a-zA-Z0-9_.-])+@(([a-zA-Z0-9-])+.)+([a-zA-Z0-9]{2,4})+$/;
 
 var nameCheck = true;
 var emailCheck = true;

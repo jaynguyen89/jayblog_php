@@ -4,10 +4,10 @@ namespace App\Test\Fixture;
 use Cake\TestSuite\Fixture\TestFixture;
 
 /**
- * FilesFixture
+ * VotesFixture
  *
  */
-class FilesFixture extends TestFixture
+class VotesFixture extends TestFixture
 {
 
     /**
@@ -19,13 +19,15 @@ class FilesFixture extends TestFixture
     public $fields = [
         'id' => ['type' => 'smallinteger', 'length' => 5, 'unsigned' => true, 'null' => false, 'default' => null, 'comment' => '', 'precision' => null],
         'post_id' => ['type' => 'smallinteger', 'length' => 5, 'unsigned' => true, 'null' => false, 'default' => null, 'comment' => '', 'precision' => null],
-        'file_name' => ['type' => 'string', 'length' => 100, 'null' => true, 'default' => null, 'collate' => 'latin1_swedish_ci', 'comment' => '', 'precision' => null, 'fixed' => null],
+        'vote_date' => ['type' => 'datetime', 'length' => null, 'null' => true, 'default' => 'CURRENT_TIMESTAMP', 'comment' => '', 'precision' => null],
+        'client_ip' => ['type' => 'string', 'length' => 100, 'null' => true, 'default' => null, 'collate' => 'latin1_swedish_ci', 'comment' => '', 'precision' => null, 'fixed' => null],
+        'sign' => ['type' => 'boolean', 'length' => null, 'null' => true, 'default' => '0', 'comment' => '', 'precision' => null],
         '_indexes' => [
-            'files_posts_fk' => ['type' => 'index', 'columns' => ['post_id'], 'length' => []],
+            'votes_posts_fk' => ['type' => 'index', 'columns' => ['post_id'], 'length' => []],
         ],
         '_constraints' => [
             'primary' => ['type' => 'primary', 'columns' => ['id'], 'length' => []],
-            'files_posts_fk' => ['type' => 'foreign', 'columns' => ['post_id'], 'references' => ['posts', 'id'], 'update' => 'restrict', 'delete' => 'restrict', 'length' => []],
+            'votes_posts_fk' => ['type' => 'foreign', 'columns' => ['post_id'], 'references' => ['posts', 'id'], 'update' => 'restrict', 'delete' => 'restrict', 'length' => []],
         ],
         '_options' => [
             'engine' => 'InnoDB',
@@ -43,7 +45,9 @@ class FilesFixture extends TestFixture
         [
             'id' => 1,
             'post_id' => 1,
-            'file_name' => 'Lorem ipsum dolor sit amet'
+            'vote_date' => '2018-02-28 09:06:15',
+            'client_ip' => 'Lorem ipsum dolor sit amet',
+            'sign' => 1
         ],
     ];
 }

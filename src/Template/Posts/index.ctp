@@ -24,7 +24,7 @@
                     <!-- Row containing general project information -->
                     <div class="row">
                         <div class="col-md-7 col-sm-7 col-xs-12">
-                            <?= $this->Html->image($latestPost->photo, ['class' => 'img-responsive', 'style' => 'border: 1px groove #3498DB; border-radius: 7px;', 'alt' => 'jayblogpreview']); ?>
+                            <?= $this->Html->image($latestPost->photo ? $latestPost->photo : 'pending.jpeg', ['class' => 'img-responsive', 'style' => 'border: 1px groove #3498DB; border-radius: 7px;', 'alt' => 'jayblogpreview']); ?>
                         </div>
                         <div class="col-md-5 col-sm-5 col-xs-12">
                             <ul class="list-group list-group-flush">
@@ -156,7 +156,7 @@
                     </div>
                     <div class="table-responsive">
                         <table class="table bg-offwhite" style="border-radius: 10px;">
-                            <thead><tr><th>#</th><th>Type</th><th>title</th></tr></thead>
+                            <thead><tr><th>#</th><th>Type</th><th>Title</th></tr></thead>
                             <tbody>
                             <?php if (count($oldProjectPosts) == 0)
                                 echo '<tr class="text-center"><td colspan="3" class="text-center">Awaiting update</td></tr>';

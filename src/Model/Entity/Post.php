@@ -11,8 +11,6 @@ use Cake\ORM\Entity;
  * @property string $description
  * @property string $content
  * @property string $photo
- * @property int $up_vote
- * @property int $down_vote
  * @property int $status
  * @property int $task_total
  * @property int $task_done
@@ -20,10 +18,11 @@ use Cake\ORM\Entity;
  * @property \Cake\I18n\FrozenTime $created_on
  * @property \Cake\I18n\FrozenTime $updated_on
  *
+ * @property \App\Model\Entity\Attachment[] $attachments
  * @property \App\Model\Entity\Comment[] $comments
  * @property \App\Model\Entity\Distribution[] $distributions
- * @property \App\Model\Entity\File[] $files
  * @property \App\Model\Entity\Message[] $messages
+ * @property \App\Model\Entity\Vote[] $votes
  */
 class Post extends Entity
 {
@@ -42,17 +41,16 @@ class Post extends Entity
         'description' => true,
         'content' => true,
         'photo' => true,
-        'up_vote' => true,
-        'down_vote' => true,
         'status' => true,
         'task_total' => true,
         'task_done' => true,
         'note' => true,
         'created_on' => true,
         'updated_on' => true,
+        'attachments' => true,
         'comments' => true,
         'distributions' => true,
-        'files' => true,
-        'messages' => true
+        'messages' => true,
+        'votes' => true
     ];
 }

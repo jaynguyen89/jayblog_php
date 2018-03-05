@@ -3,6 +3,7 @@ namespace App\Controller;
 
 use App\Controller\AppController;
 use Cake\ORM\TableRegistry;
+use Cake\Datasource\ConnectionManager;
 
 /**
  * Posts Controller
@@ -20,7 +21,7 @@ class PostsController extends AppController
      * @return \Cake\Http\Response|void
      */
     public function index() {
-        $latestPostFields = ['id', 'title', 'description', 'photo', 'up_vote', 'down_vote', 'status', 'created_on', 'updated_on'];
+        $latestPostFields = ['id', 'title', 'description', 'photo', 'status', 'created_on', 'updated_on'];
         $latestPostConditions = ['ABS(DATEDIFF(NOW(), POSTS.created_on)) <=' => '90', 'POSTS.status <' => '2'];
         $latestPosts = $this->Posts->find('all', ['conditions' => $latestPostConditions, 'fields' => $latestPostFields])->toArray();
 
@@ -32,7 +33,10 @@ class PostsController extends AppController
         $categoriesByPost = array();
         foreach ($latestPosts as $latestPost):
             $commentsByPost[$latestPost->id] = $this->Posts->Comments->find('all', ['conditions' => ['post_id' => $latestPost->id]])->count();
-            $likesByPost[$latestPost->id] = ($latestPost->up_vote - $latestPost->down_vote < 0) ? 0 : $latestPost->up_vote - $latestPost->down_vote;
+
+            $votesByPost = $this->getVotes($latestPost->id);
+
+            $likesByPost[$latestPost->id] = ($votesByPost['upvote'] <= $votesByPost['downvote']) ? 0 : $votesByPost['upvote'] - $votesByPost['downvote'];
             $typesByPost = $this->Posts->Distributions->find('all', ['conditions' => ['post_id' => $latestPost->id]])->toArray();
 
             for ($i = 0; $i < count($typesByPost); $i++) {
@@ -45,25 +49,10 @@ class PostsController extends AppController
             unset($typesByPost);
         endforeach;
 
-        /*$oldPostFields = ['Posts.title', 'Categories.title', 'Categories.description'];
-        $oldPostConditions = ['Posts.id' => 'Distributions.post_id',
-                              'Distributions.category_id' => 'Categories.id',
-                              'ABS(DATEDIFF(NOW(), Posts.created_on)) >' => '90',
-                              'Distributions.main' => true];
-        $oldPosts = $this->Posts->find('all', [
-            'fields' => $oldPostFields,
-            'type' => 'LEFT JOIN',
-            'contain' => ['Distributions', 'Categories'],
-            'conditions' => $oldPostConditions,
-            'group' => 'Categories.id',
-            'order' => ['Posts.created_on' => 'DESC'],
-            'limit' => 5
-        ])->toArray();*/
-
         $oldPostFields = ['id', 'title', 'created_on'];
         $order = ['POSTS.created_on' => 'DESC'];
         $oldPosts = $this->Posts->find('all', [
-            'conditions' => ['ABS(DATEDIFF(NOW(), POSTS.created_on)) >' => '90'],
+            'conditions' => ['ABS(DATEDIFF(NOW(), POSTS.created_on)) >' => '90', 'POSTS.status <' => '3'],
             'fields' => $oldPostFields,
             'order' => $order
         ])->toArray();
@@ -116,6 +105,17 @@ class PostsController extends AppController
             'oldInterestPosts', 'oldProjectPosts', 'oldOtherPosts', 'proposedPosts'));
     }
 
+    private function getVotes($postId) {
+        $votesByPost = $this->Posts->Votes->find('all', ['conditions' => ['post_id' => $postId]]);
+        $upVotes = $downVotes = 0;
+        foreach ($votesByPost as $vote) {
+            $upVotes += ($vote->sign) ? 1 : 0;
+            $downVotes += ($vote->sign) ? 0 : 1;
+        }
+
+        return array('upvote' => $upVotes, 'downvote' => $downVotes);
+    }
+
     /**
      * View method
      *
@@ -125,12 +125,45 @@ class PostsController extends AppController
      */
     public function view($id = null)
     {
-        $post = $this->Posts->get($id, [
-            'contain' => ['Comments', 'Distributions', 'Files', 'Messages']
-        ]);
+        $post = $this->Posts->get($id);
+        $session = $this->request->session();
 
-        $this->set('post', $post);
+        $votes = $this->getVotes($id);
+
+        $session->write('Post.up_vote', $votes['upvote']);
+        $session->write('Post.down_vote', $votes['downvote']);
+
+        $distributions = $this->Posts->Distributions->find('all', ['conditions' => ['post_id' => $post->id]]);
+        $categories = array();
+        foreach ($distributions as $distribution) {
+            $category = TableRegistry::get('Categories')->get($distribution->category_id);
+            $category['main'] = $distribution->main;
+            array_push($categories, $category);
+        }
+
+        $photos = $this->Posts->Attachments->find('all', ['conditions' => ['post_id' => $post->id, 'note' => 0]])->toArray();
+        $attachments = $this->Posts->Attachments->find('all', ['conditions' => ['post_id' => $post->id, 'note <>' => 0]])->toArray();
+
+        $connection = ConnectionManager::get('default');
+        $query = 'SELECT Posts.id, Posts.title, status, created_on, main, Categories.title as ctitle, Categories.description
+            FROM Posts Posts, Distributions Distributions, Categories Categories
+            WHERE Posts.id = Distributions.post_id
+            AND Distributions.category_id = Categories.id
+            AND main = 1
+            AND Posts.id <> 1
+            AND Posts.id <> '.$post->id.'
+            AND status <> 2
+            ORDER BY RAND(), Posts.created_on DESC
+            LIMIT 5';
+
+        $statement = $connection->prepare($query);
+        $statement->execute();
+        $suggestedPosts = $statement->fetchAll('assoc');
+
+        $this->set(compact('post', 'categories', 'photos', 'attachments', 'suggestedPosts'));
     }
+
+
 
     /**
      * Add method

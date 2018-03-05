@@ -1,22 +1,22 @@
 <?php
 namespace App\Test\TestCase\Model\Table;
 
-use App\Model\Table\PostsTable;
+use App\Model\Table\AttachmentsTable;
 use Cake\ORM\TableRegistry;
 use Cake\TestSuite\TestCase;
 
 /**
- * App\Model\Table\PostsTable Test Case
+ * App\Model\Table\AttachmentsTable Test Case
  */
-class PostsTableTest extends TestCase
+class AttachmentsTableTest extends TestCase
 {
 
     /**
      * Test subject
      *
-     * @var \App\Model\Table\PostsTable
+     * @var \App\Model\Table\AttachmentsTable
      */
-    public $Posts;
+    public $Attachments;
 
     /**
      * Fixtures
@@ -24,12 +24,12 @@ class PostsTableTest extends TestCase
      * @var array
      */
     public $fixtures = [
+        'app.attachments',
         'app.posts',
         'app.comments',
         'app.replies',
         'app.distributions',
         'app.categories',
-        'app.files',
         'app.messages',
         'app.votes'
     ];
@@ -42,8 +42,8 @@ class PostsTableTest extends TestCase
     public function setUp()
     {
         parent::setUp();
-        $config = TableRegistry::exists('Posts') ? [] : ['className' => PostsTable::class];
-        $this->Posts = TableRegistry::get('Posts', $config);
+        $config = TableRegistry::exists('Attachments') ? [] : ['className' => AttachmentsTable::class];
+        $this->Attachments = TableRegistry::get('Attachments', $config);
     }
 
     /**
@@ -53,7 +53,7 @@ class PostsTableTest extends TestCase
      */
     public function tearDown()
     {
-        unset($this->Posts);
+        unset($this->Attachments);
 
         parent::tearDown();
     }
@@ -74,6 +74,16 @@ class PostsTableTest extends TestCase
      * @return void
      */
     public function testValidationDefault()
+    {
+        $this->markTestIncomplete('Not implemented yet.');
+    }
+
+    /**
+     * Test buildRules method
+     *
+     * @return void
+     */
+    public function testBuildRules()
     {
         $this->markTestIncomplete('Not implemented yet.');
     }

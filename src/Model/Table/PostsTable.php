@@ -9,10 +9,11 @@ use Cake\Validation\Validator;
 /**
  * Posts Model
  *
+ * @property \App\Model\Table\AttachmentsTable|\Cake\ORM\Association\HasMany $Attachments
  * @property \App\Model\Table\CommentsTable|\Cake\ORM\Association\HasMany $Comments
  * @property \App\Model\Table\DistributionsTable|\Cake\ORM\Association\HasMany $Distributions
- * @property \App\Model\Table\FilesTable|\Cake\ORM\Association\HasMany $Files
  * @property \App\Model\Table\MessagesTable|\Cake\ORM\Association\HasMany $Messages
+ * @property \App\Model\Table\VotesTable|\Cake\ORM\Association\HasMany $Votes
  *
  * @method \App\Model\Entity\Post get($primaryKey, $options = [])
  * @method \App\Model\Entity\Post newEntity($data = null, array $options = [])
@@ -39,16 +40,19 @@ class PostsTable extends Table
         $this->setDisplayField('title');
         $this->setPrimaryKey('id');
 
+        $this->hasMany('Attachments', [
+            'foreignKey' => 'post_id'
+        ]);
         $this->hasMany('Comments', [
             'foreignKey' => 'post_id'
         ]);
         $this->hasMany('Distributions', [
             'foreignKey' => 'post_id'
         ]);
-        $this->hasMany('Files', [
+        $this->hasMany('Messages', [
             'foreignKey' => 'post_id'
         ]);
-        $this->hasMany('Messages', [
+        $this->hasMany('Votes', [
             'foreignKey' => 'post_id'
         ]);
     }
@@ -82,12 +86,6 @@ class PostsTable extends Table
             ->scalar('photo')
             ->maxLength('photo', 100)
             ->allowEmpty('photo');
-
-        $validator
-            ->allowEmpty('up_vote');
-
-        $validator
-            ->allowEmpty('down_vote');
 
         $validator
             ->allowEmpty('status');

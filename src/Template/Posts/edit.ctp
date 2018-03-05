@@ -18,10 +18,10 @@
         <li><?= $this->Html->link(__('New Comment'), ['controller' => 'Comments', 'action' => 'add']) ?></li>
         <li><?= $this->Html->link(__('List Distributions'), ['controller' => 'Distributions', 'action' => 'index']) ?></li>
         <li><?= $this->Html->link(__('New Distribution'), ['controller' => 'Distributions', 'action' => 'add']) ?></li>
-        <li><?= $this->Html->link(__('List Files'), ['controller' => 'Files', 'action' => 'index']) ?></li>
-        <li><?= $this->Html->link(__('New File'), ['controller' => 'Files', 'action' => 'add']) ?></li>
         <li><?= $this->Html->link(__('List Messages'), ['controller' => 'Messages', 'action' => 'index']) ?></li>
         <li><?= $this->Html->link(__('New Message'), ['controller' => 'Messages', 'action' => 'add']) ?></li>
+        <li><?= $this->Html->link(__('List Votes'), ['controller' => 'Votes', 'action' => 'index']) ?></li>
+        <li><?= $this->Html->link(__('New Vote'), ['controller' => 'Votes', 'action' => 'add']) ?></li>
     </ul>
 </nav>
 <div class="posts form large-9 medium-8 columns content">
@@ -33,14 +33,12 @@
             echo $this->Form->control('description');
             echo $this->Form->control('content');
             echo $this->Form->control('photo');
-            echo $this->Form->control('up_vote');
-            echo $this->Form->control('down_vote');
             echo $this->Form->control('status');
-            echo $this->Form->control('note');
-            echo $this->Form->control('created_on');
-            echo $this->Form->control('updated_on');
             echo $this->Form->control('task_total');
             echo $this->Form->control('task_done');
+            echo $this->Form->control('note');
+            echo $this->Form->control('created_on', ['empty' => true]);
+            echo $this->Form->control('updated_on', ['empty' => true]);
         ?>
     </fieldset>
     <?= $this->Form->button(__('Submit')) ?>

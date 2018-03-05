@@ -22,8 +22,6 @@ class PostsFixture extends TestFixture
         'description' => ['type' => 'string', 'length' => 500, 'null' => true, 'default' => null, 'collate' => 'latin1_swedish_ci', 'comment' => '', 'precision' => null, 'fixed' => null],
         'content' => ['type' => 'text', 'length' => null, 'null' => true, 'default' => null, 'collate' => 'latin1_swedish_ci', 'comment' => '', 'precision' => null],
         'photo' => ['type' => 'string', 'length' => 100, 'null' => true, 'default' => 'pending.jpeg', 'collate' => 'latin1_swedish_ci', 'comment' => '', 'precision' => null, 'fixed' => null],
-        'up_vote' => ['type' => 'smallinteger', 'length' => 5, 'unsigned' => false, 'null' => true, 'default' => '0', 'comment' => '', 'precision' => null],
-        'down_vote' => ['type' => 'smallinteger', 'length' => 5, 'unsigned' => false, 'null' => true, 'default' => '0', 'comment' => '', 'precision' => null],
         'status' => ['type' => 'tinyinteger', 'length' => 2, 'unsigned' => false, 'null' => true, 'default' => '0', 'comment' => '', 'precision' => null],
         'task_total' => ['type' => 'tinyinteger', 'length' => 2, 'unsigned' => false, 'null' => true, 'default' => '0', 'comment' => '', 'precision' => null],
         'task_done' => ['type' => 'tinyinteger', 'length' => 2, 'unsigned' => false, 'null' => true, 'default' => '0', 'comment' => '', 'precision' => null],
@@ -52,14 +50,12 @@ class PostsFixture extends TestFixture
             'description' => 'Lorem ipsum dolor sit amet',
             'content' => 'Lorem ipsum dolor sit amet, aliquet feugiat. Convallis morbi fringilla gravida, phasellus feugiat dapibus velit nunc, pulvinar eget sollicitudin venenatis cum nullam, vivamus ut a sed, mollitia lectus. Nulla vestibulum massa neque ut et, id hendrerit sit, feugiat in taciti enim proin nibh, tempor dignissim, rhoncus duis vestibulum nunc mattis convallis.',
             'photo' => 'Lorem ipsum dolor sit amet',
-            'up_vote' => 1,
-            'down_vote' => 1,
             'status' => 1,
             'task_total' => 1,
             'task_done' => 1,
             'note' => 'Lorem ipsum dolor sit amet',
-            'created_on' => '2018-02-25 11:20:04',
-            'updated_on' => '2018-02-25 11:20:04'
+            'created_on' => '2018-03-01 12:26:06',
+            'updated_on' => '2018-03-01 12:26:06'
         ],
     ];
 }

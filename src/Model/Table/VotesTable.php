@@ -7,19 +7,19 @@ use Cake\ORM\Table;
 use Cake\Validation\Validator;
 
 /**
- * Files Model
+ * Votes Model
  *
  * @property \App\Model\Table\PostsTable|\Cake\ORM\Association\BelongsTo $Posts
  *
- * @method \App\Model\Entity\File get($primaryKey, $options = [])
- * @method \App\Model\Entity\File newEntity($data = null, array $options = [])
- * @method \App\Model\Entity\File[] newEntities(array $data, array $options = [])
- * @method \App\Model\Entity\File|bool save(\Cake\Datasource\EntityInterface $entity, $options = [])
- * @method \App\Model\Entity\File patchEntity(\Cake\Datasource\EntityInterface $entity, array $data, array $options = [])
- * @method \App\Model\Entity\File[] patchEntities($entities, array $data, array $options = [])
- * @method \App\Model\Entity\File findOrCreate($search, callable $callback = null, $options = [])
+ * @method \App\Model\Entity\Vote get($primaryKey, $options = [])
+ * @method \App\Model\Entity\Vote newEntity($data = null, array $options = [])
+ * @method \App\Model\Entity\Vote[] newEntities(array $data, array $options = [])
+ * @method \App\Model\Entity\Vote|bool save(\Cake\Datasource\EntityInterface $entity, $options = [])
+ * @method \App\Model\Entity\Vote patchEntity(\Cake\Datasource\EntityInterface $entity, array $data, array $options = [])
+ * @method \App\Model\Entity\Vote[] patchEntities($entities, array $data, array $options = [])
+ * @method \App\Model\Entity\Vote findOrCreate($search, callable $callback = null, $options = [])
  */
-class FilesTable extends Table
+class VotesTable extends Table
 {
 
     /**
@@ -32,7 +32,7 @@ class FilesTable extends Table
     {
         parent::initialize($config);
 
-        $this->setTable('files');
+        $this->setTable('votes');
         $this->setDisplayField('id');
         $this->setPrimaryKey('id');
 
@@ -54,9 +54,17 @@ class FilesTable extends Table
             ->allowEmpty('id', 'create');
 
         $validator
-            ->scalar('file_name')
-            ->maxLength('file_name', 100)
-            ->allowEmpty('file_name');
+            ->dateTime('vote_date')
+            ->allowEmpty('vote_date');
+
+        $validator
+            ->scalar('client_ip')
+            ->maxLength('client_ip', 100)
+            ->allowEmpty('client_ip');
+
+        $validator
+            ->boolean('sign')
+            ->allowEmpty('sign');
 
         return $validator;
     }
