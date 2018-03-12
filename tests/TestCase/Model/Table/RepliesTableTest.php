@@ -27,10 +27,11 @@ class RepliesTableTest extends TestCase
         'app.replies',
         'app.comments',
         'app.posts',
+        'app.attachments',
         'app.distributions',
         'app.categories',
-        'app.files',
-        'app.messages'
+        'app.messages',
+        'app.votes'
     ];
 
     /**

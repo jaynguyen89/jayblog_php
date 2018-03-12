@@ -16,6 +16,7 @@ namespace App\Controller;
 
 use Cake\Controller\Controller;
 use Cake\Event\Event;
+use Cake\Mailer\Email;
 
 /**
  * Application Controller
@@ -27,6 +28,9 @@ use Cake\Event\Event;
  */
 class AppController extends Controller
 {
+    public $helpers = ['Gravatar' => [
+        'className' => 'GravatarHelper.Gravatar'
+    ]];
 
     /**
      * Initialization hook method.
@@ -50,5 +54,24 @@ class AppController extends Controller
          */
         //$this->loadComponent('Security');
         //$this->loadComponent('Csrf');
+    }
+
+    public function checkWhiteSpaceString($sentence) {
+        $whiteSpaces = substr_count($sentence, ' ') + substr_count($sentence, '&nbsp');
+        $ratio = $whiteSpaces*1.0/strlen($sentence);
+
+        return $ratio < parent::SPACETOCHAR_RATIO;
+    }
+
+    public function sendConfirmation($form = 0, $recipient = null, $data = null) {
+        $email = new Email();
+        $email->transport('gmail')
+            ->template($form == 3 ? 'comment' : 'default')
+            ->emailFormat('html')
+            ->viewVars(['form' => $form, 'receiver' => $data['name'], 'postTitle' => $data['post_title'], 'message' => $data['content']])
+            ->from(['nguyen.le.kim.phuc@gmail.com' => 'Jay Developer'])
+            ->to($recipient)
+            ->subject('[Jay\'s Blog] Thanks for your '.($form == 3 ? 'comment!' : 'message!'))
+            ->send();
     }
 }

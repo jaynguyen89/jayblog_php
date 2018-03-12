@@ -33,18 +33,6 @@
             <td><?= h($comment->commenter_email) ?></td>
         </tr>
         <tr>
-            <th scope="row"><?= __('Content') ?></th>
-            <td><?= h($comment->content) ?></td>
-        </tr>
-        <tr>
-            <th scope="row"><?= __('Photo') ?></th>
-            <td><?= h($comment->photo) ?></td>
-        </tr>
-        <tr>
-            <th scope="row"><?= __('File') ?></th>
-            <td><?= h($comment->file) ?></td>
-        </tr>
-        <tr>
             <th scope="row"><?= __('Id') ?></th>
             <td><?= $this->Number->format($comment->id) ?></td>
         </tr>
@@ -52,7 +40,15 @@
             <th scope="row"><?= __('Comment Date') ?></th>
             <td><?= h($comment->comment_date) ?></td>
         </tr>
+        <tr>
+            <th scope="row"><?= __('Status') ?></th>
+            <td><?= $comment->status ? __('Yes') : __('No'); ?></td>
+        </tr>
     </table>
+    <div class="row">
+        <h4><?= __('Content') ?></h4>
+        <?= $this->Text->autoParagraph(h($comment->content)); ?>
+    </div>
     <div class="related">
         <h4><?= __('Related Replies') ?></h4>
         <?php if (!empty($comment->replies)): ?>
@@ -64,8 +60,7 @@
                 <th scope="col"><?= __('Replier Name') ?></th>
                 <th scope="col"><?= __('Replier Email') ?></th>
                 <th scope="col"><?= __('Content') ?></th>
-                <th scope="col"><?= __('Photo') ?></th>
-                <th scope="col"><?= __('File') ?></th>
+                <th scope="col"><?= __('Status') ?></th>
                 <th scope="col" class="actions"><?= __('Actions') ?></th>
             </tr>
             <?php foreach ($comment->replies as $replies): ?>
@@ -76,8 +71,7 @@
                 <td><?= h($replies->replier_name) ?></td>
                 <td><?= h($replies->replier_email) ?></td>
                 <td><?= h($replies->content) ?></td>
-                <td><?= h($replies->photo) ?></td>
-                <td><?= h($replies->file) ?></td>
+                <td><?= h($replies->status) ?></td>
                 <td class="actions">
                     <?= $this->Html->link(__('View'), ['controller' => 'Replies', 'action' => 'view', $replies->id]) ?>
                     <?= $this->Html->link(__('Edit'), ['controller' => 'Replies', 'action' => 'edit', $replies->id]) ?>

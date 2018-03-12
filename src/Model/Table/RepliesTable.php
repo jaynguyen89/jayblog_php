@@ -69,18 +69,12 @@ class RepliesTable extends Table
 
         $validator
             ->scalar('content')
-            ->maxLength('content', 1000)
+            ->maxLength('content', 2000)
             ->allowEmpty('content');
 
         $validator
-            ->scalar('photo')
-            ->maxLength('photo', 100)
-            ->allowEmpty('photo');
-
-        $validator
-            ->scalar('file')
-            ->maxLength('file', 100)
-            ->allowEmpty('file');
+            ->boolean('status')
+            ->allowEmpty('status');
 
         return $validator;
     }

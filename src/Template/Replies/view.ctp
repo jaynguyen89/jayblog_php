@@ -35,20 +35,16 @@
             <td><?= h($reply->content) ?></td>
         </tr>
         <tr>
-            <th scope="row"><?= __('Photo') ?></th>
-            <td><?= h($reply->photo) ?></td>
-        </tr>
-        <tr>
-            <th scope="row"><?= __('File') ?></th>
-            <td><?= h($reply->file) ?></td>
-        </tr>
-        <tr>
             <th scope="row"><?= __('Id') ?></th>
             <td><?= $this->Number->format($reply->id) ?></td>
         </tr>
         <tr>
             <th scope="row"><?= __('Reply Date') ?></th>
             <td><?= h($reply->reply_date) ?></td>
+        </tr>
+        <tr>
+            <th scope="row"><?= __('Status') ?></th>
+            <td><?= $reply->status ? __('Yes') : __('No'); ?></td>
         </tr>
     </table>
 </div>

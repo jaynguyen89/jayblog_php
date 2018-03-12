@@ -14,7 +14,6 @@ use Cake\Datasource\ConnectionManager;
  */
 class PostsController extends AppController
 {
-
     /**
      * Index method
      *
@@ -123,8 +122,7 @@ class PostsController extends AppController
      * @return \Cake\Http\Response|void
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
-    public function view($id = null)
-    {
+    public function view($id = null) {
         $post = $this->Posts->get($id);
         $session = $this->request->session();
 
@@ -160,7 +158,13 @@ class PostsController extends AppController
         $statement->execute();
         $suggestedPosts = $statement->fetchAll('assoc');
 
-        $this->set(compact('post', 'categories', 'photos', 'attachments', 'suggestedPosts'));
+        $comments = $this->Posts->Comments->find('all', ['conditions' => ['post_id' => $post->id], 'order' => ['COMMENTS.comment_date' => 'DESC']])->toArray();
+        $repliesByComment = array();
+
+        foreach ($comments as $comment)
+            $repliesByComment[$comment->id] = $this->Posts->Comments->Replies->find('all', ['conditions' => ['comment_id' => $comment->id], 'order' => ['REPLIES.reply_date' => 'DESC']])->toArray();
+
+        $this->set(compact('post', 'categories', 'photos', 'attachments', 'suggestedPosts', 'comments', 'repliesByComment'));
     }
 
 

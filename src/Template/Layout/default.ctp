@@ -35,6 +35,11 @@ $cakeDescription = 'Jay\'s Blog - Dare to step';
     <link href="http://fonts.googleapis.com/css?family=Lato:300,400,700,300italic,400italic,700italic" rel="stylesheet">
     <script defer src="https://use.fontawesome.com/releases/v5.0.6/js/all.js"></script>
 
+    <?php if (strpos($this->request->here, '/posts/view/')) { ?>
+
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.5.0/themes/prism.min.css">
+    <?php } ?>
+
     <?= $this->fetch('meta') ?>
     <?= $this->fetch('css') ?>
     <?= $this->fetch('script') ?>
@@ -81,7 +86,7 @@ $cakeDescription = 'Jay\'s Blog - Dare to step';
 
                         <!-- Dropdown menu for Personal Projects -->
                         <li class="nav-item dropdown">
-                            <a class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-delay="0" data-close-others="false" href="#">Personal Projects <i class="fa fa-angle-down"></i></a>
+                            <a class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-delay="0" data-close-others="false" href="#">Projects <i class="fa fa-angle-down"></i></a>
                             <ul class="dropdown-menu" style="background-color: grey">
                                 <li class="nav-item">
                                     <a href="#"><i class="fab fa-chrome" style="margin-right: 10px;"></i>Web Apps</a>
@@ -127,7 +132,7 @@ $cakeDescription = 'Jay\'s Blog - Dare to step';
                             </ul>
                         </li>
                         <!-- End dropdown -->
-                        <li class="nav-item"><?= $this->Html->link(__('Contact'), ['controller' => 'Messages', 'action' => 'add']); ?></li>
+                        <li class="nav-item"><?= $this->Html->link(__('About'), ['controller' => 'Messages', 'action' => 'add']); ?></li>
                         <li class="nav-item" style="display: none;">
                             <a href="#" style="color: coral" onmouseover="this.style.color='orangered'" onmouseout="this.style.color='coral'"><i class="fa fa-user-circle" style="font-size: larger"></i> Admin Login</a>
                         </li>
@@ -148,32 +153,20 @@ $cakeDescription = 'Jay\'s Blog - Dare to step';
         <!-- Section containing footer -->
         <div class="container footer-1-3">
             <!-- Section containing logo and social links -->
-            <div class="col-md-4 col-sm-4 col-xs-4">
+            <div class="col-md-2 col-sm-4 col-xs-4">
                 <?= $this->Html->image('jaydev.PNG', ['alt' => 'jaydeveloper', 'url' => '/', 'class' => 'brand-img img-responsive']); ?>
                 <q><i>No pain, no gain</i></q>
                 <ul class="social social-light">
-                    <li>
-                        <a href="#" title="Facebook"><i class="fab fa-facebook-square fa-3x"></i></a>
-                    </li>
-                    <li>
-                        <a href="#" title="Twitter"><i class="fab fa-twitter-square fa-3x"></i></a>
-                    </li>
-                    <li>
-                        <a href="#" title="Google Plus"><i class="fab fa-google-plus-square fa-3x"></i></a>
-                    </li>
-                    <li>
-                        <a href="#" title="Linkedin"><i class="fab fa-linkedin fa-3x"></i></a>
-                    </li>
-                    <li>
-                        <a href="#" title="Whatsapp"><i class="fab fa-whatsapp-square fa-3x"></i></a>
-                    </li>
+                    <li><a href="#" target="_blank" title="Twitter"><i class="fab fa-twitter-square fa-3x"></i></a></li>
+                    <li><a role="button" title="Linkedin" target="_blank" onclick="window.open('www.linkedin.com/in/jay-developer', '_blank')"><i class="fab fa-linkedin fa-3x"></i></a></li>
+                    <li><a href="tel:+61422357488" title="Whatsapp"><i class="fab fa-whatsapp-square fa-3x"></i></a></li>
                 </ul>
                 <!-- /.social -->
             </div>
             <!-- End social links -->
 
             <!-- Section containing suggest form -->
-            <div class="col-md-8 col-sm-8 col-xs-8">
+            <div class="col-md-8 col-sm-8 col-xs-8 pull-right">
                 <p><i class="fas fa-bomb pomegranate"></i> Got a project idea? Please suggest me.<br><p id="suggestPostError" class="guardsman small"></p></p>
                 <div class="row">
                     <!-- Suggest form -->
@@ -213,6 +206,48 @@ $cakeDescription = 'Jay\'s Blog - Dare to step';
     <?= $this->Html->script('bootstrap.min.js'); ?>
     <?= $this->Html->script('plugins.js'); ?>
     <?= $this->Html->script('bskit-scripts.js'); ?>
+
+    <?php if (strpos($this->request->here, '/posts/view/')) { ?>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.5.0/prism.min.js"></script>
+        <script src="https://cdn.ckeditor.com/4.5.7/standard/ckeditor.js"></script>
+
+        <script type="text/javascript">
+            var commentCheck = false;
+
+            $(function () {
+                CKEDITOR.replace('editor1');
+
+                CKEDITOR.instances.editor1.on('change', function() {
+                    var commentContent = CKEDITOR.instances.editor1.getData();
+                    if (commentContent === '') {
+                        $('#countCommentChars').css('color', '#515157');
+                        $('#countCommentChars').html('5000 Chars Left');
+
+                        $('#previewDiv').hide('slow');
+                        commentCheck = false;
+                    }
+                    else {
+                        $('#previewDiv').show('slow');
+                        $('#preview').html(commentContent);
+
+                        if (5000 - commentContent.length > 0) {
+                            $('#countCommentChars').css('color', '#515157');
+                            $('#countCommentChars').html((5000 - commentContent.length).toString().concat(' Chars Left'));
+                            commentCheck = true;
+                        }
+                        else {
+                            $('#countCommentChars').css('color', '#D90000');
+                            $('#countCommentChars').html('0 Chars Left');
+                            commentCheck = false;
+                        }
+                    }
+
+                    $('#commentButton').prop('disabled', !(commenterNameCheck && commenterEmailCheck && commentCheck));
+                });
+            });
+        </script>
+    <?php } ?>
+
     <?= $this->Html->script('jayblog.js'); ?>
 </body>
 </html>

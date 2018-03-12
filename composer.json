@@ -9,8 +9,10 @@
         "cakephp/cakephp": "3.5.*",
         "cakephp/migrations": "^1.0",
         "cakephp/plugin-installer": "^1.0",
+        "josegonzalez/cakephp-upload": "^3.7",
         "josegonzalez/dotenv": "2.*",
-        "mobiledetect/mobiledetectlib": "2.*"
+        "mobiledetect/mobiledetectlib": "2.*",
+        "potatopowered/gravatar-helper": "^1.0"
     },
     "require-dev": {
         "cakephp/bake": "^1.1",

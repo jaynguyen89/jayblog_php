@@ -23,8 +23,7 @@
                 <th scope="col"><?= $this->Paginator->sort('replier_name') ?></th>
                 <th scope="col"><?= $this->Paginator->sort('replier_email') ?></th>
                 <th scope="col"><?= $this->Paginator->sort('content') ?></th>
-                <th scope="col"><?= $this->Paginator->sort('photo') ?></th>
-                <th scope="col"><?= $this->Paginator->sort('file') ?></th>
+                <th scope="col"><?= $this->Paginator->sort('status') ?></th>
                 <th scope="col" class="actions"><?= __('Actions') ?></th>
             </tr>
         </thead>
@@ -37,8 +36,7 @@
                 <td><?= h($reply->replier_name) ?></td>
                 <td><?= h($reply->replier_email) ?></td>
                 <td><?= h($reply->content) ?></td>
-                <td><?= h($reply->photo) ?></td>
-                <td><?= h($reply->file) ?></td>
+                <td><?= h($reply->status) ?></td>
                 <td class="actions">
                     <?= $this->Html->link(__('View'), ['action' => 'view', $reply->id]) ?>
                     <?= $this->Html->link(__('Edit'), ['action' => 'edit', $reply->id]) ?>

@@ -18,10 +18,11 @@ class CommentsControllerTest extends IntegrationTestCase
     public $fixtures = [
         'app.comments',
         'app.posts',
+        'app.attachments',
         'app.distributions',
         'app.categories',
-        'app.files',
         'app.messages',
+        'app.votes',
         'app.replies'
     ];
 

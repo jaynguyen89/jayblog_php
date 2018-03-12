@@ -24,9 +24,7 @@
                 <th scope="col"><?= $this->Paginator->sort('comment_date') ?></th>
                 <th scope="col"><?= $this->Paginator->sort('commenter_name') ?></th>
                 <th scope="col"><?= $this->Paginator->sort('commenter_email') ?></th>
-                <th scope="col"><?= $this->Paginator->sort('content') ?></th>
-                <th scope="col"><?= $this->Paginator->sort('photo') ?></th>
-                <th scope="col"><?= $this->Paginator->sort('file') ?></th>
+                <th scope="col"><?= $this->Paginator->sort('status') ?></th>
                 <th scope="col" class="actions"><?= __('Actions') ?></th>
             </tr>
         </thead>
@@ -38,9 +36,7 @@
                 <td><?= h($comment->comment_date) ?></td>
                 <td><?= h($comment->commenter_name) ?></td>
                 <td><?= h($comment->commenter_email) ?></td>
-                <td><?= h($comment->content) ?></td>
-                <td><?= h($comment->photo) ?></td>
-                <td><?= h($comment->file) ?></td>
+                <td><?= h($comment->status) ?></td>
                 <td class="actions">
                     <?= $this->Html->link(__('View'), ['action' => 'view', $comment->id]) ?>
                     <?= $this->Html->link(__('Edit'), ['action' => 'edit', $comment->id]) ?>

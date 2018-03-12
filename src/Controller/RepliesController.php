@@ -49,20 +49,31 @@ class RepliesController extends AppController
      *
      * @return \Cake\Http\Response|null Redirects on successful add, renders view otherwise.
      */
-    public function add()
-    {
+    public function add() {
+        $this->autoRender = false;
         $reply = $this->Replies->newEntity();
-        if ($this->request->is('post')) {
-            $reply = $this->Replies->patchEntity($reply, $this->request->getData());
-            if ($this->Replies->save($reply)) {
-                $this->Flash->success(__('The reply has been saved.'));
 
-                return $this->redirect(['action' => 'index']);
+        if ($this->request->is('post')) {
+            $data = $this->request->getData();
+
+            if (strlen(trim($data['content'])) == 0) {
+                $this->Flash->error(__('Oops! Your comment seems to be blank. Please provide some content to continue.'));
+                return $this->redirect(['controller' => 'Posts', 'action' => 'view', 2]);
             }
-            $this->Flash->error(__('The reply could not be saved. Please, try again.'));
+            else if (!$this->checkWhiteSpaceString($data['content'])) {
+                $this->Flash->error(__('Oops! Your comment seems to be bad formatted or all whitespaced. Please take a look at it again.'));
+                return $this->redirect(['controller' => 'Posts', 'action' => 'view', 2]);
+            }
+            else {
+                $reply = $this->Replies->patchEntity($reply, $data);
+                if ($this->Replies->save($reply)) {
+                    $this->Flash->success(__('Hooray! Your reply has been posted. It will be reviewed by admin before being officially published. Thank you!'));
+                    return $this->redirect(['controller' => 'Posts', 'action' => 'view', 2]);
+                }
+
+                $this->Flash->error(__('Oops! Something went wrong with the server. Please try again later.'));
+            }
         }
-        $comments = $this->Replies->Comments->find('list', ['limit' => 200]);
-        $this->set(compact('reply', 'comments'));
     }
 
     /**

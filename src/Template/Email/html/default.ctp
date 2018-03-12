@@ -26,7 +26,7 @@
             <?php endforeach; ?>
         </blockquote>
         <?php } else { ?>
-        <p>Jay usually responds to emails within 30 minutes. If you wish to talk to him in person, please look for his phone number at the signature.</p>
+        <p>Jay usually responds to emails within 30 minutes. If you wish to talk to him in person, please find below his phone number.</p>
         <?php } ?>
 
         <br><p>Kind regards,</p>

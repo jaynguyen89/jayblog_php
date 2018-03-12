@@ -26,10 +26,11 @@ class CommentsTableTest extends TestCase
     public $fixtures = [
         'app.comments',
         'app.posts',
+        'app.attachments',
         'app.distributions',
         'app.categories',
-        'app.files',
         'app.messages',
+        'app.votes',
         'app.replies'
     ];
 

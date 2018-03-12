@@ -2,7 +2,6 @@
 namespace App\Controller;
 
 use App\Controller\AppController;
-use Cake\Mailer\Email;
 
 /**
  * Messages Controller
@@ -20,36 +19,34 @@ class MessagesController extends AppController
         if ($this->request->is('post')) {
             $data = $this->request->getData();
 
-            if ($data['form_id'] == 0) {
-                $data['post_id'] = 1;
-                $data['type'] = 2;
+            if (strlen(trim($data['content'])) == 0) {
+                $this->Flash->error(__('Oops! Your '.($data['form_id'] ? 'feature' : 'project').' suggestion seems to be blank. Please provide some content to continue.'));
+                return $this->redirect('/');
             }
-            else
-                $data['type'] = 1;
-
-            $message = $this->Messages->patchEntity($message, $data);
-            if ($this->Messages->save($message)) {
-                if ($data['sender_email'])
-                    $this->sendConfirmation(1, $data['sender_email'], ['name' => $data['sender_name'], 'content' => $data['content']]);
-
-                $this->Flash->success(__('Hooray! Your '.($data['form_id'] ? 'feature' : 'project').' suggestion has been sent successfully.'));
-                return $this->redirect(['controller' => 'Posts', 'action' => 'index']);
+            else if (!$this->checkWhiteSpaceString($data['content'])) {
+                $this->Flash->error(__('Oops! Your '.($data['form_id'] ? 'feature' : 'project').' suggestion seems to be bad formatted or all whitespaced. Please take a look at it again.'));
+                return $this->redirect('/');
             }
+            else {
+                if ($data['form_id'] == 0) {
+                    $data['post_id'] = 1;
+                    $data['type'] = 2;
+                }
+                else
+                    $data['type'] = 1;
 
-            $this->Flash->error(__('Oops! Something went wrong with the server. Please try again later.'));
+                $message = $this->Messages->patchEntity($message, $data);
+                if ($this->Messages->save($message)) {
+                    if ($data['sender_email'])
+                        //$this->sendConfirmation(1, $data['sender_email'], ['name' => $data['sender_name'], 'post_title' => null, 'content' => $data['content']]);
+
+                    $this->Flash->success(__('Hooray! Your '.($data['form_id'] ? 'feature' : 'project').' suggestion has been sent successfully.'));
+                    return $this->redirect('/');
+                }
+
+                $this->Flash->error(__('Oops! Something went wrong with the server. Please try again later.'));
+            }
         }
-    }
-
-    private function sendConfirmation($form = 0, $recipient = null, $data = null) {
-        $email = new Email();
-        $email->transport('gmail')
-            ->template('default')
-            ->emailFormat('html')
-            ->viewVars(['form' => $form, 'receiver' => $data['name'], 'message' => $data['content']])
-            ->from(['nguyen.le.kim.phuc@gmail.com' => 'Jay Developer'])
-            ->to($recipient)
-            ->subject('Thanks for your message!')
-            ->send();
     }
 
     /**
@@ -92,18 +89,29 @@ class MessagesController extends AppController
         $message = $this->Messages->newEntity();
         if ($this->request->is('post')) {
             $data = $this->request->getData();
-            $data['type'] = 0;
-            $data['post_id'] = 1;
 
-            $message = $this->Messages->patchEntity($message, $data);
-            if ($this->Messages->save($message)) {
-                $this->sendConfirmation(0, $data['sender_email'], ['name' => $data['sender_name'], 'content' => $data['content']]);
-
-                $this->Flash->success(__('Hooray! Your contact message has been sent successfully.'));
+            if (strlen(trim($data['content'])) == 0) {
+                $this->Flash->error(__('Oops! Your contact message seems to be blank. Please provide some content to continue.'));
                 return $this->redirect(['action' => 'add']);
             }
+            else if (!$this->checkWhiteSpaceString($data['content'])) {
+                $this->Flash->error(__('Oops! Your contact message seems to be bad formatted or all whitespaced. Please take a look at it again.'));
+                return $this->redirect(['action' => 'add']);
+            }
+            else {
+                $data['type'] = 0;
+                $data['post_id'] = 1;
 
-            $this->Flash->error(__('Oops! Something went wrong with the server. Please try again later.'));
+                $message = $this->Messages->patchEntity($message, $data);
+                if ($this->Messages->save($message)) {
+                    $this->sendConfirmation(0, $data['sender_email'], ['name' => $data['sender_name'], 'post_title' => null, 'content' => $data['content']]);
+
+                    $this->Flash->success(__('Hooray! Your contact message has been sent successfully.'));
+                    return $this->redirect(['action' => 'add']);
+                }
+
+                $this->Flash->error(__('Oops! Something went wrong with the server. Please try again later.'));
+            }
         }
 
         $this->set(compact('message'));

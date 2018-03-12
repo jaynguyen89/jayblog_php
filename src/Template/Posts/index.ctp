@@ -42,14 +42,14 @@
                                             endforeach; ?>
                                     </div></li>
                             </ul>
-                            <p class="small">Please click <a role="button" onclick="passDataToForm()" data-toggle="modal" data-target="#login-modal">here</a> to suggest a feature or report a bug. Thanks!</p>
+                            <p class="small">Please click <a role="button" onclick="passDataToSuggestFeatureForm()" data-toggle="modal" data-target="#suggestFeatureModal">here</a> to suggest a feature or report a bug. Thanks!</p>
                         </div>
                     </div>
                     <!-- End row of general project info -->
 
                     <!-- JS code that is called when suggest link is clicked -->
                     <script type="text/javascript">
-                        function passDataToForm() {
+                        function passDataToSuggestFeatureForm() {
                             var postIdInput = document.getElementById('postIdInput');
                             postIdInput.value = '<?= $latestPost->id; ?>';
 
@@ -79,7 +79,7 @@
     <!-- End section -->
 
     <!-- This section contains the modal popup displaying a form that allows feature suggestion -->
-    <div class="modal fade" id="login-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+    <div class="modal fade" id="suggestFeatureModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
         <div class="modal-dialog">
             <div class="modal-content">
                 <!-- Popup header -->
@@ -94,7 +94,7 @@
                             <div id="div-login-msg"><h6><i class="fas fa-bullhorn" style="color: #3498DB;"></i> Please enter some optional information and your suggestion.</h6></div>
                             <div class="row">
                                 <div class="text-center"><p id="featureFormError" class="small guardsman"></p></div>
-                                <input type="hidden" name="form_id" value="1"/>
+                                <input type="hidden" name="form_id"/>
                                 <input name="post_id" id="postIdInput" type="hidden"/>
                                 <div class="col-xs-12"><input id="postTitleInput" name="post_title" class="form-control" type="text" readonly></div>
                                 <div class="col-sm-6 col-xs-12" style="margin-top: 5px;"><input name="sender_name" id="featureSuggesterName" class="form-control" type="text" placeholder="Name" oninput="checkSuggestFeatureForm()" /></div>

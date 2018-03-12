@@ -28,8 +28,7 @@
             echo $this->Form->control('replier_name');
             echo $this->Form->control('replier_email');
             echo $this->Form->control('content');
-            echo $this->Form->control('photo');
-            echo $this->Form->control('file');
+            echo $this->Form->control('status');
         ?>
     </fieldset>
     <?= $this->Form->button(__('Submit')) ?>

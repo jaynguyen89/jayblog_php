@@ -1,4 +1,8 @@
-<?php $session = $this->request->session(); ?>
+<?php $session = $this->request->session();
+$nameFieldAtt = ['class' => 'form-control', 'label' => false, 'placeholder' => 'Name*', 'type' => 'text', 'id' => 'commenterName', 'oninput' => 'validateCommentForm()'];
+$emailFieldAtt = ['class' => 'form-control', 'label' => false, 'placeholder' => 'Email*', 'type' => 'text', 'id' => 'commenterEmail', 'oninput' => 'validateCommentForm()'];
+$commentSubmit = ['id' => 'commentButton', 'class' => 'btn btn-outline btn-outline-md outline-dark', 'disabled' => true, 'style' => 'margin-top: 0;'];
+?>
 
 <div class="container">
     <section id="content-1-9" class="content-1-9 content-block" style="padding-bottom: 10px;">
@@ -13,6 +17,7 @@
         <!-- End section title -->
 
         <div class="row">
+            <!-- Left column displaying photo carousel -->
             <div class="col-md-9 col-sm-12 col-xs-12">
                 <div id="myCarousel" class="carousel slide" data-ride="carousel">
                     <!-- Photo carousel indicator dots -->
@@ -34,7 +39,7 @@
                         </div>
                         <?php } ?>
                     </div>
-                    <!-- -->
+                    <!-- End photo carousel -->
 
                     <!-- Left and right controls -->
                     <a class="left carousel-control" href="#myCarousel" data-slide="prev">
@@ -45,10 +50,15 @@
                         <span class="glyphicon glyphicon-chevron-right"></span>
                         <span class="sr-only">Next</span>
                     </a>
+                    <!-- End carousel controls -->
                 </div>
             </div>
+            <!-- End left column -->
+
+            <!-- Right column displaying general project information -->
             <div class="col-md-3 col-sm-12 col-xs-12">
                 <div class="row">
+                    <!-- General project info -->
                     <div class="col-xs-12">
                         <ul class="list-group list-group-flush">
                             <li class="list-group-item">Posted on: <b class="pull-right"><?= (new DateTime($post->created_on))->format('d/m/Y H:i'); ?></b></li>
@@ -76,20 +86,29 @@
                                     ['role' => 'button', 'escape' => false, 'confirm' => __('Since no login was required, your IP Address may be recorded. This approach is to prevent visitors voting multiple times on 1 post.\n\nNo personal information will be collected. Your IP Address will be securely encrypted.\n\nContinue to vote down for {0}?', $post->title)]); ?></li>
                         </ul>
                     </div>
+                    <!-- End project info -->
+
+                    <!-- Optional admin notes on project -->
                     <div class="col-xs-12">
                         <h5><i class="fas fa-pencil-alt" style="color: #3498DB;"></i> Notes</h5>
                         <p class="small"><?= $post->note ? $this->Text->autoParagraph(h($post->note)) : 'N/A'; ?></p>
                     </div>
+                    <!-- End notes -->
                 </div>
-
             </div>
+            <!-- End right column -->
         </div>
 
+        <!-- Section containing project description and attachments -->
         <div class="row" style="margin-top: 15px;">
+            <!-- Project description -->
             <div class="col-md-9 col-sm-9 col-xs-12">
                 <h4><i class="fas fa-clipboard" style="color: #3498DB;"></i> Project Description</h4>
                 <p class="medium"><?= $this->Text->autoParagraph(h($post->content)); ?></p>
             </div>
+            <!-- End project description -->
+
+            <!-- Attachments -->
             <div class="col-md-3 col-sm-3 col-xs-12">
                 <h4><i class="fas fa-paperclip" style="color: #3498DB;"></i> File Attachments</h4>
                 <div class="row">
@@ -105,8 +124,11 @@
                     <?php endforeach; ?>
                 </div>
             </div>
+            <!-- End attachments -->
         </div>
+        <!-- End section -->
 
+        <!-- Section containing next reading suggestions -->
         <div class="row">
             <hr>
             <h4><i class="fas fa-list-ul" style="color: #3498DB;"></i> Other posts</h4>
@@ -115,6 +137,7 @@
             <?php } else { ?>
             <div class="row">
                 <div class="table-responsive">
+                    <!-- Table of suggestions -->
                     <table class="table bg-offwhite" style="border-radius: 10px;">
                         <thead><tr><th>#</th><th>Type</th><th>Title</th><th>Status</th><th>Posted on</th></tr></thead>
                         <tbody>
@@ -127,26 +150,99 @@
                             <?php } ?></tr>
                         </tbody>
                     </table>
+                    <!-- End table -->
                 </div>
             </div>
             <?php } ?>
         </div>
+        <!-- End suggestion -->
 
-        <div class="row">
+        <!-- Section containing the comment form -->
+        <div class="row" id="commentForm">
             <hr>
-            <h4  style="margin-bottom: 0;"><i class="fas fa-paper-plane" style="color: #3498DB;"></i> Leave a Reply</h4>
+            <h4 style="margin-bottom: 0;"><i class="fas fa-paper-plane" style="color: #3498DB;"></i> Leave a Reply</h4>
             <p class="small"  style="margin-top: 0;">To respect your privacy, your submitted information will not be published.</p>
             <div class="row">
+                <div class="box" style="margin: 0 10px 0 10px">
+                    <!-- /.box-header -->
+                    <form method="post" action="/jayblog/comments/add">
+                        <input type="hidden" name="post_id" value="<?= $post->id; ?>" />
+                        <div class="box-body pad">
+                            <!-- The comment form: input name, email, content area -->
+                            <div class="row">
+                                <p id="commentError" class="guardsman text-center"></p>
+                                <div class="col-sm-6 col-xs-12"><div class="form-group"><?= $this->Form->control('commenter_name', $nameFieldAtt); ?></div></div>
+                                <div class="col-sm-6 col-xs-12"><div class="form-group"><?= $this->Form->control('commenter_email', $emailFieldAtt); ?></div></div>
+                            </div>
+                            <div class="row" style="margin: 0 5px 0 5px;">
+                                <textarea id="editor1" name="content" rows="10" cols="90""></textarea>
+                                <p id="countCommentChars" class="small pull-right" style="margin-top: 0; margin-bottom: 0; color: #515157;">5000 Chars Left</p>
+                            </div>
+                            <!-- End input area -->
 
+                            <!-- Comment preview -->
+                            <div id="previewDiv" class="row" style="margin: 0 10px 0 10px; display: none;">
+                                <h4>Preview your comment</h4>
+                                <div id="preview" class="row" style="margin: 0 10px 15px 10px; background-color: #F8F8F8; border: 1px solid #E7E7E7; border-radius: 10px; padding: 0 15px 0 15px; max-height: 250px; overflow-y: scroll;"></div>
+                            </div>
+                            <div class="editContent""><?= $this->Form->button('Submit', $commentSubmit); ?></div>
+                        </div>
+                    </form>
+                </div>
             </div>
         </div>
+        <!-- End comment form -->
 
+        <!-- Section containing all comments and replies on the post -->
         <div class="row">
             <hr>
-            <h4>Comments <i class="fas fa-caret-right" style="color: #3498DB;"></i> 5 Replies</h4>
-            <div class="row">
+            <h4>Comments <i class="fas fa-caret-right" style="color: #3498DB;"></i> <?= count($comments); ?></h4>
+            <?php $defaultAvatars = ['identicon', 'monsterid', 'wavatar', 'retro', 'robohash']; $n = 0;
+            foreach ($comments as $comment): ?>
+                <div class="row" style="<?php if ($n != count($comments) - 1) { ?>border-bottom: 1px solid #AAA;<?php } ?> padding-bottom: 10px; margin-left: 5px; margin-bottom: 15px;">
+                    <!-- The comment -->
+                    <div class="row">
+                        <!-- First column displaying commentor avatar & name, comment date and reply button -->
+                        <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
+                            <?= $this->Gravatar->avatar($comment->commenter_email, ['size' => '75px', 'default' => $defaultAvatars[array_rand($defaultAvatars)], 'class' => 'img-circle pull-left']); ?>
+                            <p style="margin-top: 0; margin-bottom: 5px;"><b><?= ucwords(strtolower($comment->commenter_name)); ?></b></p>
+                            <p style="margin-top: 5px;"><b><?= (new DateTime($comment->comment_date))->format('d/m/Y H:i'); ?></b></p>
+                            <a role="button" name="showFormTag" onclick="showReplyForm(<?= $n; ?>);passDataToReplyForm(<?= $comment->id; ?>);">Reply</a>
+                        </div>
+                        <!-- End column -->
 
-            </div>
+                        <!-- Second column containing the comment content -->
+                        <div class="col-lg-9 col-md-9 col-sm-9 col-xs-9"><?= $comment->status ? '' : '<span class="label label-warning">Pending</span>'; ?><div class="row" style="margin: 0 10px 15px 10px; background-color: #F8F8F8; border: 1px solid #3498DB; border-radius: 10px; padding: 0 15px 0 15px; max-height: 250px; overflow-y: scroll;"><?= $comment->content; ?></div></div>
+                    </div>
+                    <!-- End comment -->
+
+                    <!-- This area contains the reply form which is printed via Javascript template -->
+                    <div class="row replyFormDivs" style="display: none;"></div>
+
+                    <!-- The replies that are associated to a comment -->
+                    <?php foreach ($repliesByComment[$comment->id] as $reply):
+                        if ($reply) { ?>
+                        <div class="row" style="margin: 15px 25px 10px 50px;">
+                            <!-- First row displaying replier avatar & name, reply date -->
+                            <div class="row" style="margin-bottom: 0;">
+                                <div class="col-md-6 col-sm-6 col-xs-6">
+                                    <div class="row">
+                                        <?= $this->Gravatar->avatar($reply->replier_email, ['size' => '35px', 'default' => $defaultAvatars[array_rand($defaultAvatars)], 'class' => 'img-circle pull-left']); ?>
+                                        <h6><b><?= ucwords(strtolower($reply->replier_name)); ?></b></h6>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 col-sm-6 col-xs-6"><p class="pull-right"><b><?= (new DateTime($reply->reply_date))->format('d/m/Y H:i'); ?> <?= $reply->status ? '' : '<span class="label label-warning">Pending</span>'; ?></b></p></div>
+                            </div>
+                            <!-- End first column -->
+
+                            <!-- The replying content -->
+                            <div class="row " style="background-color: #F8F8F8; border: 1px solid #E7E7E7; border-radius: 10px; padding: 10px;"><?= $reply->content; ?></div>
+                        </div>
+                    <?php } endforeach; ?>
+                    <!-- End replies -->
+                </div>
+            <?php $n++; endforeach; ?>
         </div>
+        <!-- End section -->
     </section>
 </div>

@@ -49,20 +49,35 @@ class CommentsController extends AppController
      *
      * @return \Cake\Http\Response|null Redirects on successful add, renders view otherwise.
      */
-    public function add()
-    {
+    public function add() {
+        $this->autoRender = false;
         $comment = $this->Comments->newEntity();
-        if ($this->request->is('post')) {
-            $comment = $this->Comments->patchEntity($comment, $this->request->getData());
-            if ($this->Comments->save($comment)) {
-                $this->Flash->success(__('The comment has been saved.'));
 
-                return $this->redirect(['action' => 'index']);
+        if ($this->request->is('post')) {
+            $data = $this->request->getData();
+            $post = $this->Comments->Posts->get($data['post_id'], ['fields' => ['title']]);
+
+            if (strlen(trim($data['content'])) == 0) {
+                $this->Flash->error(__('Oops! Your comment seems to be blank. Please provide some content to continue.'));
+                return $this->redirect(['controller' => 'Posts', 'action' => 'view', $data['post_id']]);
             }
-            $this->Flash->error(__('The comment could not be saved. Please, try again.'));
+            else if (!$this->checkWhiteSpaceString($data['content'])) {
+                $this->Flash->error(__('Oops! Your comment seems to be bad formatted or all whitespaced. Please take a look at it again.'));
+                return $this->redirect(['controller' => 'Posts', 'action' => 'view', $data['post_id']]);
+            }
+            else {
+                $comment = $this->Comments->patchEntity($comment, $data);
+                if ($this->Comments->save($comment)) {
+                    $this->sendConfirmation(3, $data['commenter_email'], ['name' => $data['commenter_name'], 'post_title' => $post->title, 'content' => $data['content']]);
+
+                    $this->Flash->success(__('Hooray! Your comment has been posted. It will be reviewed by admin before being officially published. Thanks for your interest!'));
+                    return $this->redirect(['controller' => 'Posts', 'action' => 'view', $data['post_id']]);
+                }
+
+                $this->Flash->error('Oops! Something went wrong with the server. Please try again later.');
+                return $this->redirect(['controller' => 'Posts', 'action' => 'view', $data['post_id']]);
+            }
         }
-        $posts = $this->Comments->Posts->find('list', ['limit' => 200]);
-        $this->set(compact('comment', 'posts'));
     }
 
     /**

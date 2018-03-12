@@ -12,8 +12,7 @@ use Cake\ORM\Entity;
  * @property string $commenter_name
  * @property string $commenter_email
  * @property string $content
- * @property string $photo
- * @property string $file
+ * @property bool $status
  *
  * @property \App\Model\Entity\Post $post
  * @property \App\Model\Entity\Reply[] $replies
@@ -36,8 +35,7 @@ class Comment extends Entity
         'commenter_name' => true,
         'commenter_email' => true,
         'content' => true,
-        'photo' => true,
-        'file' => true,
+        'status' => true,
         'post' => true,
         'replies' => true
     ];
