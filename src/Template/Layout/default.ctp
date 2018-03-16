@@ -45,6 +45,11 @@ $cakeDescription = 'Jay\'s Blog - Dare to step';
     <?= $this->fetch('script') ?>
 </head>
 <body data-spy="scroll" data-target="nav">
+<?php $active = (strpos($this->request->here, '/messages/add') != false ? '1' :
+    (strpos($this->request->here, '/posts/view/') != false ? '-1' :
+        ((strpos($this->request->here, '/posts/programming-interest') != false || strpos($this->request->here, '/posts/framework-interest') != false || strpos($this->request->here, '/posts/api-interest') != false || strpos($this->request->here, '/posts/software-interest') != false) ? '2' :
+            ((strpos($this->request->here, '/posts/web-project') != false || strpos($this->request->here, '/posts/computer-project') != false || strpos($this->request->here, '/posts/ios-project') != false || strpos($this->request->here, '/posts/android-project') != false) ? '3' :
+                ((strpos($this->request->here, '/posts/cloud-others') != false || strpos($this->request->here, '/posts/news-others') != false || strpos($this->request->here, '/posts/tiptrick-others') != false) ? '4' : '0'))))); ?>
     <header id="header-2" class="soft-scroll header-2">
         <nav class="main-nav navbar navbar-default navbar-fixed-top">
             <!-- Container DIV wrapping the whole navbar and staying fixed to the top of site -->
@@ -63,76 +68,55 @@ $cakeDescription = 'Jay\'s Blog - Dare to step';
                 <!-- Navbar menu containing collapsible items and links -->
                 <div class="collapse navbar-collapse" id="navbar-collapse">
                     <ul class="nav navbar-nav navbar-right">
-                        <li class="nav-item active"><?= $this->Html->link(__('Home'), '/', ['class' => 'nav-link']); ?></li>
+                        <li class="nav-item <?= $active == 0 ? 'active' : ''; ?>"><?= $this->Html->link(__('Home'), '/', ['class' => 'nav-link']); ?></li>
                         <!-- Dropdown menu for Interests -->
-                        <li class="nav-item dropdown">
+                        <li class="nav-item dropdown <?= $active == 2 ? 'active' : ''; ?>">
                             <a class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-delay="0" data-close-others="false" href="#">Interests <i class="fa fa-angle-down"></i></a>
-                            <ul class="dropdown-menu" style="background-color: grey">
-                                <li class="nav-item">
-                                    <a href="#"><i class="fas fa-code" style="margin-right: 10px;"></i>Programming Languages</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="#"><i class="fas fa-puzzle-piece" style="margin-right: 10px;"></i>Frameworks</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="#"><i class="fas fa-cogs" style="margin-right: 10px;"></i>APIs</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="#"><i class="fas fa-object-group" style="margin-right: 10px;"></i>Tools & Software</a>
-                                </li>
+                            <ul class="dropdown-menu" style="background-color: lightgray">
+                                <li><?= $this->Html->link($this->Html->tag('i', '', ['class' => 'fas fa-code', 'style' => 'margin-right: 10px;']).'Programming Languages',
+                                        ['controller' => 'Posts', 'action' => 'programmingInterest'], ['escape' => false]); ?></li>
+                                <li><?= $this->Html->link($this->Html->tag('i', '', ['class' => 'fas fa-puzzle-piece', 'style' => 'margin-right: 10px;']).'Frameworks',
+                                        ['controller' => 'Posts', 'action' => 'frameworkInterest'], ['escape' => false]); ?></li>
+                                <li><?= $this->Html->link($this->Html->tag('i', '', ['class' => 'fas fa-cogs', 'style' => 'margin-right: 10px;']).'APIs',
+                                        ['controller' => 'Posts', 'action' => 'apiInterest'], ['escape' => false]); ?></li>
+                                <li><?= $this->Html->link($this->Html->tag('i', '', ['class' => 'fas fa-object-group', 'style' => 'margin-right: 10px;']).'Tools & Software',
+                                        ['controller' => 'Posts', 'action' => 'softwareInterest'], ['escape' => false]); ?></li>
                             </ul>
                         </li>
                         <!-- End dropdown -->
 
                         <!-- Dropdown menu for Personal Projects -->
-                        <li class="nav-item dropdown">
+                        <li class="nav-item dropdown <?= $active == 3 ? 'active' : ''; ?>">
                             <a class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-delay="0" data-close-others="false" href="#">Projects <i class="fa fa-angle-down"></i></a>
-                            <ul class="dropdown-menu" style="background-color: grey">
-                                <li class="nav-item">
-                                    <a href="#"><i class="fab fa-chrome" style="margin-right: 10px;"></i>Web Apps</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="#"><i class="fas fa-laptop" style="margin-right: 10px;"></i>Computer Apps</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="#"><i class="fab fa-app-store-ios" style="margin-right: 10px;"></i>iOS Apps</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="#"><i class="fab fa-android" style="margin-right: 10px;"></i>Android Apps</a>
-                                </li>
-                                <!-- Nested dropdown inside the outer dropdown menu
-                                <li class="nav-item dropdown">
-                                    <a class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-delay="0" data-close-others="false" href="#"><i class="fas fa-mobile" style="margin-right: 10px;"></i>Mobile Apps <i class="fa fa-angle-down"></i></a>
-                                    <ul class="dropdown-menu bg-asbestos">
-                                        <li class="nav-item">
-                                            <a href="#" class="text-right"><i class="fab fa-app-store-ios" style="margin-right: 10px;"></i>iOS</a>
-                                        </li>
-                                        <li class="nav-item">
-                                            <a href="#" class="text-right"><i class="fab fa-android" style="margin-right: 10px;"></i>Android</a>
-                                        </li>
-                                    </ul>
-                                </li>
-                                -->
+                            <ul class="dropdown-menu" style="background-color: lightgray">
+                                <li><?= $this->Html->link($this->Html->tag('i', '', ['class' => 'fab fa-chrome', 'style' => 'margin-right: 10px;']).'Web Apps',
+                                        ['controller' => 'Posts', 'action' => 'webProject'], ['escape' => false]); ?></li>
+                                <li><?= $this->Html->link($this->Html->tag('i', '', ['class' => 'fas fa-laptop', 'style' => 'margin-right: 10px;']).'Computer Apps',
+                                        ['controller' => 'Posts', 'action' => 'computerProject'], ['escape' => false]); ?></li>
+                                <li><?= $this->Html->link($this->Html->tag('i', '', ['class' => 'fab fa-app-store-ios', 'style' => 'margin-right: 10px;']).'iOS Apps',
+                                        ['controller' => 'Posts', 'action' => 'iosProject'], ['escape' => false]); ?></li>
+                                <li><?= $this->Html->link($this->Html->tag('i', '', ['class' => 'fab fa-android', 'style' => 'margin-right: 10px;']).'Android Apps',
+                                        ['controller' => 'Posts', 'action' => 'androidProject'], ['escape' => false]); ?></li>
                             </ul>
                         </li>
                         <!-- End dropdown -->
 
                         <!-- Dropdown menu for Other contents -->
-                        <li class="nav-item dropdown">
+                        <li class="nav-item dropdown <?= $active == 4 ? 'active' : ''; ?>">
                             <a class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-delay="0" data-close-others="false" href="#">Others <i class="fa fa-angle-down"></i></a>
-                            <ul class="dropdown-menu" style="background-color: grey">
-                                <li class="nav-item"><a href="#"><i class="fas fa-cloud-upload-alt" style="margin-right: 10px;"></i>Servers & Clouds</a></li>
-                                <li class="nav-item"><a href="#"><i class="fas fa-code-branch" style="margin-right: 10px;"></i>Version Control</a></li>
-                                <li class="nav-item">
-                                    <a href="#"><i class="far fa-newspaper" style="margin-right: 10px;"></i>IT News</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="#"><i class="far fa-lightbulb" style="margin-right: 10px;"></i>Tips & Tricks</a>
-                                </li>
+                            <ul class="dropdown-menu" style="background-color: lightgray">
+                                <li><?= $this->Html->link($this->Html->tag('i', '', ['class' => 'fas fa-cloud-upload-alt', 'style' => 'margin-right: 10px;']).'Servers & Clouds',
+                                        ['controller' => 'Posts', 'action' => 'cloudOthers'], ['escape' => false]); ?></li>
+                                <!--<li><?= $this->Html->link($this->Html->tag('i', '', ['class' => 'fas fa-code-branch', 'style' => 'margin-right: 10px;']).'Version Control',
+                                        ['controller' => 'Posts', 'action' => 'vcsOthers'], ['escape' => false]); ?></li>-->
+                                <li><?= $this->Html->link($this->Html->tag('i', '', ['class' => 'far fa-newspaper', 'style' => 'margin-right: 10px;']).'IT News',
+                                    ['controller' => 'Posts', 'action' => 'newsOthers'], ['escape' => false]); ?></li>
+                                <li><?= $this->Html->link($this->Html->tag('i', '', ['class' => 'far fa-lightbulb', 'style' => 'margin-right: 10px;']).'Tips & Tricks',
+                                    ['controller' => 'Posts', 'action' => 'tiptrickOthers'], ['escape' => false]); ?></li>
                             </ul>
                         </li>
                         <!-- End dropdown -->
-                        <li class="nav-item"><?= $this->Html->link(__('About'), ['controller' => 'Messages', 'action' => 'add']); ?></li>
+                        <li class="nav-item <?= $active == 1 ? 'active' : ''; ?>"><?= $this->Html->link(__('About'), ['controller' => 'Messages', 'action' => 'add']); ?></li>
                         <li class="nav-item" style="display: none;">
                             <a href="#" style="color: coral" onmouseover="this.style.color='orangered'" onmouseout="this.style.color='coral'"><i class="fa fa-user-circle" style="font-size: larger"></i> Admin Login</a>
                         </li>
@@ -207,7 +191,7 @@ $cakeDescription = 'Jay\'s Blog - Dare to step';
     <?= $this->Html->script('plugins.js'); ?>
     <?= $this->Html->script('bskit-scripts.js'); ?>
 
-    <?php if (strpos($this->request->here, '/posts/view/')) { ?>
+    <?php if (strpos($this->request->here, '/posts/view/') != false) { ?>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.5.0/prism.min.js"></script>
         <script src="https://cdn.ckeditor.com/4.5.7/standard/ckeditor.js"></script>
 

@@ -28,6 +28,9 @@ use Cake\Mailer\Email;
  */
 class AppController extends Controller
 {
+    const POST_TYPES = [1 => 'Web Application', 2 => 'Computer Application', 3 => 'iOS Application', 4 => 'Android Application', 5 => 'Programming Language', 6 => 'Frameworks',
+        7 => 'APIs', 8 => 'Tools & Software', 9 => 'Server & Clouds', 10 => 'Version Control', 11 => 'IT News', 12 => 'Tips & Tricks'];
+
     public $helpers = ['Gravatar' => [
         'className' => 'GravatarHelper.Gravatar'
     ]];

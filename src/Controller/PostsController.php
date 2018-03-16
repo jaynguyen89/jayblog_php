@@ -38,11 +38,12 @@ class PostsController extends AppController
             $likesByPost[$latestPost->id] = ($votesByPost['upvote'] <= $votesByPost['downvote']) ? 0 : $votesByPost['upvote'] - $votesByPost['downvote'];
             $typesByPost = $this->Posts->Distributions->find('all', ['conditions' => ['post_id' => $latestPost->id]])->toArray();
 
+            $categoriesByPost[$latestPost->id] = array();
             for ($i = 0; $i < count($typesByPost); $i++) {
-                $categoriesByPost[$i] = array();
-                array_push($categoriesByPost[$i], TableRegistry::get('Categories')->get($typesByPost[$i]->category_id));
+                $category = TableRegistry::get('Categories')->get($typesByPost[$i]->category_id);
 
-                $typesByPost[$i]->main ? array_push($categoriesByPost[$i], true) : array_push($categoriesByPost[$i], false);
+                $category->main = ($typesByPost[$i]->main ? true : false);
+                array_push($categoriesByPost[$latestPost->id], $category);
             }
 
             unset($typesByPost);
@@ -74,25 +75,25 @@ class PostsController extends AppController
 
             switch ($oldPostType->type):
                 case 0:
-                    if (count($oldInterestPosts) == 5)
+                    if (count($oldInterestPosts) == 4)
                         continue;
 
                     array_push($oldInterestPosts, $oldPost);
                     break;
                 case 1:
-                    if (count($oldProjectPosts) == 5)
+                    if (count($oldProjectPosts) == 4)
                         continue;
 
                     array_push($oldProjectPosts, $oldPost);
                     break;
                 case 2:
-                    if (count($oldOtherPosts) == 5)
+                    if (count($oldOtherPosts) == 4)
                         continue;
 
                     array_push($oldOtherPosts, $oldPost);
                     break;
                 default:
-                    if (count($proposedPosts) == 5)
+                    if (count($proposedPosts) == 4)
                         continue;
 
                     array_push($proposedPosts, $oldPost);
@@ -147,12 +148,12 @@ class PostsController extends AppController
             FROM Posts Posts, Distributions Distributions, Categories Categories
             WHERE Posts.id = Distributions.post_id
             AND Distributions.category_id = Categories.id
-            AND main = 1
+            AND Distributions.main = 1
             AND Posts.id <> 1
             AND Posts.id <> '.$post->id.'
-            AND status <> 2
+            AND Posts.status <> 2
             ORDER BY RAND(), Posts.created_on DESC
-            LIMIT 5';
+            LIMIT 5;';
 
         $statement = $connection->prepare($query);
         $statement->execute();
@@ -231,5 +232,122 @@ class PostsController extends AppController
         }
 
         return $this->redirect(['action' => 'index']);
+    }
+
+    private function getPostCategories($post_id) {
+        $connection = ConnectionManager::get('default');
+        $query = 'SELECT c.title as ctitle, c.description as cdesc, d.main
+                FROM Posts p, Categories c, Distributions d
+                WHERE p.id = d.post_id
+                AND c.id = d.category_id
+                AND p.id = '.$post_id.';';
+
+        $statement = $connection->prepare($query);
+        $statement->execute();
+        $categories = $statement->fetchAll('assoc');
+
+        return $categories;
+    }
+
+    private function getCategorizedPosts($type) {
+        $connection = ConnectionManager::get('default');
+        $query = 'SELECT p.id, p.title as ptitle, p.description as pdesc, p.status, p.photo, p.created_on
+                FROM Posts p, Categories c, Distributions d
+                WHERE p.id = d.post_id
+                AND c.id = d.category_id
+                AND c.id = '.$type.'
+                AND d.main = 1
+                ORDER BY p.created_on DESC;';
+
+        $statement = $connection->prepare($query);
+        $statement->execute();
+        $posts = $statement->fetchAll('assoc');
+
+        return $posts;
+    }
+
+    private function getCategoriesByPost($posts) {
+        $categoriesByPost = array();
+        foreach ($posts as $post)
+            $categoriesByPost[$post['id']] = $this->getPostCategories($post['id']);
+
+        return $categoriesByPost;
+    }
+
+    public function programmingInterest() {
+        $posts = $this->getCategorizedPosts(array_search('Programming Language', parent::POST_TYPES));
+        $categoriesByPost = $this->getCategoriesByPost($posts);
+
+        $this->set(compact('posts', 'categoriesByPost'));
+    }
+
+    public function frameworkInterest() {
+        $posts = $this->getCategorizedPosts(array_search('Frameworks', parent::POST_TYPES));
+        $categoriesByPost = $this->getCategoriesByPost($posts);
+
+        $this->set(compact('posts', 'categoriesByPost'));
+    }
+
+    public function apiInterest() {
+        $posts = $this->getCategorizedPosts(array_search('APIs', parent::POST_TYPES));
+        $categoriesByPost = $this->getCategoriesByPost($posts);
+
+        $this->set(compact('posts', 'categoriesByPost'));
+    }
+
+    public function softwareInterest() {
+        $posts = $this->getCategorizedPosts(array_search('Tools & Software', parent::POST_TYPES));
+        $categoriesByPost = $this->getCategoriesByPost($posts);
+
+        $this->set(compact('posts', 'categoriesByPost'));
+    }
+
+    public function webProject() {
+        $posts = $this->getCategorizedPosts(array_search('Web Application', parent::POST_TYPES));
+        $categoriesByPost = $this->getCategoriesByPost($posts);
+
+        $this->set(compact('posts', 'categoriesByPost'));
+    }
+
+    public function computerProject() {
+        $posts = $this->getCategorizedPosts(array_search('Computer Application', parent::POST_TYPES));
+        $categoriesByPost = $this->getCategoriesByPost($posts);
+
+        $this->set(compact('posts', 'categoriesByPost'));
+    }
+
+    public function iosProject() {
+        $posts = $this->getCategorizedPosts(array_search('iOS Application', parent::POST_TYPES));
+        $categoriesByPost = $this->getCategoriesByPost($posts);
+
+        $this->set(compact('posts', 'categoriesByPost'));
+    }
+
+    public function androidProject() {
+        $posts = $this->getCategorizedPosts(array_search('Android Application', parent::POST_TYPES));
+        $categoriesByPost = $this->getCategoriesByPost($posts);
+
+        $this->set(compact('posts', 'categoriesByPost'));
+    }
+
+    public function cloudOthers() {
+        $posts = $this->getCategorizedPosts(array_search('Server & Clouds', parent::POST_TYPES));
+        $categoriesByPost = $this->getCategoriesByPost($posts);
+
+        $this->set(compact('posts', 'categoriesByPost'));
+    }
+
+    public function newsOthers() {
+        $posts = $this->getCategorizedPosts(array_search('IT News', parent::POST_TYPES));
+        $categoriesByPost = $this->getCategoriesByPost($posts);
+
+        $this->set(compact('posts', 'categoriesByPost'));
+    }
+
+    public function tiptrickOthers() {
+        $posts = $this->getCategorizedPosts(array_search('Tips & Tricks', parent::POST_TYPES));
+        $categoriesByPost = $this->getCategoriesByPost($posts);
+
+        $this->set(compact('posts', 'categoriesByPost'));
     }
 }

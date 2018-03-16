@@ -162,8 +162,4 @@ class PagesController extends AppController
         $this->set(compact('latestPosts', 'commentsByPost', 'likesByPost', 'categoriesByPost',
             'oldInterestPosts', 'oldProjectPosts', 'oldOtherPosts', 'proposedPosts'));*/
     }
-
-    public function contact() {
-
-    }
 }

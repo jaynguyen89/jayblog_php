@@ -410,7 +410,7 @@ Version: 1.0
     #header-2 .main-nav .nav .dropdown-menu a
     {
         padding: 8px 20px;
-        color: #fff;
+        color: #666;
         -webkit-opacity: 1;
         -moz-opacity: 1;
         opacity: 1;

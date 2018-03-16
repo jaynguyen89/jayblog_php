@@ -17,43 +17,49 @@ $commentSubmit = ['id' => 'commentButton', 'class' => 'btn btn-outline btn-outli
         <!-- End section title -->
 
         <div class="row">
-            <!-- Left column displaying photo carousel -->
-            <div class="col-md-9 col-sm-12 col-xs-12">
-                <div id="myCarousel" class="carousel slide" data-ride="carousel">
-                    <!-- Photo carousel indicator dots -->
-                    <ol class="carousel-indicators">
-                        <?php for ($i = 0; $i < count($photos); $i++)
-                            echo $i ? '<li data-target="#myCarousel" data-slide-to="'.$i.'"></li>' :
-                                      '<li data-target="#myCarousel" data-slide-to="'.$i.'" class="active"></li>'; ?>
-                    </ol>
-                    <!-- End carousel -->
-
-                    <!-- Carousel photos container -->
-                    <div class="carousel-inner">
-                        <?php for ($i = 0; $i < count($photos); $i++) { ?>
-                        <div class="item <?= $i ? '' : 'active'; ?>">
-                            <?= $this->Html->image($photos[$i]->file_name, ['alt' => $post->title, 'style' => 'border: 1px groove #3498DB; border-radius: 7px;']); ?>
-                            <div class="carousel-caption">
-                                <h3 style="font-weight: bold; color: #3498DB;"><?= $photos[$i]->description; ?></h3>
-                            </div>
-                        </div>
-                        <?php } ?>
-                    </div>
-                    <!-- End photo carousel -->
-
-                    <!-- Left and right controls -->
-                    <a class="left carousel-control" href="#myCarousel" data-slide="prev">
-                        <span class="glyphicon glyphicon-chevron-left"></span>
-                        <span class="sr-only">Previous</span>
-                    </a>
-                    <a class="right carousel-control" href="#myCarousel" data-slide="next">
-                        <span class="glyphicon glyphicon-chevron-right"></span>
-                        <span class="sr-only">Next</span>
-                    </a>
-                    <!-- End carousel controls -->
+            <?php if (!$photos) { ?>
+                <div class="col-md-9 col-sm-12 col-xs-12">
+                    <?= $this->Html->image('sky_bulb.jpeg', ['alt' => 'pending', 'style' => 'border: 1px groove #3498DB; border-radius: 7px;']); ?>
                 </div>
-            </div>
-            <!-- End left column -->
+            <?php } else { ?>
+                <!-- Left column displaying photo carousel -->
+                <div class="col-md-9 col-sm-12 col-xs-12">
+                    <div id="myCarousel" class="carousel slide" data-ride="carousel">
+                        <!-- Photo carousel indicator dots -->
+                        <ol class="carousel-indicators">
+                            <?php for ($i = 0; $i < count($photos); $i++)
+                                echo $i ? '<li data-target="#myCarousel" data-slide-to="'.$i.'"></li>' :
+                                          '<li data-target="#myCarousel" data-slide-to="'.$i.'" class="active"></li>'; ?>
+                        </ol>
+                        <!-- End carousel -->
+
+                        <!-- Carousel photos container -->
+                        <div class="carousel-inner">
+                            <?php for ($i = 0; $i < count($photos); $i++) { ?>
+                            <div class="item <?= $i ? '' : 'active'; ?>">
+                                <img src="/jayblog/files/2/<?= $photos[$i]->file_name; ?>" alt="<?= $post->title; ?>" style="border: 1px groove #3498DB; border-radius: 7px;"/>
+                                <div class="carousel-caption">
+                                    <h3 style="font-weight: bold; color: #3498DB;"><?= $photos[$i]->description; ?></h3>
+                                </div>
+                            </div>
+                            <?php } ?>
+                        </div>
+                        <!-- End photo carousel -->
+
+                        <!-- Left and right controls -->
+                        <a class="left carousel-control" href="#myCarousel" data-slide="prev">
+                            <span class="glyphicon glyphicon-chevron-left"></span>
+                            <span class="sr-only">Previous</span>
+                        </a>
+                        <a class="right carousel-control" href="#myCarousel" data-slide="next">
+                            <span class="glyphicon glyphicon-chevron-right"></span>
+                            <span class="sr-only">Next</span>
+                        </a>
+                        <!-- End carousel controls -->
+                    </div>
+                </div>
+                <!-- End left column -->
+            <?php } ?>
 
             <!-- Right column displaying general project information -->
             <div class="col-md-3 col-sm-12 col-xs-12">
@@ -141,13 +147,15 @@ $commentSubmit = ['id' => 'commentButton', 'class' => 'btn btn-outline btn-outli
                     <table class="table bg-offwhite" style="border-radius: 10px;">
                         <thead><tr><th>#</th><th>Type</th><th>Title</th><th>Status</th><th>Posted on</th></tr></thead>
                         <tbody>
-                            <tr><?php for ($i = 0; $i < count($suggestedPosts); $i++) { ?>
-                                <th><?= $i + 1; ?></th>
-                                <td class="small"><a data-toggle="tooltip" title="<?= $suggestedPosts[$i]['ctitle']; ?>" style="margin-right: 5px;"><i class="<?= $suggestedPosts[$i]['description']; ?>"></i></a> <?= $suggestedPosts[$i]['ctitle']; ?></td>
-                                <td><?= $suggestedPosts[$i]['title']; ?></td>
-                                <td><?= $suggestedPosts[$i]['status'] ? '<span class="label label-success">Completed</span>' : '<span class="label label-info">Progressing</span>'; ?></td>
-                                <td><?= (new DateTime($suggestedPosts[$i]['created_on']))->format('d/m/Y H:i'); ?></td>
-                            <?php } ?></tr>
+                            <?php for ($i = 0; $i < count($suggestedPosts); $i++) { ?>
+                                <tr>
+                                    <th><?= $i + 1; ?></th>
+                                    <td class="small"><a data-toggle="tooltip" title="<?= $suggestedPosts[$i]['ctitle']; ?>" style="margin-right: 5px;"><i class="<?= $suggestedPosts[$i]['description']; ?>"></i></a> <?= $suggestedPosts[$i]['ctitle']; ?></td>
+                                    <td><?= $suggestedPosts[$i]['title']; ?></td>
+                                    <td><?= $suggestedPosts[$i]['status'] ? '<span class="label label-success">Completed</span>' : '<span class="label label-info">Progressing</span>'; ?></td>
+                                    <td><?= (new DateTime($suggestedPosts[$i]['created_on']))->format('d/m/Y H:i'); ?></td>
+                                </tr>
+                            <?php } ?>
                         </tbody>
                     </table>
                     <!-- End table -->

@@ -13,18 +13,18 @@
         <!-- End section title -->
 
         <!-- Row containing recent projects -->
-        <div class="row" style="margin: 5px;">
+        <div class="row">
             <?php foreach($latestPosts as $latestPost): ; ?>
             <div class="col-md-6">
                 <!-- Card containing a single project -->
                 <div class="card">
                     <!-- Project title -->
-                    <h3 class="card-header"><b><?= $latestPost->title; ?></b><?= ($latestPost->status == 1) ? '<span class="label label-info pull-right">Progressing</span>' : '<span class="label label-success pull-right">Completed</span>' ?></h3>
+                    <h3 class="card-header"><b><?= $latestPost->title; ?></b><?= ($latestPost->status == 1) ? '<span class="label label-info pull-right" style="font-size: 0.65em;">Progressing</span>' : '<span class="label label-success pull-right" style="font-size: 0.65em;">Completed</span>' ?></h3>
 
                     <!-- Row containing general project information -->
                     <div class="row">
                         <div class="col-md-7 col-sm-7 col-xs-12">
-                            <?= $this->Html->image($latestPost->photo ? $latestPost->photo : 'pending.jpeg', ['class' => 'img-responsive', 'style' => 'border: 1px groove #3498DB; border-radius: 7px;', 'alt' => 'jayblogpreview']); ?>
+                            <?= $this->Html->image($latestPost->photo, ['class' => 'img-responsive', 'style' => 'border: 1px groove #3498DB; border-radius: 7px;', 'alt' => 'jayblogpreview']); ?>
                         </div>
                         <div class="col-md-5 col-sm-5 col-xs-12">
                             <ul class="list-group list-group-flush">
@@ -34,11 +34,11 @@
                                 <li class="list-group-item">Likes: <b class="pull-right"><?= $likesByPost[$latestPost->id]; ?></b></li>
                                 <li class="list-group-item">Type:
                                     <div class="pull-right">
-                                        <?php foreach ($categoriesByPost as $category):
-                                            if ($category[1])
-                                                echo '<a data-toggle="tooltip" title="'.$category[0]->title.'" style="margin-right: 5px;"><i class="'.$category[0]->description.' fa-2x"></i></a>';
+                                        <?php foreach ($categoriesByPost[$latestPost->id] as $category):
+                                            if ($category->main)
+                                                echo '<a data-toggle="tooltip" title="'.$category->title.'" style="margin-right: 5px;"><i class="'.$category->description.' fa-2x"></i></a>';
                                             else
-                                                echo '<a data-toggle="tooltip" title="'.$category[0]->title.'"><i class="'.$category[0]->description.' fa-2x" style="color: gray; margin-right: 5px;" onmouseover="this.style.color=\'dimgray\'" onmouseout="this.style.color=\'gray\'"></i></a>';
+                                                echo '<a data-toggle="tooltip" title="'.$category->title.'"><i class="'.$category->description.' fa-2x" style="color: gray; margin-right: 5px;" onmouseover="this.style.color=\'dimgray\'" onmouseout="this.style.color=\'gray\'"></i></a>';
                                             endforeach; ?>
                                     </div></li>
                             </ul>
@@ -133,14 +133,14 @@
                     </div>
                     <div class="table-responsive">
                         <table class="table bg-offwhite" style="border-radius: 10px;">
-                            <thead><tr><th>#</th><th>Type</th><th>Title</th></tr></thead>
+                            <thead><tr><th>#</th><th class="text-center">Type</th><th>Title</th></tr></thead>
                             <tbody>
                             <?php if (count($oldInterestPosts) == 0)
                                 echo '<tr class="text-center"><td colspan="3" class="text-center">Awaiting update</td></tr>';
                             else for ($i = 0; $i < count($oldInterestPosts); $i++) { ?>
                                 <tr>
                                     <th scope="row"><?= $i + 1; ?></th>
-                                    <td><?= '<a data-toggle="tooltip" title="'.$oldInterestPosts[$i]->category.'" style="margin-right: 5px;"><i class="'.$oldInterestPosts[$i]->description.'"></i></a>';?></td>
+                                    <td class="text-center"><?= '<a data-toggle="tooltip" title="'.$oldInterestPosts[$i]->category.'" style="margin-right: 5px;"><i class="'.$oldInterestPosts[$i]->description.'"></i></a>';?></td>
                                     <td><?= $this->Html->link($oldInterestPosts[$i]->title, ['action' => 'view', $oldInterestPosts[$i]->id]); ?></td>
                                 </tr>
                             <?php } ?>
@@ -156,14 +156,14 @@
                     </div>
                     <div class="table-responsive">
                         <table class="table bg-offwhite" style="border-radius: 10px;">
-                            <thead><tr><th>#</th><th>Type</th><th>Title</th></tr></thead>
+                            <thead><tr><th>#</th><th class="text-center">Type</th><th>Title</th></tr></thead>
                             <tbody>
                             <?php if (count($oldProjectPosts) == 0)
                                 echo '<tr class="text-center"><td colspan="3" class="text-center">Awaiting update</td></tr>';
                             else for ($i = 0; $i < count($oldProjectPosts); $i++) { ?>
                                 <tr>
                                     <th scope="row"><?= $i + 1; ?></th>
-                                    <td><?= '<a data-toggle="tooltip" title="'.$oldProjectPosts[$i]->category.'" style="margin-right: 5px;"><i class="'.$oldProjectPosts[$i]->description.'"></i></a>';?></td>
+                                    <td class="text-center"><?= '<a data-toggle="tooltip" title="'.$oldProjectPosts[$i]->category.'" style="margin-right: 5px;"><i class="'.$oldProjectPosts[$i]->description.'"></i></a>';?></td>
                                     <td><?= $this->Html->link($oldProjectPosts[$i]->title, ['action' => 'view', $oldProjectPosts[$i]->id]); ?></td>
                                 </tr>
                             <?php } ?>
@@ -180,14 +180,14 @@
                     </div>
                     <div class="table-responsive">
                         <table class="table bg-offwhite" style="border-radius: 10px;">
-                            <thead><tr><th>#</th><th>Type</th><th>Title</th></tr></thead>
+                            <thead><tr><th>#</th><th class="text-center">Type</th><th>Title</th></tr></thead>
                             <tbody>
                             <?php if (count($oldOtherPosts) == 0)
                                 echo '<tr class="text-center"><td colspan="3" class="text-center">Awaiting update</td></tr>';
                             else for ($i = 0; $i < count($oldOtherPosts); $i++) { ?>
                                 <tr>
                                     <th scope="row"><?= $i + 1; ?></th>
-                                    <td><?= '<a data-toggle="tooltip" title="'.$oldOtherPosts[$i]->category.'" style="margin-right: 5px;"><i class="'.$oldOtherPosts[$i]->description.'"></i></a>';?></td>
+                                    <td class="text-center"><?= '<a data-toggle="tooltip" title="'.$oldOtherPosts[$i]->category.'" style="margin-right: 5px;"><i class="'.$oldOtherPosts[$i]->description.'"></i></a>';?></td>
                                     <td><?= $this->Html->link($oldOtherPosts[$i]->title, ['action' => 'view', $oldOtherPosts[$i]->id]); ?></td>
                                 </tr>
                             <?php } ?>
@@ -200,14 +200,14 @@
                     <h4><b>Proposed Readings</b></h4>
                     <div class="table-responsive">
                         <table class="table bg-offwhite" style="border-radius: 10px;">
-                            <thead><tr><th>#</th><th>Type</th><th>Title</th></tr></thead>
+                            <thead><tr><th>#</th><th class="text-center">Type</th><th>Title</th></tr></thead>
                             <tbody>
                             <?php if (count($proposedPosts) == 0)
                                 echo '<tr class="text-center"><td colspan="3" class="text-center">Awaiting update</td></tr>';
                             else for ($i = 0; $i < count($proposedPosts); $i++) { ?>
                                 <tr>
                                     <th scope="row"><?= $i + 1; ?></th>
-                                    <td><?= '<a data-toggle="tooltip" title="'.$proposedPosts[$i]->category.'" style="margin-right: 5px;"><i class="'.$proposedPosts[$i]->description.'"></i></a>';?></td>
+                                    <td class="text-center"><?= '<a data-toggle="tooltip" title="'.$proposedPosts[$i]->category.'" style="margin-right: 5px;"><i class="'.$proposedPosts[$i]->description.'"></i></a>';?></td>
                                     <td><?= $this->Html->link($proposedPosts[$i]->title, ['action' => 'view', $proposedPosts[$i]->id]); ?></td>
                                 </tr>
                             <?php } ?>
