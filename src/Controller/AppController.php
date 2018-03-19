@@ -16,7 +16,10 @@ namespace App\Controller;
 
 use Cake\Controller\Controller;
 use Cake\Event\Event;
+use Cake\Http\Response;
 use Cake\Mailer\Email;
+use Cake\Datasource\ConnectionManager;
+use Cake\ORM\TableRegistry;
 
 /**
  * Application Controller
@@ -57,6 +60,37 @@ class AppController extends Controller
          */
         //$this->loadComponent('Security');
         //$this->loadComponent('Csrf');
+    }
+
+    public function beforeRender(Event $event) {
+        $years = $this->readDatabase('SELECT DISTINCT YEAR(created_on) as created FROM Posts WHERE YEAR(created_on) <> 0;');
+
+        $postCountsByTime = array();
+        $yearField = array();
+        for ($i = 0; $i < count($years); $i++) {
+            foreach (parent::MONTHS as $number => $month):
+                $key = $number . '-' . $years[$i]['created'];
+
+                $conditions = ['YEAR(created_on)' => $years[$i]['created'], 'MONTH(created_on)' => $number];
+                $postCountsByTime[$key] = TableRegistry::get('Posts')->find('all', ['conditions' => $conditions])->count();
+            endforeach;
+
+            $yearField[$i] = $years[$i]['created'];
+        }
+
+        $this->set(compact('yearField', 'postCountsByTime'));
+        $this->set('months', parent::MONTHS);
+
+        return parent::beforeRender($event);
+    }
+
+    public function readDatabase($query) {
+        $connection = ConnectionManager::get('default');
+        $statement = $connection->prepare($query);
+        $statement->execute();
+        $data = $statement->fetchAll('assoc');
+
+        return $data;
     }
 
     public function checkWhiteSpaceString($sentence) {

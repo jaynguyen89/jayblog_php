@@ -133,6 +133,124 @@ $cakeDescription = 'Jay\'s Blog - Dare to step';
         <?= $this->fetch('content') ?>
     </div>
 
+    <?php if (strpos($this->request->here, '/messages/add') == false) {
+        $keywordFieldAttr = ['id' => 'keyword', 'placeholder' => 'Keyword', 'label' => false, 'type' => 'text', 'class' => 'form-control', 'oninput' => 'keywordFormCheck()'];
+        $keywordSubmitAttr = ['id' => 'keywordSubmit', 'class' => 'btn btn-outline btn-outline-sm outline-dark', 'style' => 'margin: auto', 'disabled' => true];
+        $monthFieldAttr = ['id' => 'month', 'empty' => 'Select Month', 'class' => 'form-control', 'onchange' => 'filterFormCheck()'];
+        $yearFieldAttr = ['id' => 'year', 'empty' => 'Select Year', 'class' => 'form-control', 'onchange' => 'filterFormCheck()'];
+        $filterSubmitAttr = ['id' => 'filterSubmit', 'class' => 'btn btn-outline btn-outline-sm outline-dark pull-left', 'disabled' => true]; ?>
+        <div class="container">
+            <div class="row" style="margin-bottom: 20px;">
+                <div class="container">
+                    <div class="underlined-title">
+                        <h1>Search for Posts</h1>
+                        <hr>
+                    </div>
+                </div>
+                <div class="row" style="margin: 0; border-radius: 10px; border: 2px solid #3498DB; padding: 15px;">
+                    <h3>By keywords (case-insensitive) <p class="guardsman" id="keywordError"></p></h3>
+                    <div class="row">
+                        <form method="post" action="/jayblog/posts/projectSearch">
+                            <input type="hidden" name="form_id" value="0" />
+                            <div class="col-lg-10 col-md-10 col-sm-10 col-xs-12"><?= $this->Form->control('keyword', $keywordFieldAttr); ?></div>
+                            <div class="col-lg-2 col-md-2 col-sm-2 col-xs-12"><?= $this->Form->button(__('Search'), $keywordSubmitAttr); ?></div>
+                        </form>
+                    </div>
+                    <hr style="border: 1px solid #3498DB;" />
+                    <h3>By uploaded time <p class="guardsman" id="filterStatus"></p></h3>
+                    <div class="row">
+                        <form method="post" action="/jayblog/posts/projectSearch">
+                            <input type="hidden" name="form_id" value="1" />
+                            <div class="col-xs-6"><?= $this->Form->select('month', $months, $monthFieldAttr); ?></div>
+                            <div class="col-xs-6"><?= $this->Form->select('year', $yearField, $yearFieldAttr); ?></div>
+                            <div class="col-md-12"><?= $this->Form->button(__('Search'), $filterSubmitAttr); ?></div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <script type="text/javascript">
+            const specialChars = ['!', '~', '`', '@', '#', '$', '%', '^', '&', '*', '(', ')', '-', '_', '=', '+', '[',
+                '{', ']', '}', '\\', '|', ';', ':', '\'', '"', ',', '<', '.', '>', '/', '?'];
+
+            const postCountsByMonth = {
+                <?php $t = 0; foreach ($postCountsByTime as $key => $value):
+                    echo ($t++ == count($postCountsByTime) - 1) ? '\''.$key.'\': '.$value.'' : '\''.$key.'\': '.$value.', ';
+                endforeach; ?>
+            };
+
+            const years = {
+                <?php $k = 0; foreach ($yearField as $key => $value):
+                    echo ($k++ == count($yearField) - 1) ? ''.$key.': '.$value.'' : ''.$key.': '.$value.',';
+                endforeach; ?>
+            };
+
+            var keywordSubmit = document.getElementById('keywordSubmit');
+            var filterSubmit = document.getElementById('filterSubmit');
+
+            function keywordFormCheck() {
+                var keyword = document.getElementById('keyword').value;
+                var keywordError = document.getElementById('keywordError');
+
+                if (keyword.length === 0) {
+                    keywordSubmit.disabled = true;
+                    keywordError.innerHTML = '';
+                    filterFormCheck();
+                }
+                else {
+                    var test = true;
+                    for (var i = 0; i < specialChars.length; i++) {
+                        if (keyword.indexOf(specialChars[i]) > -1) {
+                            test = false;
+                            break;
+                        }
+                    }
+
+                    if (!test) {
+                        filterFormCheck();
+                        keywordSubmit.disabled = true;
+                        keywordError.innerHTML = 'Keyword could not contain special characters. Separate keywords by white space.';
+                    }
+                    else {
+                        keywordSubmit.disabled = false;
+                        filterSubmit.disabled = true;
+                        keywordError.innerHTML = '';
+                    }
+                }
+            }
+
+            function filterFormCheck() {
+                var month = document.getElementById('month').value;
+                var year = document.getElementById('year').value;
+                var filterError = document.getElementById('filterStatus');
+
+                if (month.length === 0 || year.length === 0) {
+                    filterError.innerHTML = '';
+                    filterSubmit.disabled = true;
+                }
+
+                if (month === 0 && year === 0)
+                    keywordFormCheck();
+
+                if (month.length !== 0 && year.length !== 0) {
+                    var key = month.concat('-').concat(years[year]);
+
+                    if (postCountsByMonth[key] !== 0) {
+                        filterError.innerHTML = '';
+                        filterSubmit.disabled = false;
+                        keywordSubmit.disabled = true;
+                    }
+                    else {
+                        filterError.innerHTML = '0 posts found in ' + key.toString();
+                        filterSubmit.disabled = true;
+                        keywordFormCheck();
+                    }
+                }
+            }
+        </script>
+    <?php } ?>
+
     <section class="content-block-nopad bg-offwhite footer-wrap-1-3">
         <!-- Section containing footer -->
         <div class="container footer-1-3">

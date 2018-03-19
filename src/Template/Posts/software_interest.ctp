@@ -1,4 +1,4 @@
-<div class="container" style="min-height: 622px;">
+<div class="container">
     <!-- Section contains all projects and posts on programming languages -->
     <section id="content-1-9" class="content-1-9 content-block" style="padding-bottom: 10px;">
         <!-- Section title -->

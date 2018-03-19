@@ -4,15 +4,16 @@
         <!-- Section title -->
         <div class="container">
             <div class="underlined-title">
-                <h1>Interest: Frameworks</h1>
+                <h1><?= count($posts).(count($posts) < 2 ? ' Post' : ' Posts'); ?> found for <?= $data['form_id'] ? $data['month'].'-'.$yearField[$data['year']] : '"'.$data['keyword'].'"'; ?></h1>
                 <hr>
-                <p class="lead">Section contains Jay's researches and practices on various kinds of Frameworks.</p>
             </div>
         </div>
         <!-- End section title -->
 
         <div class="row">
-            <?php foreach ($posts as $post): ?>
+            <?php if (!$posts) { ?>
+                <h3>Oops! No result matches your search. Please try again!</h3>
+            <?php } else { foreach ($posts as $post): ?>
                 <div class="col-md-6 col-sm-6 col-xs-12" style="margin-bottom: 45px;">
                     <div class="header" style="margin-bottom: 5px;">
                         <b style="font-size: 1.4em;"><?= $post['ptitle']; ?></b>
@@ -44,7 +45,7 @@
                         <div class="col-sm-3 col-xs-3"><a href="#" class="btn btn-outline btn-outline-sm outline-dark">Open</a></div>
                     </div>
                 </div>
-            <?php endforeach; ?>
+            <?php endforeach; } ?>
         </div>
     </section>
 </div>
