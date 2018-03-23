@@ -24,6 +24,7 @@ class CommentsFixture extends TestFixture
         'commenter_email' => ['type' => 'string', 'length' => 50, 'null' => true, 'default' => null, 'collate' => 'latin1_swedish_ci', 'comment' => '', 'precision' => null, 'fixed' => null],
         'content' => ['type' => 'text', 'length' => null, 'null' => true, 'default' => null, 'collate' => 'latin1_swedish_ci', 'comment' => '', 'precision' => null],
         'status' => ['type' => 'boolean', 'length' => null, 'null' => true, 'default' => '0', 'comment' => '', 'precision' => null],
+        'active' => ['type' => 'boolean', 'length' => null, 'null' => true, 'default' => '1', 'comment' => '', 'precision' => null],
         '_indexes' => [
             'comments_posts_fk' => ['type' => 'index', 'columns' => ['post_id'], 'length' => []],
         ],
@@ -47,11 +48,12 @@ class CommentsFixture extends TestFixture
         [
             'id' => 1,
             'post_id' => 1,
-            'comment_date' => '2018-03-09 09:30:56',
+            'comment_date' => '2018-03-22 07:21:08',
             'commenter_name' => 'Lorem ipsum dolor sit amet',
             'commenter_email' => 'Lorem ipsum dolor sit amet',
             'content' => 'Lorem ipsum dolor sit amet, aliquet feugiat. Convallis morbi fringilla gravida, phasellus feugiat dapibus velit nunc, pulvinar eget sollicitudin venenatis cum nullam, vivamus ut a sed, mollitia lectus. Nulla vestibulum massa neque ut et, id hendrerit sit, feugiat in taciti enim proin nibh, tempor dignissim, rhoncus duis vestibulum nunc mattis convallis.',
-            'status' => 1
+            'status' => 1,
+            'active' => 1
         ],
     ];
 }

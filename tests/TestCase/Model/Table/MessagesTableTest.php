@@ -26,11 +26,12 @@ class MessagesTableTest extends TestCase
     public $fixtures = [
         'app.messages',
         'app.posts',
+        'app.attachments',
         'app.comments',
         'app.replies',
         'app.distributions',
         'app.categories',
-        'app.files'
+        'app.votes'
     ];
 
     /**

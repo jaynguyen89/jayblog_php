@@ -2,6 +2,7 @@
 namespace App\Controller;
 
 use App\Controller\AppController;
+use Cake\Event\Event;
 use Cake\ORM\TableRegistry;
 
 /**
@@ -11,8 +12,13 @@ use Cake\ORM\TableRegistry;
  *
  * @method \App\Model\Entity\Post[]|\Cake\Datasource\ResultSetInterface paginate($object = null, array $settings = [])
  */
-class PostsController extends AppController
-{
+class PostsController extends AppController {
+    public function beforeFilter(Event $event) {
+        parent::beforeFilter($event);
+        $this->Auth->allow(['index', 'view', 'androidProject', 'apiInterest', 'cloudOthers', 'computerProject', 'frameworkInterest',
+            'iosProject', 'newsOthers', 'programmingInterest', 'projectSearch', 'softwareInterest', 'tiptrickOthers', 'webProject']);
+    }
+
     /**
      * Index method
      *
@@ -20,7 +26,7 @@ class PostsController extends AppController
      */
     public function index() {
         $latestPostFields = ['id', 'title', 'description', 'photo', 'status', 'created_on', 'updated_on'];
-        $latestPostConditions = ['ABS(DATEDIFF(NOW(), POSTS.created_on)) <=' => '90', 'POSTS.status <' => '2'];
+        $latestPostConditions = ['ABS(DATEDIFF(NOW(), POSTS.created_on)) <=' => '90', 'POSTS.status <' => '2', 'active' => true];
         $latestPosts = $this->Posts->find('all', ['conditions' => $latestPostConditions, 'fields' => $latestPostFields])->toArray();
 
         unset($latestPostFields);
@@ -30,7 +36,7 @@ class PostsController extends AppController
         $likesByPost = array();
         $categoriesByPost = array();
         foreach ($latestPosts as $latestPost):
-            $commentsByPost[$latestPost->id] = $this->Posts->Comments->find('all', ['conditions' => ['post_id' => $latestPost->id]])->count();
+            $commentsByPost[$latestPost->id] = $this->Posts->Comments->find('all', ['conditions' => ['post_id' => $latestPost->id, 'active' => true]])->count();
 
             $votesByPost = $this->getVotes($latestPost->id);
 
@@ -51,7 +57,7 @@ class PostsController extends AppController
         $oldPostFields = ['id', 'title', 'created_on'];
         $order = ['POSTS.created_on' => 'DESC'];
         $oldPosts = $this->Posts->find('all', [
-            'conditions' => ['ABS(DATEDIFF(NOW(), POSTS.created_on)) >' => '90', 'POSTS.status <' => '3'],
+            'conditions' => ['ABS(DATEDIFF(NOW(), POSTS.created_on)) >' => '90', 'POSTS.status <' => '3', 'active' => true],
             'fields' => $oldPostFields,
             'order' => $order
         ])->toArray();
@@ -139,22 +145,20 @@ class PostsController extends AppController
             array_push($categories, $category);
         }
 
-        $photos = $this->Posts->Attachments->find('all', ['conditions' => ['post_id' => $post->id, 'note' => 0]])->toArray();
-        $attachments = $this->Posts->Attachments->find('all', ['conditions' => ['post_id' => $post->id, 'note <>' => 0]])->toArray();
+        $photos = $this->Posts->Attachments->find('all', ['conditions' => ['post_id' => $post->id, 'note' => 0, 'active' => true]])->toArray();
+        $attachments = $this->Posts->Attachments->find('all', ['conditions' => ['post_id' => $post->id, 'note <>' => 0, 'active' => true]])->toArray();
 
         $query = $this->prepareQuery($post->id, 2);
 
         $suggestedPosts = $this->readDatabase($query);
-        $comments = $this->Posts->Comments->find('all', ['conditions' => ['post_id' => $post->id], 'order' => ['COMMENTS.comment_date' => 'DESC']])->toArray();
+        $comments = $this->Posts->Comments->find('all', ['conditions' => ['post_id' => $post->id, 'active' => true], 'order' => ['COMMENTS.comment_date' => 'DESC']])->toArray();
         $repliesByComment = array();
 
         foreach ($comments as $comment)
-            $repliesByComment[$comment->id] = $this->Posts->Comments->Replies->find('all', ['conditions' => ['comment_id' => $comment->id], 'order' => ['REPLIES.reply_date' => 'DESC']])->toArray();
+            $repliesByComment[$comment->id] = $this->Posts->Comments->Replies->find('all', ['conditions' => ['comment_id' => $comment->id, 'active' => true], 'order' => ['REPLIES.reply_date' => 'DESC']])->toArray();
 
         $this->set(compact('post', 'categories', 'photos', 'attachments', 'suggestedPosts', 'comments', 'repliesByComment'));
     }
-
-
 
     /**
      * Add method
@@ -221,7 +225,6 @@ class PostsController extends AppController
     }
 
     private function getCategoriesByPost($posts) {
-
         $categoriesByPost = array();
         foreach ($posts as $post):
             $query = $this->prepareQuery($post['id'], 1);
@@ -341,7 +344,8 @@ class PostsController extends AppController
                 foreach ($keywords as $keyword):
                     $records = $this->readDatabase('SELECT p.id, p.title as ptitle, p.description as pdesc, p.status, p.photo, p.created_on
                                                 FROM posts p 
-                                                WHERE p.title LIKE \'%'.$keyword.'%\'');
+                                                WHERE p.title LIKE \'%'.$keyword.'%\'
+                                                AND p.active = true;');
 
                     if ($records) {
                         foreach ($records as $record)
@@ -355,7 +359,7 @@ class PostsController extends AppController
             }
         }
         else {
-            $years = $this->readDatabase('SELECT DISTINCT YEAR(created_on) as created FROM Posts WHERE YEAR(created_on) <> 0;');
+            $years = $this->readDatabase('SELECT DISTINCT YEAR(created_on) as created FROM Posts WHERE YEAR(created_on) <> 0 AND active = true;');
             $yearField = array();
             for ($i = 0; $i < count($years); $i++)
                 $yearField[$i] = $years[$i]['created'];
@@ -363,7 +367,8 @@ class PostsController extends AppController
             $posts = $this->readDatabase('SELECT p.id, p.title as ptitle, p.description as pdesc, p.status, p.photo, p.created_on
                                                 FROM posts p 
                                                 WHERE YEAR(created_on) = '.$yearField[$data['year']].' 
-                                                AND MONTH(created_on) = '.$data['month'].';');
+                                                AND MONTH(created_on) = '.$data['month'].'
+                                                AND p.active = true;');
         }
 
         $categoriesByPost = array();
@@ -386,6 +391,7 @@ class PostsController extends AppController
                         AND c.id = d.category_id
                         AND c.id = '.$data.'
                         AND d.main = 1
+                        AND p.active = true
                         ORDER BY p.created_on DESC;';
                 break;
             case 1:
@@ -393,7 +399,8 @@ class PostsController extends AppController
                         FROM Posts p, Categories c, Distributions d
                         WHERE p.id = d.post_id
                         AND c.id = d.category_id
-                        AND p.id = '.$data.';';
+                        AND p.id = '.$data.'
+                        AND p.active = true;';
                 break;
             default:
                 $query = 'SELECT Posts.id, Posts.title, status, created_on, main, Categories.title as ctitle, Categories.description
@@ -404,6 +411,7 @@ class PostsController extends AppController
                         AND Posts.id <> 1
                         AND Posts.id <> '.$data.'
                         AND Posts.status <> 2
+                        AND Posts.active = true
                         ORDER BY RAND(), Posts.created_on DESC
                         LIMIT 5;';
                 break;

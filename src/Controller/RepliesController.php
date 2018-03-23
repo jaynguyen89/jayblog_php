@@ -2,7 +2,7 @@
 namespace App\Controller;
 
 use App\Controller\AppController;
-
+use Cake\Event\Event;
 /**
  * Replies Controller
  *
@@ -12,6 +12,10 @@ use App\Controller\AppController;
  */
 class RepliesController extends AppController
 {
+    public function beforeFilter(Event $event) {
+        parent::beforeFilter($event);
+        $this->Auth->allow(['add']);
+    }
 
     /**
      * Index method
@@ -83,22 +87,25 @@ class RepliesController extends AppController
      * @return \Cake\Http\Response|null Redirects on successful edit, renders view otherwise.
      * @throws \Cake\Network\Exception\NotFoundException When record not found.
      */
-    public function edit($id = null)
-    {
-        $reply = $this->Replies->get($id, [
-            'contain' => []
-        ]);
-        if ($this->request->is(['patch', 'post', 'put'])) {
-            $reply = $this->Replies->patchEntity($reply, $this->request->getData());
-            if ($this->Replies->save($reply)) {
-                $this->Flash->success(__('The reply has been saved.'));
+    public function edit() {
+        $this->autoRender = false;
+        $id = $this->request->query('cid');
+        $pid = $this->request->query('pid');
 
-                return $this->redirect(['action' => 'index']);
-            }
-            $this->Flash->error(__('The reply could not be saved. Please, try again.'));
+        $reply = $this->Replies->get($id);
+
+        if ($pid)
+            $reply->active = false;
+        else
+            $reply->status = true;
+
+        if ($this->Replies->save($reply)) {
+            $this->Flash->success(__('The comment #'.$reply->id.' has been '.($pid ? 'suspended' : 'approved').' successfully.'));
+            return $this->redirect($this->request->referer());
         }
-        $comments = $this->Replies->Comments->find('list', ['limit' => 200]);
-        $this->set(compact('reply', 'comments'));
+
+        $this->Flash->error(__('Server went wrong. Try again later!'));
+        return $this->redirect($this->request->referer());
     }
 
     /**

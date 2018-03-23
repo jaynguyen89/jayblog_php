@@ -66,6 +66,10 @@ class AttachmentsTable extends Table
         $validator
             ->allowEmpty('note');
 
+        $validator
+            ->boolean('active')
+            ->allowEmpty('active');
+
         return $validator;
     }
 

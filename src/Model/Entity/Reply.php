@@ -13,6 +13,7 @@ use Cake\ORM\Entity;
  * @property string $replier_email
  * @property string $content
  * @property bool $status
+ * @property bool $active
  *
  * @property \App\Model\Entity\Comment $comment
  */
@@ -35,6 +36,7 @@ class Reply extends Entity
         'replier_email' => true,
         'content' => true,
         'status' => true,
+        'active' => true,
         'comment' => true
     ];
 }

@@ -2,3 +2,18 @@
 .s0 { color: rgb(204,120,50); }
 .s1 { color: rgb(169,183,198); }
 .s2 { color: rgb(106,135,89); }
+
+.blink {
+    animation: blink 2s steps(5, start) infinite;
+    -webkit-animation: blink 1s steps(5, start) infinite;
+}
+@keyframes blink {
+    to {
+        visibility: hidden;
+    }
+}
+@-webkit-keyframes blink {
+    to {
+        visibility: hidden;
+    }
+}

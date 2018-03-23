@@ -30,13 +30,13 @@ $cakeDescription = 'Jay\'s Blog - Dare to step';
     <?= $this->Html->css('styles.css'); ?>
     <?= $this->Html->css('blocks.css'); ?>
     <?= $this->Html->css('plugins.css'); ?>
+    <?= $this->Html->css('jayblog.css'); ?>
 
     <link href="http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,400,300,600,700" rel="stylesheet">
     <link href="http://fonts.googleapis.com/css?family=Lato:300,400,700,300italic,400italic,700italic" rel="stylesheet">
     <script defer src="https://use.fontawesome.com/releases/v5.0.6/js/all.js"></script>
 
     <?php if (strpos($this->request->here, '/posts/view/')) { ?>
-
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.5.0/themes/prism.min.css">
     <?php } ?>
 
@@ -118,7 +118,7 @@ $cakeDescription = 'Jay\'s Blog - Dare to step';
                         <!-- End dropdown -->
                         <li class="nav-item <?= $active == 1 ? 'active' : ''; ?>"><?= $this->Html->link(__('About'), ['controller' => 'Messages', 'action' => 'add']); ?></li>
                         <li class="nav-item" style="display: none;">
-                            <a href="#" style="color: coral" onmouseover="this.style.color='orangered'" onmouseout="this.style.color='coral'"><i class="fa fa-user-circle" style="font-size: larger"></i> Admin Login</a>
+                            <a href="/jayblog/users/login" style="color: coral" onmouseover="this.style.color='orangered'" onmouseout="this.style.color='coral'"><i class="fa fa-user-circle" style="font-size: larger"></i> Admin Login</a>
                         </li>
                     </ul>
                 </div>
@@ -133,7 +133,7 @@ $cakeDescription = 'Jay\'s Blog - Dare to step';
         <?= $this->fetch('content') ?>
     </div>
 
-    <?php if (strpos($this->request->here, '/messages/add') == false) {
+    <?php if (strpos($this->request->here, '/messages/add') == false && strpos($this->request->here, '/users/') == false) {
         $keywordFieldAttr = ['id' => 'keyword', 'placeholder' => 'Keyword', 'label' => false, 'type' => 'text', 'class' => 'form-control', 'oninput' => 'keywordFormCheck()'];
         $keywordSubmitAttr = ['id' => 'keywordSubmit', 'class' => 'btn btn-outline btn-outline-sm outline-dark', 'style' => 'margin: auto', 'disabled' => true];
         $monthFieldAttr = ['id' => 'month', 'empty' => 'Select Month', 'class' => 'form-control', 'onchange' => 'filterFormCheck()'];

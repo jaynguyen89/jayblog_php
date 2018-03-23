@@ -83,12 +83,12 @@ $commentSubmit = ['id' => 'commentButton', 'class' => 'btn btn-outline btn-outli
                             <li class="list-group-item">Up vote: <b><?= $session->read('Post.up_vote'); ?></b>
                                 <?= $this->Form->postLink(
                                     $this->Html->tag('i', '', ['class' => 'fas fa-thumbs-up fa-2x pull-right']),
-                                    ['controller' => 'votes', 'action' => 'setVotes', '?' => ['pid' => $post->id, 'sign' => 1]],
+                                    ['controller' => 'Votes', 'action' => 'setVotes', '?' => ['pid' => $post->id, 'sign' => 1]],
                                     ['role' => 'button', 'escape' => false, 'confirm' => __('Since no login was required, your IP Address may be recorded. This approach is to prevent visitors voting multiple times on 1 post.\n\nNo personal information will be collected. Your IP Address will be securely encrypted.\n\nContinue to vote up for {0}?', $post->title)]); ?></li>
                             <li class="list-group-item">Down vote: <b><?= $session->read('Post.down_vote'); ?></b>
                                 <?= $this->Form->postLink(
                                     $this->Html->tag('i', '', ['class' => 'fas fa-thumbs-down fa-2x pull-right']),
-                                    ['controller' => 'votes', 'action' => 'setVotes', '?' => ['pid' => $post->id, 'sign' => 0]],
+                                    ['controller' => 'Votes', 'action' => 'setVotes', '?' => ['pid' => $post->id, 'sign' => 0]],
                                     ['role' => 'button', 'escape' => false, 'confirm' => __('Since no login was required, your IP Address may be recorded. This approach is to prevent visitors voting multiple times on 1 post.\n\nNo personal information will be collected. Your IP Address will be securely encrypted.\n\nContinue to vote down for {0}?', $post->title)]); ?></li>
                         </ul>
                     </div>
@@ -168,7 +168,7 @@ $commentSubmit = ['id' => 'commentButton', 'class' => 'btn btn-outline btn-outli
         <!-- Section containing the comment form -->
         <div class="row" id="commentForm">
             <hr>
-            <h4 style="margin-bottom: 0;"><i class="fas fa-paper-plane" style="color: #3498DB;"></i> Leave a Reply</h4>
+            <h4 style="margin-bottom: 0;"><i class="fas fa-paper-plane" style="color: #3498DB;"></i> Leave a Comment</h4>
             <p class="small"  style="margin-top: 0;">To respect your privacy, your submitted information will not be published.</p>
             <div class="row">
                 <div class="box" style="margin: 0 10px 0 10px">
@@ -250,6 +250,7 @@ $commentSubmit = ['id' => 'commentButton', 'class' => 'btn btn-outline btn-outli
                     <!-- End replies -->
                 </div>
             <?php $n++; endforeach; ?>
+            <hr>
         </div>
         <!-- End section -->
     </section>

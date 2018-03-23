@@ -2,6 +2,7 @@
 namespace App\Controller;
 
 use App\Controller\AppController;
+use Cake\Event\Event;
 
 /**
  * Messages Controller
@@ -12,6 +13,11 @@ use App\Controller\AppController;
  */
 class MessagesController extends AppController
 {
+    public function beforeFilter(Event $event) {
+        parent::beforeFilter($event);
+        $this->Auth->allow(['add', 'suggestProject']);
+    }
+
     public function suggestProject() {
         $this->autoRender = false;
         $message = $this->Messages->newEntity();
@@ -124,22 +130,25 @@ class MessagesController extends AppController
      * @return \Cake\Http\Response|null Redirects on successful edit, renders view otherwise.
      * @throws \Cake\Network\Exception\NotFoundException When record not found.
      */
-    public function edit($id = null)
-    {
-        $message = $this->Messages->get($id, [
-            'contain' => []
-        ]);
-        if ($this->request->is(['patch', 'post', 'put'])) {
-            $message = $this->Messages->patchEntity($message, $this->request->getData());
-            if ($this->Messages->save($message)) {
-                $this->Flash->success(__('The message has been saved.'));
+    public function edit() {
+        $this->autoRender = false;
+        $id = $this->request->query('mid');
+        $pid = $this->request->query('pid');
 
-                return $this->redirect(['action' => 'index']);
-            }
-            $this->Flash->error(__('The message could not be saved. Please, try again.'));
+        $message = $this->Messages->get($id);
+
+        if ($pid)
+            $message->active = false;
+        else
+            $message->is_oppened = true;
+
+        if ($this->Messages->save($message)) {
+            $this->Flash->success(__('The suggestion #'.$message->id.' has been '.($pid ? 'suspended' : 'marked as opened').' successfully.'));
+            return $this->redirect($this->request->referer());
         }
-        $posts = $this->Messages->Posts->find('list', ['limit' => 200]);
-        $this->set(compact('message', 'posts'));
+
+        $this->Flash->error(__('Server went wrong. Try again later!'));
+        return $this->redirect($this->request->referer());
     }
 
     /**

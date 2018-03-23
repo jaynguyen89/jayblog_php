@@ -4,7 +4,7 @@
         <!-- Section title -->
         <div class="container">
             <div class="underlined-title">
-                <h1>Interest: IT News</h1>
+                <h1>Others: IT News</h1>
                 <hr>
                 <p class="lead">Section contains Jay's researches and practices on various kinds of IT News.</p>
             </div>
@@ -41,7 +41,9 @@
                     </div>
                     <div class="row">
                         <div class="col-sm-9 col-xs-9"><?= $post['pdesc']; ?></div>
-                        <div class="col-sm-3 col-xs-3"><a href="#" class="btn btn-outline btn-outline-sm outline-dark">Open</a></div>
+                        <div class="col-sm-3 col-xs-3">
+                            <?= $this->Html->link('Open', ['action' => 'view', $post['id']], ['class' => 'btn btn-outline btn-outline-sm outline-dark']); ?>
+                        </div>
                     </div>
                 </div>
             <?php endforeach; ?>

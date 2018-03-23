@@ -25,11 +25,11 @@ class PostsTableTest extends TestCase
      */
     public $fixtures = [
         'app.posts',
+        'app.attachments',
         'app.comments',
         'app.replies',
         'app.distributions',
         'app.categories',
-        'app.files',
         'app.messages',
         'app.votes'
     ];

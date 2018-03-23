@@ -11,6 +11,7 @@ use Cake\ORM\Entity;
  * @property string $file_name
  * @property string $description
  * @property int $note
+ * @property bool $active
  *
  * @property \App\Model\Entity\Post $post
  */
@@ -31,6 +32,7 @@ class Attachment extends Entity
         'file_name' => true,
         'description' => true,
         'note' => true,
+        'active' => true,
         'post' => true
     ];
 }

@@ -83,6 +83,10 @@ class MessagesTable extends Table
             ->boolean('is_oppened')
             ->allowEmpty('is_oppened');
 
+        $validator
+            ->boolean('active')
+            ->allowEmpty('active');
+
         return $validator;
     }
 

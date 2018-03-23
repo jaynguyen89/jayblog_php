@@ -24,6 +24,7 @@ class RepliesFixture extends TestFixture
         'replier_email' => ['type' => 'string', 'length' => 50, 'null' => true, 'default' => null, 'collate' => 'latin1_swedish_ci', 'comment' => '', 'precision' => null, 'fixed' => null],
         'content' => ['type' => 'string', 'length' => 2000, 'null' => true, 'default' => null, 'collate' => 'latin1_swedish_ci', 'comment' => '', 'precision' => null, 'fixed' => null],
         'status' => ['type' => 'boolean', 'length' => null, 'null' => true, 'default' => '0', 'comment' => '', 'precision' => null],
+        'active' => ['type' => 'boolean', 'length' => null, 'null' => true, 'default' => '1', 'comment' => '', 'precision' => null],
         '_indexes' => [
             'replies_comments_fk' => ['type' => 'index', 'columns' => ['comment_id'], 'length' => []],
         ],
@@ -47,11 +48,12 @@ class RepliesFixture extends TestFixture
         [
             'id' => 1,
             'comment_id' => 1,
-            'reply_date' => '2018-03-09 09:31:53',
+            'reply_date' => '2018-03-22 07:23:15',
             'replier_name' => 'Lorem ipsum dolor sit amet',
             'replier_email' => 'Lorem ipsum dolor sit amet',
             'content' => 'Lorem ipsum dolor sit amet',
-            'status' => 1
+            'status' => 1,
+            'active' => 1
         ],
     ];
 }

@@ -2,6 +2,7 @@
 namespace App\Controller;
 
 use App\Controller\AppController;
+use Cake\Event\Event;
 
 /**
  * Comments Controller
@@ -12,6 +13,10 @@ use App\Controller\AppController;
  */
 class CommentsController extends AppController
 {
+    public function beforeFilter(Event $event) {
+        parent::beforeFilter($event);
+        $this->Auth->allow(['add']);
+    }
 
     /**
      * Index method
@@ -87,22 +92,25 @@ class CommentsController extends AppController
      * @return \Cake\Http\Response|null Redirects on successful edit, renders view otherwise.
      * @throws \Cake\Network\Exception\NotFoundException When record not found.
      */
-    public function edit($id = null)
-    {
-        $comment = $this->Comments->get($id, [
-            'contain' => []
-        ]);
-        if ($this->request->is(['patch', 'post', 'put'])) {
-            $comment = $this->Comments->patchEntity($comment, $this->request->getData());
-            if ($this->Comments->save($comment)) {
-                $this->Flash->success(__('The comment has been saved.'));
+    public function edit() {
+        $this->autoRender = false;
+        $id = $this->request->query('cid');
+        $pid = $this->request->query('pid');
 
-                return $this->redirect(['action' => 'index']);
-            }
-            $this->Flash->error(__('The comment could not be saved. Please, try again.'));
+        $comment = $this->Comments->get($id);
+
+        if ($pid)
+            $comment->active = false;
+        else
+            $comment->status = true;
+
+        if ($this->Comments->save($comment)) {
+            $this->Flash->success(__('The comment #'.$comment->id.' has been '.($pid ? 'suspended' : 'approved').' successfully.'));
+            return $this->redirect($this->request->referer());
         }
-        $posts = $this->Comments->Posts->find('list', ['limit' => 200]);
-        $this->set(compact('comment', 'posts'));
+
+        $this->Flash->error(__('Server went wrong. Try again later!'));
+        return $this->redirect($this->request->referer());
     }
 
     /**

@@ -54,12 +54,28 @@ class AppController extends Controller
         $this->loadComponent('RequestHandler');
         $this->loadComponent('Flash');
 
+        $this->loadComponent('Auth', [
+            'authorize' => ['Controller'],
+            'loginRedirect' => [
+                'controller' => 'Users',
+                'action' => 'view'
+            ],
+            'logoutRedirect' => [
+                'controller' => 'Posts',
+                'action' => 'index', 'home'
+            ]
+        ]);
+
         /*
          * Enable the following components for recommended CakePHP security settings.
          * see https://book.cakephp.org/3.0/en/controllers/components/security.html
          */
         //$this->loadComponent('Security');
         //$this->loadComponent('Csrf');
+    }
+
+    public function beforeFilter(Event $event) {
+        $this->Auth->allow(['index', 'login']);
     }
 
     public function beforeRender(Event $event) {
@@ -82,6 +98,10 @@ class AppController extends Controller
         $this->set('months', parent::MONTHS);
 
         return parent::beforeRender($event);
+    }
+
+    public function isAuthorized($user) {
+        return isset($user) ? true : false;
     }
 
     public function readDatabase($query) {

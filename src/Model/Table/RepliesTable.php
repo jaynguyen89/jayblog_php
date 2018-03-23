@@ -76,6 +76,10 @@ class RepliesTable extends Table
             ->boolean('status')
             ->allowEmpty('status');
 
+        $validator
+            ->boolean('active')
+            ->allowEmpty('active');
+
         return $validator;
     }
 

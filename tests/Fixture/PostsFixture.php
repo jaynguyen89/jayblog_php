@@ -28,6 +28,7 @@ class PostsFixture extends TestFixture
         'note' => ['type' => 'string', 'length' => 250, 'null' => true, 'default' => null, 'collate' => 'latin1_swedish_ci', 'comment' => '', 'precision' => null, 'fixed' => null],
         'created_on' => ['type' => 'datetime', 'length' => null, 'null' => true, 'default' => 'CURRENT_TIMESTAMP', 'comment' => '', 'precision' => null],
         'updated_on' => ['type' => 'datetime', 'length' => null, 'null' => true, 'default' => 'CURRENT_TIMESTAMP', 'comment' => '', 'precision' => null],
+        'active' => ['type' => 'boolean', 'length' => null, 'null' => true, 'default' => '1', 'comment' => '', 'precision' => null],
         '_constraints' => [
             'primary' => ['type' => 'primary', 'columns' => ['id'], 'length' => []],
         ],
@@ -54,8 +55,9 @@ class PostsFixture extends TestFixture
             'task_total' => 1,
             'task_done' => 1,
             'note' => 'Lorem ipsum dolor sit amet',
-            'created_on' => '2018-03-01 12:26:06',
-            'updated_on' => '2018-03-01 12:26:06'
+            'created_on' => '2018-03-22 07:22:52',
+            'updated_on' => '2018-03-22 07:22:52',
+            'active' => 1
         ],
     ];
 }

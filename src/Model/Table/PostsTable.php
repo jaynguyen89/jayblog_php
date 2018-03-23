@@ -109,6 +109,10 @@ class PostsTable extends Table
             ->dateTime('updated_on')
             ->allowEmpty('updated_on');
 
+        $validator
+            ->boolean('active')
+            ->allowEmpty('active');
+
         return $validator;
     }
 }

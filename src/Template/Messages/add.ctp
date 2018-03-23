@@ -2,8 +2,7 @@
 $nameFieldAttr = ['class' => 'form-control', 'label' => false, 'placeholder' => 'Name*', 'type' => 'text', 'id' => 'contactorName', 'oninput' => 'validateContactForm()'];
 $emailFieldAttr = ['class' => 'form-control', 'label' => false, 'placeholder' => 'Email*', 'type' => 'text', 'id' => 'contactorEmail', 'oninput' => 'validateContactForm()'];
 $phoneFieldAttr = ['class' => 'form-control', 'label' => false, 'placeholder' => 'Phone', 'type' => 'text', 'id' => 'contactorPhone', 'oninput' => 'validateContactForm()'];
-$contentFieldAttr = ['class' => 'form-control', 'label' => false, 'placeholder' => 'Message', 'type' => 'text', 'id' => 'contactContent', 'oninput' => 'countContactContent()'];
-?>
+$contentFieldAttr = ['class' => 'form-control', 'label' => false, 'placeholder' => 'Message', 'type' => 'text', 'id' => 'contactContent', 'oninput' => 'countContactContent()']; ?>
 
 <div class="container">
     <!-- Breadcrumb navigation pane -->

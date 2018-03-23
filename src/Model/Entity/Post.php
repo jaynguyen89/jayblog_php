@@ -17,6 +17,7 @@ use Cake\ORM\Entity;
  * @property string $note
  * @property \Cake\I18n\FrozenTime $created_on
  * @property \Cake\I18n\FrozenTime $updated_on
+ * @property bool $active
  *
  * @property \App\Model\Entity\Attachment[] $attachments
  * @property \App\Model\Entity\Comment[] $comments
@@ -47,6 +48,7 @@ class Post extends Entity
         'note' => true,
         'created_on' => true,
         'updated_on' => true,
+        'active' => true,
         'attachments' => true,
         'comments' => true,
         'distributions' => true,
