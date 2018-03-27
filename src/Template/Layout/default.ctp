@@ -45,11 +45,13 @@ $cakeDescription = 'Jay\'s Blog - Dare to step';
     <?= $this->fetch('script') ?>
 </head>
 <body data-spy="scroll" data-target="nav">
-<?php $active = (strpos($this->request->here, '/messages/add') != false ? '1' :
+<?php $user = $this->request->session()->read('Auth.User');
+$active = (strpos($this->request->here, '/messages/add') != false ? '1' :
     (strpos($this->request->here, '/posts/view/') != false ? '-1' :
         ((strpos($this->request->here, '/posts/programming-interest') != false || strpos($this->request->here, '/posts/framework-interest') != false || strpos($this->request->here, '/posts/api-interest') != false || strpos($this->request->here, '/posts/software-interest') != false) ? '2' :
             ((strpos($this->request->here, '/posts/web-project') != false || strpos($this->request->here, '/posts/computer-project') != false || strpos($this->request->here, '/posts/ios-project') != false || strpos($this->request->here, '/posts/android-project') != false) ? '3' :
-                ((strpos($this->request->here, '/posts/cloud-others') != false || strpos($this->request->here, '/posts/news-others') != false || strpos($this->request->here, '/posts/tiptrick-others') != false) ? '4' : '0'))))); ?>
+                ((strpos($this->request->here, '/posts/cloud-others') != false || strpos($this->request->here, '/posts/news-others') != false || strpos($this->request->here, '/posts/tiptrick-others') != false) ? '4' :
+                    ((strpos($this->request->here, '/users/suspended-assets') != false || strpos($this->request->here, '/attachments/highlighted-assets') != false ) ? '5' : '0')))))); ?>
     <header id="header-2" class="soft-scroll header-2">
         <nav class="main-nav navbar navbar-default navbar-fixed-top">
             <!-- Container DIV wrapping the whole navbar and staying fixed to the top of site -->
@@ -62,13 +64,19 @@ $cakeDescription = 'Jay\'s Blog - Dare to step';
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
-                    <?= $this->Html->image('jaydev.PNG', ['alt' => 'jaydeveloper', 'url' => '/', 'class' => 'brand-img img-responsive']); ?>
+                    <?= $user ? $this->Html->image('jaydev.PNG', ['alt' => 'jaydeveloper', 'url' => ['controller' => 'Users', 'action' => 'view'], 'class' => 'brand-img img-responsive']) :
+                        $this->Html->image('jaydev.PNG', ['alt' => 'jaydeveloper', 'url' => '/', 'class' => 'brand-img img-responsive']); ?>
                 </div>
 
                 <!-- Navbar menu containing collapsible items and links -->
                 <div class="collapse navbar-collapse" id="navbar-collapse">
                     <ul class="nav navbar-nav navbar-right">
-                        <li class="nav-item <?= $active == 0 ? 'active' : ''; ?>"><?= $this->Html->link(__('Home'), '/', ['class' => 'nav-link']); ?></li>
+                        <?php if (!$user) { ?>
+                            <li class="nav-item <?= $active == 0 ? 'active' : ''; ?>"><?= $this->Html->link(__('Home'), '/', ['class' => 'nav-link']); ?></li>
+                        <?php } else { ?>
+                            <li class="nav-item <?= $active == 0 ? 'active' : ''; ?>"><?= $this->Html->link(__('Home'),
+                                    ['controller' => 'Users', 'action' => 'view'], ['class' => 'nav-link']); ?></li>
+                        <?php } ?>
                         <!-- Dropdown menu for Interests -->
                         <li class="nav-item dropdown <?= $active == 2 ? 'active' : ''; ?>">
                             <a class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-delay="0" data-close-others="false" href="#">Interests <i class="fa fa-angle-down"></i></a>
@@ -116,10 +124,25 @@ $cakeDescription = 'Jay\'s Blog - Dare to step';
                             </ul>
                         </li>
                         <!-- End dropdown -->
-                        <li class="nav-item <?= $active == 1 ? 'active' : ''; ?>"><?= $this->Html->link(__('About'), ['controller' => 'Messages', 'action' => 'add']); ?></li>
+                        <?php if (!$user) { ?>
+                            <li class="nav-item <?= $active == 1 ? 'active' : ''; ?>"><?= $this->Html->link(__('About'), ['controller' => 'Messages', 'action' => 'add']); ?></li>
+                        <?php } ?>
                         <li class="nav-item" style="display: none;">
                             <a href="/jayblog/users/login" style="color: coral" onmouseover="this.style.color='orangered'" onmouseout="this.style.color='coral'"><i class="fa fa-user-circle" style="font-size: larger"></i> Admin Login</a>
                         </li>
+                        <?php if ($user) { ?>
+                            <!-- Dropdown menu for Other contents -->
+                            <li class="nav-item dropdown <?= $active == 5 ? 'active' : ''; ?>">
+                                <a class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-delay="0" data-close-others="false" href="#">Manage <i class="fa fa-angle-down"></i></a>
+                                <ul class="dropdown-menu" style="background-color: lightgray">
+                                    <li><?= $this->Html->link($this->Html->tag('i', '', ['class' => 'fas fa-calendar-times', 'style' => 'margin-right: 10px;']).'Suspendings',
+                                            ['controller' => 'Users', 'action' => 'suspendedAssets'], ['escape' => false]); ?></li>
+                                    <li><?= $this->Html->link($this->Html->tag('i', '', ['class' => 'fas fa-flag-checkered', 'style' => 'margin-right: 10px;']).'Highlightings',
+                                            ['controller' => 'Users', 'action' => 'highlightedAssets'], ['escape' => false]); ?></li>
+                                </ul>
+                            </li>
+                            <!-- End dropdown -->
+                        <?php } ?>
                     </ul>
                 </div>
                 <!-- End navbar menu -->

@@ -18,6 +18,20 @@ class CommentsController extends AppController
         $this->Auth->allow(['add']);
     }
 
+    public function reviewComment($id = null) {
+        $this->autoRender = false;
+
+        $comment = $this->Comments->get($id);
+        $comment->active = true;
+
+        if ($this->Comments->save($comment))
+            $this->Flash->success(__('The comment #'.$comment->id.' has been revived successfully.'));
+        else
+            $this->Flash->error(__('Server went wrong. Try again later!'));
+
+        return $this->redirect($this->request->referer());
+    }
+
     /**
      * Index method
      *
@@ -104,12 +118,11 @@ class CommentsController extends AppController
         else
             $comment->status = true;
 
-        if ($this->Comments->save($comment)) {
+        if ($this->Comments->save($comment))
             $this->Flash->success(__('The comment #'.$comment->id.' has been '.($pid ? 'suspended' : 'approved').' successfully.'));
-            return $this->redirect($this->request->referer());
-        }
+        else
+            $this->Flash->error(__('Server went wrong. Try again later!'));
 
-        $this->Flash->error(__('Server went wrong. Try again later!'));
         return $this->redirect($this->request->referer());
     }
 
@@ -120,16 +133,17 @@ class CommentsController extends AppController
      * @return \Cake\Http\Response|null Redirects to index.
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
-    public function delete($id = null)
-    {
+    public function delete($id = null) {
+        $this->autoRender = false;
+
         $this->request->allowMethod(['post', 'delete']);
         $comment = $this->Comments->get($id);
-        if ($this->Comments->delete($comment)) {
-            $this->Flash->success(__('The comment has been deleted.'));
-        } else {
-            $this->Flash->error(__('The comment could not be deleted. Please, try again.'));
-        }
 
-        return $this->redirect(['action' => 'index']);
+        if ($this->Comments->delete($comment))
+            $this->Flash->success(__('The comment and its associated replies have been deleted.'));
+        else
+            $this->Flash->error(__('The comment could not be deleted. Please, try again.'));
+
+        return $this->redirect($this->request->referer());
     }
 }

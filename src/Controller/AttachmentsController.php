@@ -12,7 +12,6 @@ use App\Controller\AppController;
  */
 class AttachmentsController extends AppController
 {
-
     /**
      * Index method
      *
@@ -72,22 +71,35 @@ class AttachmentsController extends AppController
      * @return \Cake\Http\Response|null Redirects on successful edit, renders view otherwise.
      * @throws \Cake\Network\Exception\NotFoundException When record not found.
      */
-    public function edit($id = null)
-    {
-        $attachment = $this->Attachments->get($id, [
-            'contain' => []
-        ]);
-        if ($this->request->is(['patch', 'post', 'put'])) {
-            $attachment = $this->Attachments->patchEntity($attachment, $this->request->getData());
-            if ($this->Attachments->save($attachment)) {
-                $this->Flash->success(__('The attachment has been saved.'));
+    public function edit() {
+        $this->autoRender = false;
 
-                return $this->redirect(['action' => 'index']);
-            }
-            $this->Flash->error(__('The attachment could not be saved. Please, try again.'));
+        if ($this->request->is('post'))
+            $data = $this->request->getData();
+
+        $result = true;
+        if (!$data['file_id'])
+            $this->Flash->error('No file has been selected to revive.');
+        else {
+            foreach ($data['file_id'] as $id):
+                $file= $this->Attachments->get($id);
+                $file->active = true;
+
+                if ($this->Attachments->save($file))
+                    continue;
+                else {
+                    $result = false;
+                    break;
+                }
+            endforeach;
         }
-        $posts = $this->Attachments->Posts->find('list', ['limit' => 200]);
-        $this->set(compact('attachment', 'posts'));
+
+        if ($result)
+            $this->Flash->success('All selected files have been revived successfully. Total: '.(count($data['file_id']) == 1 ? '1 file' : count($data['file_id']).' files').'.');
+        else
+            $this->Flash->error('An error has been occurred during processing the request. Try again later.');
+
+        $this->redirect($this->request->referer());
     }
 
     /**

@@ -18,6 +18,20 @@ class MessagesController extends AppController
         $this->Auth->allow(['add', 'suggestProject']);
     }
 
+    public function reviewMessage($id = null) {
+        $this->autoRender = false;
+        $message = $this->Messages->get($id);
+
+        $message->active = true;
+
+        if ($this->Messages->save($message))
+            $this->Flash->success(__('The suggestion #'.$message->id.' has been revived successfully.'));
+        else
+            $this->Flash->error(__('Server went wrong. Try again later!'));
+
+        return $this->redirect($this->request->referer());
+    }
+
     public function suggestProject() {
         $this->autoRender = false;
         $message = $this->Messages->newEntity();
@@ -142,12 +156,11 @@ class MessagesController extends AppController
         else
             $message->is_oppened = true;
 
-        if ($this->Messages->save($message)) {
+        if ($this->Messages->save($message))
             $this->Flash->success(__('The suggestion #'.$message->id.' has been '.($pid ? 'suspended' : 'marked as opened').' successfully.'));
-            return $this->redirect($this->request->referer());
-        }
+        else
+            $this->Flash->error(__('Server went wrong. Try again later!'));
 
-        $this->Flash->error(__('Server went wrong. Try again later!'));
         return $this->redirect($this->request->referer());
     }
 
@@ -158,15 +171,15 @@ class MessagesController extends AppController
      * @return \Cake\Http\Response|null Redirects to index.
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
-    public function delete($id = null)
-    {
+    public function delete($id = null) {
+        $this->autoRender = false;
         $this->request->allowMethod(['post', 'delete']);
+
         $message = $this->Messages->get($id);
-        if ($this->Messages->delete($message)) {
+        if ($this->Messages->delete($message))
             $this->Flash->success(__('The message has been deleted.'));
-        } else {
+        else
             $this->Flash->error(__('The message could not be deleted. Please, try again.'));
-        }
 
         return $this->redirect(['action' => 'index']);
     }

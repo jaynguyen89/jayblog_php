@@ -17,6 +17,20 @@ class RepliesController extends AppController
         $this->Auth->allow(['add']);
     }
 
+    public function reviewReply($id = null) {
+        $this->autoRender = false;
+
+        $reply = $this->Replies->get($id);
+        $reply->active = true;
+
+        if ($this->Replies->save($reply))
+            $this->Flash->success(__('The reply #'.$reply->id.' has been revived successfully.'));
+        else
+            $this->Flash->error(__('Server went wrong. Try again later!'));
+
+        return $this->redirect($this->request->referer());
+    }
+
     /**
      * Index method
      *
@@ -115,15 +129,16 @@ class RepliesController extends AppController
      * @return \Cake\Http\Response|null Redirects to index.
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
-    public function delete($id = null)
-    {
+    public function delete($id = null) {
+        $this->autoRender = false;
+
         $this->request->allowMethod(['post', 'delete']);
         $reply = $this->Replies->get($id);
-        if ($this->Replies->delete($reply)) {
+
+        if ($this->Replies->delete($reply))
             $this->Flash->success(__('The reply has been deleted.'));
-        } else {
+        else
             $this->Flash->error(__('The reply could not be deleted. Please, try again.'));
-        }
 
         return $this->redirect(['action' => 'index']);
     }

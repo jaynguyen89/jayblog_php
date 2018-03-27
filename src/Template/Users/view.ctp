@@ -68,10 +68,10 @@
                                             <?php if (!$repliesByComment->status) { ?>
                                                 <div class="row" style="margin-left: 10px;">
                                                     <?= $this->Form->postLink('Approve',
-                                                        ['controller' => 'Replies', 'action' => 'edit', '?' => ['cid' => $repliesByComment->id, 'pid' => '0']],
+                                                        ['controller' => 'Replies', 'action' => 'edit', '?' => ['rid' => $repliesByComment->id, 'pid' => '0']],
                                                         ['class' => 'btn btn-outline btn-outline-sm outline-dark', 'confirm' => __('Approve reply #{0}?', $repliesByComment->id)]); ?>
                                                     <?= $this->Form->postLink('Suspend',
-                                                        ['controller' => 'Replies', 'action' => 'edit', '?' => ['cid' => $repliesByComment->id, 'pid' => '1']],
+                                                        ['controller' => 'Replies', 'action' => 'edit', '?' => ['rid' => $repliesByComment->id, 'pid' => '1']],
                                                         ['class' => 'btn btn-outline btn-outline-sm outline-light', 'confirm' => __('Suspend reply #{0}?', $repliesByComment->id)]); ?>
                                                 </div>
                                             <?php } ?>
@@ -87,6 +87,7 @@
 
             <!-- New Suggestions -->
             <div id="suggestions" class="tab-pane fade">
+                <h2>Feature Suggestions</h2>
                 <?php foreach ($suggestedPosts as $suggestedPost): ?>
                     <div class="row" style="border-bottom: 1px solid #3498DB; padding-left: 10px; margin-bottom: 15px;">
                         <div class="row bg-info" style="padding: 0 15px 0px 10px;">
@@ -116,6 +117,7 @@
                     </div>
                 <?php endforeach; ?>
 
+                <h2>Project Suggestions</h2>
                 <?php foreach ($postSuggestions as $postSuggestion): ?>
                     <div class="row" style="border-bottom: 1px solid #3498DB; padding-left: 10px; margin-bottom: 15px;">
                         <div class="bg-offwhite" style="border-radius: 10px;">
@@ -147,11 +149,9 @@
                             <div class="col-md-3 col-sm-3 col-xs-4">
                                 <p style="margin-bottom: 0;"><b><?= ucwords(strtolower($newContactor->sender_name)); ?></b></p>
                                 <p style="margin-top: 0;"><b><?= strtolower($newContactor->sender_email); ?></b></p>
-                                <p style="margin-top: 0;"><b><?= $newContactor->phone; ?></b></p>
+                                <p style="margin-top: 0;"><b><?= $newContactor->phone ? $newContactor->phone : 'N/A'; ?></b></p>
                             </div>
-                            <div class="col-md-9 col-sm-9 col-xs-8">
-                                <p><?= $newContactor->content; ?></p>
-                            </div>
+                            <div class="col-md-9 col-sm-9 col-xs-8"><p><?= $newContactor->content; ?></p></div>
                             <div class="row" style="margin-left: 20px;">
                                 <?= $this->Form->postLink('Okay',
                                     ['controller' => 'Messages', 'action' => 'edit', '?' => ['mid' => $newContactor->id, 'pid' => '0']],
