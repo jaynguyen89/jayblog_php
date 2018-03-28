@@ -27,6 +27,7 @@ class MessagesFixture extends TestFixture
         'recieved_on' => ['type' => 'datetime', 'length' => null, 'null' => true, 'default' => 'CURRENT_TIMESTAMP', 'comment' => '', 'precision' => null],
         'is_oppened' => ['type' => 'boolean', 'length' => null, 'null' => true, 'default' => '0', 'comment' => '', 'precision' => null],
         'active' => ['type' => 'boolean', 'length' => null, 'null' => true, 'default' => '1', 'comment' => '', 'precision' => null],
+        'flagged' => ['type' => 'boolean', 'length' => null, 'null' => true, 'default' => '0', 'comment' => '', 'precision' => null],
         '_indexes' => [
             'messages_posts_fk' => ['type' => 'index', 'columns' => ['post_id'], 'length' => []],
         ],
@@ -55,9 +56,10 @@ class MessagesFixture extends TestFixture
             'sender_phone' => 'Lorem ipsum d',
             'content' => 'Lorem ipsum dolor sit amet, aliquet feugiat. Convallis morbi fringilla gravida, phasellus feugiat dapibus velit nunc, pulvinar eget sollicitudin venenatis cum nullam, vivamus ut a sed, mollitia lectus. Nulla vestibulum massa neque ut et, id hendrerit sit, feugiat in taciti enim proin nibh, tempor dignissim, rhoncus duis vestibulum nunc mattis convallis.',
             'type' => 1,
-            'recieved_on' => '2018-03-22 07:21:43',
+            'recieved_on' => '2018-03-28 07:25:13',
             'is_oppened' => 1,
-            'active' => 1
+            'active' => 1,
+            'flagged' => 1
         ],
     ];
 }

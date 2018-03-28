@@ -69,6 +69,48 @@ class MessagesController extends AppController
         }
     }
 
+    public function highlighter() {
+        $this->autoRender = false;
+        $id = $this->request->query('sid');
+        $pid = $this->request->query('form');
+
+        $message = $this->Messages->get($id);
+
+        if ($pid)
+            $message->is_oppened = false;
+        else
+            $message->flagged = true;
+
+        if ($this->Messages->save($message))
+            $this->Flash->success('The suggestion #'.$message->id.' has been '.($pid ? 'marked as unopened' : 'highlighted').' successfully.');
+        else
+            $this->Flash->error('Server went wrong. Try again later.');
+
+        return $this->redirect($this->request->referer());
+    }
+
+    public function lowlighter() {
+        $this->autoRender = false;
+        $id = $this->request->query('sid');
+        $pid = $this->request->query('form');
+
+        $message = $this->Messages->get($id);
+
+        if ($pid) {
+            $message->active = false;
+            $message->flagged = false;
+        }
+        else
+            $message->flagged = false;
+
+        if ($this->Messages->save($message))
+            $this->Flash->success('The suggestion #'.$message->id.' has been '.($pid ? 'lowlighted and suspended' : 'lowlighted').' successfully.');
+        else
+            $this->Flash->error('Server went wrong. Try again later.');
+
+        return $this->redirect($this->request->referer());
+    }
+
     /**
      * Index method
      *
@@ -151,13 +193,19 @@ class MessagesController extends AppController
 
         $message = $this->Messages->get($id);
 
-        if ($pid)
+        if ($pid == 1)
             $message->active = false;
-        else
+        else if ($pid == 0)
             $message->is_oppened = true;
+        else {
+            $message->is_oppened = true;
+            $message->flagged = true;
+        }
 
-        if ($this->Messages->save($message))
-            $this->Flash->success(__('The suggestion #'.$message->id.' has been '.($pid ? 'suspended' : 'marked as opened').' successfully.'));
+        if ($this->Messages->save($message)) {
+            $label = ($pid == 0 ? 'marked as `opened`' : ($pid == 1 ? 'suspended' : 'highlighted'));
+            $this->Flash->success(__('The suggestion #' . $message->id . ' has been ' .$label. ' successfully.'));
+        }
         else
             $this->Flash->error(__('Server went wrong. Try again later!'));
 

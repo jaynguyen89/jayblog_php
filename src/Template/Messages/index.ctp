@@ -25,6 +25,8 @@
                 <th scope="col"><?= $this->Paginator->sort('type') ?></th>
                 <th scope="col"><?= $this->Paginator->sort('recieved_on') ?></th>
                 <th scope="col"><?= $this->Paginator->sort('is_oppened') ?></th>
+                <th scope="col"><?= $this->Paginator->sort('active') ?></th>
+                <th scope="col"><?= $this->Paginator->sort('flagged') ?></th>
                 <th scope="col" class="actions"><?= __('Actions') ?></th>
             </tr>
         </thead>
@@ -39,6 +41,8 @@
                 <td><?= $this->Number->format($message->type) ?></td>
                 <td><?= h($message->recieved_on) ?></td>
                 <td><?= h($message->is_oppened) ?></td>
+                <td><?= h($message->active) ?></td>
+                <td><?= h($message->flagged) ?></td>
                 <td class="actions">
                     <?= $this->Html->link(__('View'), ['action' => 'view', $message->id]) ?>
                     <?= $this->Html->link(__('Edit'), ['action' => 'edit', $message->id]) ?>

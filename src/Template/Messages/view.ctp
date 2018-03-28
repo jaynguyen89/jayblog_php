@@ -50,6 +50,14 @@
             <th scope="row"><?= __('Is Oppened') ?></th>
             <td><?= $message->is_oppened ? __('Yes') : __('No'); ?></td>
         </tr>
+        <tr>
+            <th scope="row"><?= __('Active') ?></th>
+            <td><?= $message->active ? __('Yes') : __('No'); ?></td>
+        </tr>
+        <tr>
+            <th scope="row"><?= __('Flagged') ?></th>
+            <td><?= $message->flagged ? __('Yes') : __('No'); ?></td>
+        </tr>
     </table>
     <div class="row">
         <h4><?= __('Content') ?></h4>

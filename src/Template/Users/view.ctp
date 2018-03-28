@@ -90,29 +90,42 @@
                 <h2>Feature Suggestions</h2>
                 <?php foreach ($suggestedPosts as $suggestedPost): ?>
                     <div class="row" style="border-bottom: 1px solid #3498DB; padding-left: 10px; margin-bottom: 15px;">
+                        <!-- Post associated with suggestion -->
                         <div class="row bg-info" style="padding: 0 15px 0px 10px;">
                             <h4 class="pull-left">Post #<?= $suggestedPost->id; ?>: <?= $suggestedPost->title; ?></h4>
                             <h4 class="pull-right"><?= (new DateTime($suggestedPost->created_on))->format('d/m/Y H:i'); ?></h4>
                             <span class="label label-info">Feature</span>
                         </div>
+                        <!-- End post -->
+
                         <?php foreach ($featureSuggestions[$suggestedPost->id] as $featureSuggestion): ?>
+                            <!-- Suggestion for the post -->
                             <div class="row" style="margin-top: 5px; padding: 0 10px 0 10px;">
                                 <div class="row bg-offwhite" style="border-radius: 10px;">
+                                    <!-- Suggester Info -->
                                     <div class="col-md-3 col-sm-3 col-xs-4">
                                         <p style="margin-bottom: 0;"><b><?= $featureSuggestion->sender_name ? ucwords(strtolower($featureSuggestion->sender_name)) : 'N/A'; ?></b></p>
                                         <p style="margin-top: 0;"><b><?= $featureSuggestion->sender_email ? strtolower($featureSuggestion->sender_email) : 'N/A'; ?></b></p>
                                     </div>
+                                    <!-- End suggester info -->
+
                                     <div class="col-md-9 col-sm-9 col-xs-8"><p><?= $featureSuggestion->content; ?></p></div>
+
+                                    <!-- Action buttons -->
                                     <div class="row" style="margin-left: 20px;">
                                         <?= $this->Form->postLink('Okay',
                                             ['controller' => 'Messages', 'action' => 'edit', '?' => ['mid' => $featureSuggestion->id, 'pid' => '0']],
                                             ['class' => 'btn btn-outline btn-outline-sm outline-dark', 'confirm' => __('Mark suggestion #{0} as read?', $featureSuggestion->id)]); ?>
+                                        <?= $this->Form->postLink('Highlight',
+                                            ['controller' => 'Messages', 'action' => 'edit', '?' => ['mid' => $featureSuggestion->id, 'pid' => '2']],
+                                            ['class' => 'btn btn-outline btn-outline-sm outline-dim', 'confirm' => __('Highlight suggestion #{0}?', $featureSuggestion->id)]); ?>
                                         <?= $this->Form->postLink('Suspend',
                                             ['controller' => 'Messages', 'action' => 'edit', '?' => ['mid' => $featureSuggestion->id, 'pid' => '1']],
                                             ['class' => 'btn btn-outline btn-outline-sm outline-light', 'confirm' => __('Suspend suggestion #{0}?', $featureSuggestion->id)]); ?>
                                     </div>
                                 </div>
                             </div>
+                            <!-- End suggestion -->
                         <?php endforeach; ?>
                     </div>
                 <?php endforeach; ?>
@@ -121,16 +134,24 @@
                 <?php foreach ($postSuggestions as $postSuggestion): ?>
                     <div class="row" style="border-bottom: 1px solid #3498DB; padding-left: 10px; margin-bottom: 15px;">
                         <div class="bg-offwhite" style="border-radius: 10px;">
+                            <!-- Suggester Info -->
                             <div class="col-md-2 col-sm-3 col-xs-4">
                                 <p style="margin-bottom: 0;"><b><?= $postSuggestion->sender_name ? ucwords(strtolower($postSuggestion->sender_name)) : 'N/A'; ?></b></p>
                                 <p style="margin-top: 0;"><b><?= $postSuggestion->sender_email ? strtolower($postSuggestion->sender_email) : 'N/A'; ?></b></p>
                                 <span class="label label-info">Post</span>
                             </div>
+                            <!-- End Suggester Info -->
+
                             <div class="col-md-10 col-sm-9 col-xs-8"><p><?= $postSuggestion->content; ?></p></div>
+
+                            <!-- Action buttons -->
                             <div class="row" style="margin-left: 20px;">
                                 <?= $this->Form->postLink('Okay',
                                     ['controller' => 'Messages', 'action' => 'edit', '?' => ['mid' => $postSuggestion->id, 'pid' => '0']],
                                     ['class' => 'btn btn-outline btn-outline-sm outline-dark', 'confirm' => __('Mark suggestion #{0} as read?', $postSuggestion->id)]); ?>
+                                <?= $this->Form->postLink('Highlight',
+                                    ['controller' => 'Messages', 'action' => 'edit', '?' => ['mid' => $postSuggestion->id, 'pid' => '2']],
+                                    ['class' => 'btn btn-outline btn-outline-sm outline-dim', 'confirm' => __('Highlight suggestion #{0}?', $postSuggestion->id)]); ?>
                                 <?= $this->Form->postLink('Suspend',
                                     ['controller' => 'Messages', 'action' => 'edit', '?' => ['mid' => $postSuggestion->id, 'pid' => '1']],
                                     ['class' => 'btn btn-outline btn-outline-sm outline-light', 'confirm' => __('Suspend suggestion #{0}?', $postSuggestion->id)]); ?>
@@ -146,16 +167,24 @@
                 <?php foreach ($newContactors as $newContactor): ?>
                     <div class="row" style="border-bottom: 1px solid #3498DB; padding-left: 10px; margin-bottom: 15px;">
                         <div class="bg-offwhite" style="border-radius: 10px;">
+                            <!-- Suggester Info -->
                             <div class="col-md-3 col-sm-3 col-xs-4">
                                 <p style="margin-bottom: 0;"><b><?= ucwords(strtolower($newContactor->sender_name)); ?></b></p>
                                 <p style="margin-top: 0;"><b><?= strtolower($newContactor->sender_email); ?></b></p>
                                 <p style="margin-top: 0;"><b><?= $newContactor->phone ? $newContactor->phone : 'N/A'; ?></b></p>
                             </div>
+                            <!-- End Suggester Info -->
+
                             <div class="col-md-9 col-sm-9 col-xs-8"><p><?= $newContactor->content; ?></p></div>
+
+                            <!-- Action buttons -->
                             <div class="row" style="margin-left: 20px;">
                                 <?= $this->Form->postLink('Okay',
                                     ['controller' => 'Messages', 'action' => 'edit', '?' => ['mid' => $newContactor->id, 'pid' => '0']],
                                     ['class' => 'btn btn-outline btn-outline-sm outline-dark', 'confirm' => __('Mark suggestion #{0} as read?', $newContactor->id)]); ?>
+                                <?= $this->Form->postLink('Highlight',
+                                    ['controller' => 'Messages', 'action' => 'edit', '?' => ['mid' => $newContactor->id, 'pid' => '2']],
+                                    ['class' => 'btn btn-outline btn-outline-sm outline-dim', 'confirm' => __('Highlight suggestion #{0}?', $newContactor->id)]); ?>
                                 <?= $this->Form->postLink('Suspend',
                                     ['controller' => 'Messages', 'action' => 'edit', '?' => ['mid' => $newContactor->id, 'pid' => '1']],
                                     ['class' => 'btn btn-outline btn-outline-sm outline-light', 'confirm' => __('Suspend suggestion #{0}?', $newContactor->id)]); ?>

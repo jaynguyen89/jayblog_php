@@ -51,7 +51,7 @@ $active = (strpos($this->request->here, '/messages/add') != false ? '1' :
         ((strpos($this->request->here, '/posts/programming-interest') != false || strpos($this->request->here, '/posts/framework-interest') != false || strpos($this->request->here, '/posts/api-interest') != false || strpos($this->request->here, '/posts/software-interest') != false) ? '2' :
             ((strpos($this->request->here, '/posts/web-project') != false || strpos($this->request->here, '/posts/computer-project') != false || strpos($this->request->here, '/posts/ios-project') != false || strpos($this->request->here, '/posts/android-project') != false) ? '3' :
                 ((strpos($this->request->here, '/posts/cloud-others') != false || strpos($this->request->here, '/posts/news-others') != false || strpos($this->request->here, '/posts/tiptrick-others') != false) ? '4' :
-                    ((strpos($this->request->here, '/users/suspended-assets') != false || strpos($this->request->here, '/attachments/highlighted-assets') != false ) ? '5' : '0')))))); ?>
+                    ((strpos($this->request->here, '/users/suspended-assets') != false || strpos($this->request->here, '/users/highlighted-assets') != false ) ? '5' : '0')))))); ?>
     <header id="header-2" class="soft-scroll header-2">
         <nav class="main-nav navbar navbar-default navbar-fixed-top">
             <!-- Container DIV wrapping the whole navbar and staying fixed to the top of site -->

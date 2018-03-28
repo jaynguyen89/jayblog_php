@@ -1242,6 +1242,21 @@ p .btn
     background: #D90000;
 }
 
+.btn-outline.outline-dim,
+.icon.outline-dim
+{
+    color: #2ecc71;
+    background: none;
+    border: 2px solid #2ecc71;
+}
+
+.btn-outline.outline-dim:hover,
+.icon.outline-dim:hover
+{
+    color: #FFF;
+    background: #2ecc71;
+}
+
 .btn-outline.outline-dark,
 .icon.outline-dark
 {

@@ -16,6 +16,7 @@ use Cake\ORM\Entity;
  * @property \Cake\I18n\FrozenTime $recieved_on
  * @property bool $is_oppened
  * @property bool $active
+ * @property bool $flagged
  *
  * @property \App\Model\Entity\Post $post
  */
@@ -41,6 +42,7 @@ class Message extends Entity
         'recieved_on' => true,
         'is_oppened' => true,
         'active' => true,
+        'flagged' => true,
         'post' => true
     ];
 }

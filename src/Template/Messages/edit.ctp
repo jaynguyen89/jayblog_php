@@ -29,8 +29,10 @@
             echo $this->Form->control('sender_phone');
             echo $this->Form->control('content');
             echo $this->Form->control('type');
-            echo $this->Form->control('recieved_on');
+            echo $this->Form->control('recieved_on', ['empty' => true]);
             echo $this->Form->control('is_oppened');
+            echo $this->Form->control('active');
+            echo $this->Form->control('flagged');
         ?>
     </fieldset>
     <?= $this->Form->button(__('Submit')) ?>
