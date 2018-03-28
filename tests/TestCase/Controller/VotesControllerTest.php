@@ -18,11 +18,11 @@ class VotesControllerTest extends IntegrationTestCase
     public $fixtures = [
         'app.votes',
         'app.posts',
+        'app.attachments',
         'app.comments',
         'app.replies',
         'app.distributions',
         'app.categories',
-        'app.files',
         'app.messages'
     ];
 

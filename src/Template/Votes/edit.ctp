@@ -27,6 +27,7 @@
             echo $this->Form->control('vote_date', ['empty' => true]);
             echo $this->Form->control('client_ip');
             echo $this->Form->control('sign');
+            echo $this->Form->control('active');
         ?>
     </fieldset>
     <?= $this->Form->button(__('Submit')) ?>

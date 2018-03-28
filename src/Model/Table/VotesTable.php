@@ -66,6 +66,10 @@ class VotesTable extends Table
             ->boolean('sign')
             ->allowEmpty('sign');
 
+        $validator
+            ->boolean('active')
+            ->allowEmpty('active');
+
         return $validator;
     }
 

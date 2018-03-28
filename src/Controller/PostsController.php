@@ -3,6 +3,7 @@ namespace App\Controller;
 
 use App\Controller\AppController;
 use Cake\Event\Event;
+use Cake\I18n\Time;
 use Cake\ORM\TableRegistry;
 
 /**
@@ -111,7 +112,7 @@ class PostsController extends AppController {
     }
 
     private function getVotes($postId) {
-        $votesByPost = $this->Posts->Votes->find('all', ['conditions' => ['post_id' => $postId]]);
+        $votesByPost = $this->Posts->Votes->find('all', ['conditions' => ['post_id' => $postId, 'active' => true]]);
         $upVotes = $downVotes = 0;
         foreach ($votesByPost as $vote) {
             $upVotes += ($vote->sign) ? 1 : 0;
@@ -157,7 +158,13 @@ class PostsController extends AppController {
         foreach ($comments as $comment)
             $repliesByComment[$comment->id] = $this->Posts->Comments->Replies->find('all', ['conditions' => ['comment_id' => $comment->id, 'active' => true], 'order' => ['REPLIES.reply_date' => 'DESC']])->toArray();
 
-        $this->set(compact('post', 'categories', 'photos', 'attachments', 'suggestedPosts', 'comments', 'repliesByComment'));
+        $postDate = new \DateTime($post->created_on);
+        $now = Time::now();
+
+        $diff = $now->diff($postDate)->days;
+        $isCommentable = $diff > 180 ? false : true;
+
+        $this->set(compact('post', 'categories', 'photos', 'attachments', 'suggestedPosts', 'comments', 'repliesByComment', 'isCommentable'));
     }
 
     /**

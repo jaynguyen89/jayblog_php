@@ -26,11 +26,11 @@ class VotesTableTest extends TestCase
     public $fixtures = [
         'app.votes',
         'app.posts',
+        'app.attachments',
         'app.comments',
         'app.replies',
         'app.distributions',
         'app.categories',
-        'app.files',
         'app.messages'
     ];
 

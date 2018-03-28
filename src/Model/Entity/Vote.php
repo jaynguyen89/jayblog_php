@@ -11,6 +11,7 @@ use Cake\ORM\Entity;
  * @property \Cake\I18n\FrozenTime $vote_date
  * @property string $client_ip
  * @property bool $sign
+ * @property bool $active
  *
  * @property \App\Model\Entity\Post $post
  */
@@ -31,6 +32,7 @@ class Vote extends Entity
         'vote_date' => true,
         'client_ip' => true,
         'sign' => true,
+        'active' => true,
         'post' => true
     ];
 }

@@ -38,5 +38,9 @@
             <th scope="row"><?= __('Sign') ?></th>
             <td><?= $vote->sign ? __('Yes') : __('No'); ?></td>
         </tr>
+        <tr>
+            <th scope="row"><?= __('Active') ?></th>
+            <td><?= $vote->active ? __('Yes') : __('No'); ?></td>
+        </tr>
     </table>
 </div>

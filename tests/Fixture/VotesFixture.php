@@ -22,6 +22,7 @@ class VotesFixture extends TestFixture
         'vote_date' => ['type' => 'datetime', 'length' => null, 'null' => true, 'default' => 'CURRENT_TIMESTAMP', 'comment' => '', 'precision' => null],
         'client_ip' => ['type' => 'string', 'length' => 100, 'null' => true, 'default' => null, 'collate' => 'latin1_swedish_ci', 'comment' => '', 'precision' => null, 'fixed' => null],
         'sign' => ['type' => 'boolean', 'length' => null, 'null' => true, 'default' => '0', 'comment' => '', 'precision' => null],
+        'active' => ['type' => 'boolean', 'length' => null, 'null' => true, 'default' => '1', 'comment' => '', 'precision' => null],
         '_indexes' => [
             'votes_posts_fk' => ['type' => 'index', 'columns' => ['post_id'], 'length' => []],
         ],
@@ -45,9 +46,10 @@ class VotesFixture extends TestFixture
         [
             'id' => 1,
             'post_id' => 1,
-            'vote_date' => '2018-02-28 09:06:15',
+            'vote_date' => '2018-03-27 09:49:50',
             'client_ip' => 'Lorem ipsum dolor sit amet',
-            'sign' => 1
+            'sign' => 1,
+            'active' => 1
         ],
     ];
 }

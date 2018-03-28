@@ -22,6 +22,7 @@
                 <th scope="col"><?= $this->Paginator->sort('vote_date') ?></th>
                 <th scope="col"><?= $this->Paginator->sort('client_ip') ?></th>
                 <th scope="col"><?= $this->Paginator->sort('sign') ?></th>
+                <th scope="col"><?= $this->Paginator->sort('active') ?></th>
                 <th scope="col" class="actions"><?= __('Actions') ?></th>
             </tr>
         </thead>
@@ -33,6 +34,7 @@
                 <td><?= h($vote->vote_date) ?></td>
                 <td><?= h($vote->client_ip) ?></td>
                 <td><?= h($vote->sign) ?></td>
+                <td><?= h($vote->active) ?></td>
                 <td class="actions">
                     <?= $this->Html->link(__('View'), ['action' => 'view', $vote->id]) ?>
                     <?= $this->Html->link(__('Edit'), ['action' => 'edit', $vote->id]) ?>

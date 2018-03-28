@@ -83,16 +83,23 @@ $commentSubmit = ['id' => 'commentButton', 'class' => 'btn btn-outline btn-outli
                             <li class="list-group-item">Up vote: <b><?= $session->read('Post.up_vote'); ?></b>
                                 <?= $this->Form->postLink(
                                     $this->Html->tag('i', '', ['class' => 'fas fa-thumbs-up fa-2x pull-right']),
-                                    ['controller' => 'Votes', 'action' => 'setVotes', '?' => ['pid' => $post->id, 'sign' => 1]],
+                                    ['controller' => 'Votes', 'action' => 'add', '?' => ['pid' => $post->id, 'sign' => 1]],
                                     ['role' => 'button', 'escape' => false, 'confirm' => __('Since no login was required, your IP Address may be recorded. This approach is to prevent visitors voting multiple times on 1 post.\n\nNo personal information will be collected. Your IP Address will be securely encrypted.\n\nContinue to vote up for {0}?', $post->title)]); ?></li>
                             <li class="list-group-item">Down vote: <b><?= $session->read('Post.down_vote'); ?></b>
                                 <?= $this->Form->postLink(
                                     $this->Html->tag('i', '', ['class' => 'fas fa-thumbs-down fa-2x pull-right']),
-                                    ['controller' => 'Votes', 'action' => 'setVotes', '?' => ['pid' => $post->id, 'sign' => 0]],
+                                    ['controller' => 'Votes', 'action' => 'add', '?' => ['pid' => $post->id, 'sign' => 0]],
                                     ['role' => 'button', 'escape' => false, 'confirm' => __('Since no login was required, your IP Address may be recorded. This approach is to prevent visitors voting multiple times on 1 post.\n\nNo personal information will be collected. Your IP Address will be securely encrypted.\n\nContinue to vote down for {0}?', $post->title)]); ?></li>
                         </ul>
                     </div>
                     <!-- End project info -->
+
+                    <?php $user = $this->request->session()->read('Auth.User'); if ($user) { ?>
+                        <div class="col-xs-12">
+                            <?= $this->Form->postLink('Reset Votes', ['controller' => 'Votes', 'action' => 'edit', $post->id],
+                                ['class' => 'btn btn-outline btn-outline-sm outline-light', 'confirm' => __('All votes will be reset for {0}. Continue?', $post->title)]); ?>
+                        </div>
+                    <?php } ?>
 
                     <!-- Optional admin notes on project -->
                     <div class="col-xs-12">
@@ -171,6 +178,7 @@ $commentSubmit = ['id' => 'commentButton', 'class' => 'btn btn-outline btn-outli
             <h4 style="margin-bottom: 0;"><i class="fas fa-paper-plane" style="color: #3498DB;"></i> Leave a Comment</h4>
             <p class="small"  style="margin-top: 0;">To respect your privacy, your submitted information will not be published.</p>
             <div class="row">
+                <?php if ($isCommentable) { ?>
                 <div class="box" style="margin: 0 10px 0 10px">
                     <!-- /.box-header -->
                     <form method="post" action="/jayblog/comments/add">
@@ -197,6 +205,9 @@ $commentSubmit = ['id' => 'commentButton', 'class' => 'btn btn-outline btn-outli
                         </div>
                     </form>
                 </div>
+            <?php } else { ?>
+                <h3>Comment is not available on posts that are older than 6 months.</h3>
+            <?php } ?>
             </div>
         </div>
         <!-- End comment form -->
@@ -215,7 +226,9 @@ $commentSubmit = ['id' => 'commentButton', 'class' => 'btn btn-outline btn-outli
                             <?= $this->Gravatar->avatar($comment->commenter_email, ['size' => '75px', 'default' => $defaultAvatars[array_rand($defaultAvatars)], 'class' => 'img-circle pull-left']); ?>
                             <p style="margin-top: 0; margin-bottom: 5px;"><b><?= ucwords(strtolower($comment->commenter_name)); ?></b></p>
                             <p style="margin-top: 5px;"><b><?= (new DateTime($comment->comment_date))->format('d/m/Y H:i'); ?></b></p>
-                            <a role="button" name="showFormTag" onclick="showReplyForm(<?= $n; ?>);passDataToReplyForm(<?= $comment->id; ?>);">Reply</a>
+                            <?php if ($isCommentable) { ?>
+                                <a role="button" name="showFormTag" onclick="showReplyForm(<?= $n; ?>);passDataToReplyForm(<?= $comment->id; ?>);">Reply</a>
+                            <?php } ?>
                         </div>
                         <!-- End column -->
 
@@ -225,7 +238,9 @@ $commentSubmit = ['id' => 'commentButton', 'class' => 'btn btn-outline btn-outli
                     <!-- End comment -->
 
                     <!-- This area contains the reply form which is printed via Javascript template -->
-                    <div class="row replyFormDivs" style="display: none;"></div>
+                    <?php if ($isCommentable) { ?>
+                        <div class="row replyFormDivs" style="display: none;"></div>
+                    <?php } ?>
 
                     <!-- The replies that are associated to a comment -->
                     <?php foreach ($repliesByComment[$comment->id] as $reply):
