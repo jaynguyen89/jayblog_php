@@ -194,21 +194,117 @@ class PostsController extends AppController {
      * @return \Cake\Http\Response|null Redirects on successful edit, renders view otherwise.
      * @throws \Cake\Network\Exception\NotFoundException When record not found.
      */
-    public function edit($id = null)
-    {
-        $post = $this->Posts->get($id, [
-            'contain' => []
-        ]);
-        if ($this->request->is(['patch', 'post', 'put'])) {
-            $post = $this->Posts->patchEntity($post, $this->request->getData());
-            if ($this->Posts->save($post)) {
-                $this->Flash->success(__('The post has been saved.'));
+    public function edit() {
+        $this->request->allowMethod(['post', 'delete', 'put', 'patch', 'get']);
 
-                return $this->redirect(['action' => 'index']);
+        $id = $this->request->query('pid');
+        $form = $this->request->query('form');
+
+        $post = $this->Posts->get($id);
+        $categories = array();
+        $postCateIds = array();
+        $mainCate = array();
+
+        if ($form) {
+            $categories = TableRegistry::get('Categories')->find('all')->toArray();
+            foreach ($categories as $category)
+                $mainCate[$category['id']] = false;
+
+            $postCategories = $this->readDatabase('SELECT c.id, d.main FROM posts p, distributions d, categories c
+                                                         WHERE p.id = d.post_id AND d.category_id = c.id AND p.id = '.$post->id.';');
+
+            foreach ($postCategories as $postCategory) {
+                array_push($postCateIds, $postCategory['id']);
+                $mainCate[$postCategory['id']] = $postCategory['main'];
             }
-            $this->Flash->error(__('The post could not be saved. Please, try again.'));
         }
-        $this->set(compact('post'));
+
+        if ($this->request->is(['patch', 'post', 'put'])) {
+            if ($form) {
+                $data = $this->request->getData();
+                $post = $this->Posts->patchEntity($post, $data);
+
+                $post->photo = ($data['photo'] == '' ? 'pending.jpeg' : $data['photo']);
+
+                if ($this->Posts->save($post)) {
+                    $discardedCategories = array();
+                    foreach ($postCateIds as $postCateId):
+                        if (!in_array($postCateId, $data['category']))
+                            array_push($discardedCategories, $postCateId);
+                    endforeach;
+
+                    $newPostCategories = array();
+                    foreach ($data['category'] as $category):
+                        if (!in_array($category, $postCateIds))
+                            array_push($newPostCategories, $category);
+                    endforeach;
+
+                    if ($discardedCategories) {
+                        foreach ($discardedCategories as $discardedCategory):
+                            $distribution = $this->Posts->Distributions->find('all', ['conditions' => ['post_id' => $post->id, 'category_id' => $discardedCategory]])->first();
+
+                            if ($this->Posts->Distributions->delete($distribution))
+                                continue;
+                            else {
+                                $this->Flash->error('Post has been updated but some categories may fail to update.');
+                                return $this->redirect(['action' => 'view', $post->id]);
+                            }
+                        endforeach;
+                    }
+
+                    if ($newPostCategories) {
+                        foreach ($newPostCategories as $newPostCategory):
+                            $distData = array();
+                            $distData['post_id'] = $post->id;
+                            $distData['category_id'] = $newPostCategory;
+                            $distData['main'] = ($data['main'] == $newPostCategory ? true : false);
+
+                            $distribution = $this->Posts->Distributions->newEntity();
+                            $distribution = $this->Posts->Distributions->patchEntity($distribution, $distData);
+
+                            if ($this->Posts->Distributions->save($distribution))
+                                continue;
+                            else {
+                                $this->Flash->error('Post has been updated but some categories may fail to update.');
+                                return $this->redirect(['action' => 'view', $post->id]);
+                            }
+                        endforeach;
+                    }
+
+                    $remainedCategories = array_intersect($data['category'], $postCateIds);
+                    if ($remainedCategories) {
+                        foreach ($remainedCategories as $remainedCategory):
+                            $distribution = $this->Posts->Distributions->find('all', ['conditions' => ['post_id' => $post->id, 'category_id' => $remainedCategory]])->first();
+
+                            $distribution->main = ($data['main'] == $remainedCategory ? true : false);
+                            if ($this->Posts->Distributions->save($distribution))
+                                continue;
+                            else {
+                                $this->Flash->error('Post has been updated but some categories may fail to update.');
+                                return $this->redirect(['action' => 'view', $post->id]);
+                            }
+                        endforeach;
+                    }
+
+                    $this->Flash->success(__('The post and its categories have been editted successfully.'));
+                    return $this->redirect(['action' => 'view', $post->id]);
+                }
+
+                $this->Flash->error(__('Server went wrong. Try again later.'));
+            }
+            else {
+                $post = $this->Posts->patchEntity($post, $this->request->getData());
+
+                if ($this->Posts->save($post)) {
+                    $this->Flash->success(__('The post has been editted successfully.'));
+                    return $this->redirect(['action' => 'view', $post->id]);
+                }
+
+                $this->Flash->error(__('Server went wrong. Try again later.'));
+            }
+        }
+
+        $this->set(compact('post', 'form', 'categories', 'postCateIds', 'mainCate'));
     }
 
     /**
@@ -218,17 +314,32 @@ class PostsController extends AppController {
      * @return \Cake\Http\Response|null Redirects to index.
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
-    public function delete($id = null)
-    {
+    public function delete($id = null) {
+        $this->autoRender = false;
         $this->request->allowMethod(['post', 'delete']);
-        $post = $this->Posts->get($id);
-        if ($this->Posts->delete($post)) {
-            $this->Flash->success(__('The post has been deleted.'));
-        } else {
-            $this->Flash->error(__('The post could not be deleted. Please, try again.'));
-        }
 
-        return $this->redirect(['action' => 'index']);
+        $post = $this->Posts->get($id);
+        $post->active = false;
+
+        if ($this->Posts->save($post))
+            $this->Flash->success(__('The post has been suspended successfully.'));
+        else
+            $this->Flash->error(__('Server went wrong. Try again later.'));
+
+        return $this->redirect($this->request->referer());
+    }
+
+    public function revive($id = null) {
+        $this->autoRender = false;
+        $post = $this->Posts->get($id);
+        $post->active = true;
+
+        if ($this->Posts->save($post))
+            $this->Flash->success('Hooray! The post #'.$post->id.' has been revived successfully.');
+        else
+            $this->Flash->error('Server went wrong. Try again later.');
+
+        return $this->redirect($this->request->referer());
     }
 
     private function getCategoriesByPost($posts) {
@@ -362,7 +473,7 @@ class PostsController extends AppController {
             }
             else {
                 $this->Flash->error(__('Oops! The keyword seems to be all whitespaces. Please remove some!'));
-                $this->redirect($this->referer());
+                $this->redirect($this->request->referer());
             }
         }
         else {
@@ -386,7 +497,7 @@ class PostsController extends AppController {
             endforeach;
         }
 
-        $this->set(compact('posts', 'categoriesByPost', 'data', 'yearField', 'keywords'));
+        $this->set(compact('posts', 'categoriesByPost', 'data', 'yearField'));
     }
 
     private function prepareQuery($data, $context) {

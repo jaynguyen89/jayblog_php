@@ -2,6 +2,11 @@
 $nameFieldAtt = ['class' => 'form-control', 'label' => false, 'placeholder' => 'Name*', 'type' => 'text', 'id' => 'commenterName', 'oninput' => 'validateCommentForm()'];
 $emailFieldAtt = ['class' => 'form-control', 'label' => false, 'placeholder' => 'Email*', 'type' => 'text', 'id' => 'commenterEmail', 'oninput' => 'validateCommentForm()'];
 $commentSubmit = ['id' => 'commentButton', 'class' => 'btn btn-outline btn-outline-md outline-dark', 'disabled' => true, 'style' => 'margin-top: 0;'];
+
+$user = $this->request->session()->read('Auth.User');
+
+$progress = $post->task_total ? round($post->task_done/$post->task_total, 2)*100 : 60;
+$progressLabel = $progress < 25 ? 'danger' : ($progress < 50 ? 'warning' : ($progress < 75 ? 'info' : 'success'));
 ?>
 
 <div class="container">
@@ -10,8 +15,24 @@ $commentSubmit = ['id' => 'commentButton', 'class' => 'btn btn-outline btn-outli
         <div class="container">
             <div class="underlined-title">
                 <h1><?= $post->title; ?></h1><span class="label label-success">Completed</span>
+                <?php if ($user && !$post->active) { ?><span class="label label-danger" style="margin-left: 10px;">Suspended</span><?php } ?>
                 <hr>
                 <p class="lead"><?= $post->description; ?></p>
+                <div class="progress">
+                <?php if ($post->task_total) { ?>
+                    <div role="progressbar" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"
+                    class="progress-bar progress-bar-striped progress-bar-<?= $progressLabel; ?>"
+                    style="width: <?= ($progress < 15 ? '15' : $progress); ?>%">
+                        <?= $post->task_done.'/'.$post->task_total; ?> Tasks Done (<?= $progress; ?>%)
+                    </div>
+                <?php } else { ?>
+                    <div role="progressbar" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"
+                    class="progress-bar progress-bar-striped progress-bar-<?= $progressLabel; ?>"
+                    style="width: <?= ($progress < 15 ? '15' : $progress); ?>%">
+                        Currently Working On
+                    </div>
+                <?php } ?>
+                </div>
             </div>
         </div>
         <!-- End section title -->
@@ -94,17 +115,23 @@ $commentSubmit = ['id' => 'commentButton', 'class' => 'btn btn-outline btn-outli
                     </div>
                     <!-- End project info -->
 
-                    <?php $user = $this->request->session()->read('Auth.User'); if ($user) { ?>
-                        <div class="col-xs-12">
+                    <?php if ($user) { ?>
+                    <div class="row">
+                        <div class="col-xs-6">
+                            <?= $this->Html->link('Edit Board', ['controller' => 'Posts', 'action' => 'edit', '?' => ['pid' => $post->id, 'form' => '1']],
+                                ['class' => 'btn btn-outline btn-outline-sm outline-dark']); ?>
+                        </div>
+                        <div class="col-xs-6">
                             <?= $this->Form->postLink('Reset Votes', ['controller' => 'Votes', 'action' => 'edit', $post->id],
                                 ['class' => 'btn btn-outline btn-outline-sm outline-light', 'confirm' => __('All votes will be reset for {0}. Continue?', $post->title)]); ?>
                         </div>
+                    </div>
                     <?php } ?>
 
                     <!-- Optional admin notes on project -->
                     <div class="col-xs-12">
                         <h5><i class="fas fa-pencil-alt" style="color: #3498DB;"></i> Notes</h5>
-                        <p class="small"><?= $post->note ? $this->Text->autoParagraph(h($post->note)) : 'N/A'; ?></p>
+                        <p class="small"><?= $post->note ? $post->note : 'N/A'; ?></p>
                     </div>
                     <!-- End notes -->
                 </div>
@@ -117,7 +144,7 @@ $commentSubmit = ['id' => 'commentButton', 'class' => 'btn btn-outline btn-outli
             <!-- Project description -->
             <div class="col-md-9 col-sm-9 col-xs-12">
                 <h4><i class="fas fa-clipboard" style="color: #3498DB;"></i> Project Description</h4>
-                <p class="medium"><?= $this->Text->autoParagraph(h($post->content)); ?></p>
+                <p class="medium"><?= $post->content; ?></p>
             </div>
             <!-- End project description -->
 
@@ -141,6 +168,7 @@ $commentSubmit = ['id' => 'commentButton', 'class' => 'btn btn-outline btn-outli
         </div>
         <!-- End section -->
 
+        <?php if (!$user) { ?>
         <!-- Section containing next reading suggestions -->
         <div class="row">
             <hr>
@@ -191,7 +219,7 @@ $commentSubmit = ['id' => 'commentButton', 'class' => 'btn btn-outline btn-outli
                                 <div class="col-sm-6 col-xs-12"><div class="form-group"><?= $this->Form->control('commenter_email', $emailFieldAtt); ?></div></div>
                             </div>
                             <div class="row" style="margin: 0 5px 0 5px;">
-                                <textarea id="editor1" name="content" rows="10" cols="90""></textarea>
+                                <textarea id="editor1" name="content" rows="10" cols="90"></textarea>
                                 <p id="countCommentChars" class="small pull-right" style="margin-top: 0; margin-bottom: 0; color: #515157;">5000 Chars Left</p>
                             </div>
                             <!-- End input area -->
@@ -211,6 +239,30 @@ $commentSubmit = ['id' => 'commentButton', 'class' => 'btn btn-outline btn-outli
             </div>
         </div>
         <!-- End comment form -->
+        <?php } else { ?>
+        <div class="row">
+            <hr>
+            <div class="col-sm-3 col-xs-6" style="margin-top: 10px;">
+                <?= $this->Html->link('Edit Post', ['controller' => 'Posts', 'action' => 'edit', '?' => ['pid' => $post->id, 'form' => '0']],
+                    ['class' => 'btn btn-outline btn-outline-sm outline-dark', 'style' => 'margin: auto;']); ?>
+            </div>
+            <div class="col-sm-3 col-xs-6" style="margin-top: 10px;">
+                <?= $this->Html->link('Edit Files', ['controller' => 'Attachments', 'action' => 'adminEdit', '?' => ['pid' => $post->id, 'form' => '0']],
+                    ['class' => 'btn btn-outline btn-outline-sm outline-dark', 'style' => 'margin: auto;']); ?>
+            </div>
+            <div class="col-sm-3 col-xs-6" style="margin-top: 10px;">
+                <?= $this->Html->link('Edit Gallery', ['controller' => 'Attachments', 'action' => 'adminEdit', '?' => ['pid' => $post->id, 'form' => '1']],
+                    ['class' => 'btn btn-outline btn-outline-sm outline-dark', 'style' => 'margin: auto;']); ?>
+            </div>
+            <div class="col-sm-3 col-xs-6" style="margin-top: 10px;">
+                <?= ($post->active) ? $this->Form->postLink('Suspend', ['controller' => 'Posts', 'action' => 'delete', $post->id],
+                    ['class' => 'btn btn-outline btn-outline-sm outline-light', 'style' => 'margin: auto;', 'confirm' => __('Suspend post #{0}: {1}. Continue?', $post->id, $post->title)]) :
+                    $this->Form->postLink('Revive', ['controller' => 'Posts', 'action' => 'revive', $post->id],
+                    ['class' => 'btn btn-outline btn-outline-sm outline-dim', 'style' => 'margin: auto;', 'confirm' => __('Revive post #{0}: {1}. Continue?', $post->id, $post->title)]); ?>
+            </div>
+            <hr>
+        </div>
+        <?php } ?>
 
         <!-- Section containing all comments and replies on the post -->
         <div class="row">
@@ -226,8 +278,14 @@ $commentSubmit = ['id' => 'commentButton', 'class' => 'btn btn-outline btn-outli
                             <?= $this->Gravatar->avatar($comment->commenter_email, ['size' => '75px', 'default' => $defaultAvatars[array_rand($defaultAvatars)], 'class' => 'img-circle pull-left']); ?>
                             <p style="margin-top: 0; margin-bottom: 5px;"><b><?= ucwords(strtolower($comment->commenter_name)); ?></b></p>
                             <p style="margin-top: 5px;"><b><?= (new DateTime($comment->comment_date))->format('d/m/Y H:i'); ?></b></p>
-                            <?php if ($isCommentable) { ?>
+                            <?php if ($isCommentable && !$user) { ?>
                                 <a role="button" name="showFormTag" onclick="showReplyForm(<?= $n; ?>);passDataToReplyForm(<?= $comment->id; ?>);">Reply</a>
+                            <?php } else { ?>
+                                <?php if (!$comment->status)
+                                    echo $this->Form->postLink('Approve', ['controller' => 'Comments', 'action' => 'edit', '?' => ['cid' => $comment->id, 'pid' => '0']],
+                                                         ['class' => 'text-success', 'confirm' => __('Approve comment #{0}. Continue?', $comment->id)]); ?>
+                                <?= $this->Form->postLink('Suspend', ['controller' => 'Comments', 'action' => 'edit', '?' => ['cid' => $comment->id, 'pid' => '1']],
+                                                         ['class' => 'text-danger', 'confirm' => __('Suspending comment #{0} will suspend its related replies. Continue?', $comment->id)]); ?>
                             <?php } ?>
                         </div>
                         <!-- End column -->
@@ -238,7 +296,7 @@ $commentSubmit = ['id' => 'commentButton', 'class' => 'btn btn-outline btn-outli
                     <!-- End comment -->
 
                     <!-- This area contains the reply form which is printed via Javascript template -->
-                    <?php if ($isCommentable) { ?>
+                    <?php if ($isCommentable && !$user) { ?>
                         <div class="row replyFormDivs" style="display: none;"></div>
                     <?php } ?>
 
@@ -260,6 +318,15 @@ $commentSubmit = ['id' => 'commentButton', 'class' => 'btn btn-outline btn-outli
 
                             <!-- The replying content -->
                             <div class="row " style="background-color: #F8F8F8; border: 1px solid #E7E7E7; border-radius: 10px; padding: 10px;"><?= $reply->content; ?></div>
+                            <?php if ($user) { ?>
+                                <div class="row">
+                                    <?php if (!$reply->status)
+                                    echo $this->Form->postLink('Approve', ['controller' => 'Replies', 'action' => 'edit', '?' => ['rid' => $reply->id, 'pid' => '0']],
+                                                             ['class' => 'text-success', 'confirm' => __('Approve reply {0}. Continue?', $reply->id)]); ?>
+                                    <?= $this->Form->postLink('Suspend', ['controller' => 'Replies', 'action' => 'edit', '?' => ['rid' => $reply->id, 'pid' => '1']],
+                                                             ['class' => 'text-danger', 'confirm' => __('Suspend reply {0}. Continue?', $reply->id)]); ?>
+                                </div>
+                            <?php } ?>
                         </div>
                     <?php } endforeach; ?>
                     <!-- End replies -->

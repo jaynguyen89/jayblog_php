@@ -45,7 +45,8 @@ $cakeDescription = 'Jay\'s Blog - Dare to step';
     <?= $this->fetch('script') ?>
 </head>
 <body data-spy="scroll" data-target="nav">
-<?php $user = $this->request->session()->read('Auth.User');
+<?php $session = $this->request->session();
+$user = $session->read('Auth.User');
 $active = (strpos($this->request->here, '/messages/add') != false ? '1' :
     (strpos($this->request->here, '/posts/view/') != false ? '-1' :
         ((strpos($this->request->here, '/posts/programming-interest') != false || strpos($this->request->here, '/posts/framework-interest') != false || strpos($this->request->here, '/posts/api-interest') != false || strpos($this->request->here, '/posts/software-interest') != false) ? '2' :
@@ -133,12 +134,14 @@ $active = (strpos($this->request->here, '/messages/add') != false ? '1' :
                         <?php if ($user) { ?>
                             <!-- Dropdown menu for Other contents -->
                             <li class="nav-item dropdown <?= $active == 5 ? 'active' : ''; ?>">
-                                <a class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-delay="0" data-close-others="false" href="#">Manage <i class="fa fa-angle-down"></i></a>
+                                <a class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-delay="0" data-close-others="false" href="#">Actions <i class="fa fa-angle-down"></i></a>
                                 <ul class="dropdown-menu" style="background-color: lightgray">
                                     <li><?= $this->Html->link($this->Html->tag('i', '', ['class' => 'fas fa-calendar-times', 'style' => 'margin-right: 10px;']).'Suspendings',
                                             ['controller' => 'Users', 'action' => 'suspendedAssets'], ['escape' => false]); ?></li>
                                     <li><?= $this->Html->link($this->Html->tag('i', '', ['class' => 'fas fa-flag-checkered', 'style' => 'margin-right: 10px;']).'Highlightings',
                                             ['controller' => 'Users', 'action' => 'highlightedAssets'], ['escape' => false]); ?></li>
+                                    <li><?= $this->Html->link($this->Html->tag('i', '', ['class' => 'fas fa-user-times', 'style' => 'margin-right: 10px;']).'Sign Out',
+                                            ['controller' => 'Users', 'action' => 'logout'], ['escape' => false]); ?></li>
                                 </ul>
                             </li>
                             <!-- End dropdown -->
@@ -156,7 +159,7 @@ $active = (strpos($this->request->here, '/messages/add') != false ? '1' :
         <?= $this->fetch('content') ?>
     </div>
 
-    <?php if (strpos($this->request->here, '/messages/add') == false && strpos($this->request->here, '/users/') == false) {
+    <?php if (strpos($this->request->here, '/messages/add') == false && strpos($this->request->here, '/users/') == false && !$user) {
         $keywordFieldAttr = ['id' => 'keyword', 'placeholder' => 'Keyword', 'label' => false, 'type' => 'text', 'class' => 'form-control', 'oninput' => 'keywordFormCheck()'];
         $keywordSubmitAttr = ['id' => 'keywordSubmit', 'class' => 'btn btn-outline btn-outline-sm outline-dark', 'style' => 'margin: auto', 'disabled' => true];
         $monthFieldAttr = ['id' => 'month', 'empty' => 'Select Month', 'class' => 'form-control', 'onchange' => 'filterFormCheck()'];
@@ -332,7 +335,7 @@ $active = (strpos($this->request->here, '/messages/add') != false ? '1' :
     <?= $this->Html->script('plugins.js'); ?>
     <?= $this->Html->script('bskit-scripts.js'); ?>
 
-    <?php if (strpos($this->request->here, '/posts/view/') != false) { ?>
+    <?php if (strpos($this->request->here, '/posts/view/') != false && !$user) { ?>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.5.0/prism.min.js"></script>
         <script src="https://cdn.ckeditor.com/4.5.7/standard/ckeditor.js"></script>
 
@@ -371,6 +374,11 @@ $active = (strpos($this->request->here, '/messages/add') != false ? '1' :
                 });
             });
         </script>
+    <?php } else if ($user && strpos($this->request->here, '/posts/edit') != false) { ?>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.5.0/prism.min.js"></script>
+        <script src="https://cdn.ckeditor.com/4.5.7/standard/ckeditor.js"></script>
+
+        <script type="text/javascript">$(function () { CKEDITOR.replace('editor1'); });</script>
     <?php } ?>
 
     <?= $this->Html->script('jayblog.js'); ?>

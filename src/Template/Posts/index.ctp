@@ -42,14 +42,14 @@
                                             endforeach; ?>
                                     </div></li>
                             </ul>
-                            <p class="small">Please click <a role="button" onclick="passDataToSuggestFeatureForm()" data-toggle="modal" data-target="#suggestFeatureModal">here</a> to suggest a feature or report a bug. Thanks!</p>
+                            <p class="small">Please click <a role="button" onclick="passDataToSuggestFeatureForm<?= $latestPost->id; ?>()" data-toggle="modal" data-target="#suggestFeatureModal">here</a> to suggest a feature or report a bug. Thanks!</p>
                         </div>
                     </div>
                     <!-- End row of general project info -->
 
                     <!-- JS code that is called when suggest link is clicked -->
                     <script type="text/javascript">
-                        function passDataToSuggestFeatureForm() {
+                        function passDataToSuggestFeatureForm<?= $latestPost->id; ?>() {
                             var postIdInput = document.getElementById('postIdInput');
                             postIdInput.value = '<?= $latestPost->id; ?>';
 

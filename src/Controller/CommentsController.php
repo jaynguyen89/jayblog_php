@@ -112,14 +112,49 @@ class CommentsController extends AppController
         $pid = $this->request->query('pid');
 
         $comment = $this->Comments->get($id);
+        $replies = array();
 
-        if ($pid)
+        if ($pid == 1)
             $comment->active = false;
+        else if ($pid == 2) {
+            $comment->active = false;
+            $replies = $this->Comments->Replies->find('all', ['conditions' => ['comment_id' => $id, 'active' => true]])->toArray();
+
+            if ($replies) {
+                foreach ($replies as &$reply)
+                    $reply->active = false;
+
+                unset($reply);
+            }
+        }
         else
             $comment->status = true;
 
-        if ($this->Comments->save($comment))
-            $this->Flash->success(__('The comment #'.$comment->id.' has been '.($pid ? 'suspended' : 'approved').' successfully.'));
+        $i = 0;
+        if ($this->Comments->save($comment)) {
+            if ($pid == 2) {
+                if ($replies) {
+                    $success = true;
+                    foreach ($replies as $reply) {
+                        if ($this->Comments->Replies->save($reply))
+                            $i++;
+                        else {
+                            $success = false;
+                            break;
+                        }
+                    }
+
+                    if ($success)
+                        $this->Flash->success(__('The comment #' . $comment->id . ' and all of its replies ('.count($replies).') have been suspended successfully.'));
+                    else
+                        $this->Flash->warning('The comment #' . $comment->id . ' has been suspended but some of its replies ('.count($replies) - $i.'/'.count($replies).') was failed to suspend.');
+                }
+                else
+                    $this->Flash->success(__('The comment #' . $comment->id . ' has been suspended successfully. No active replies found.'));
+            }
+            else
+                $this->Flash->success(__('The comment #' . $comment->id . ' has been ' . ($pid ? 'suspended' : 'approved') . ' successfully.'));
+        }
         else
             $this->Flash->error(__('Server went wrong. Try again later!'));
 

@@ -1,6 +1,57 @@
+<?php $adminIdSearchAttr = ['id' => 'postId', 'placeholder' => 'Post ID', 'label' => false, 'type' => 'number', 'class' => 'form-control', 'oninput' => 'adminSearchCheck()'];
+$adminKeySearchAttr = ['id' => 'keyword', 'placeholder' => 'Keyword', 'label' => false, 'type' => 'text', 'class' => 'form-control', 'oninput' => 'adminSearchCheck()'];
+$adminSubmitAttr = ['id' => 'adminSubmit', 'style' => 'margin-left: 15px;', 'class' => 'btn btn-outline btn-outline-sm outline-dark', 'disabled' => true]; ?>
+
 <div class="container">
     <div class="row" style="min-height: 622px;">
         <h2>Admin: Jay Nguyen</h2>
+
+        <!-- Admin Search Form -->
+        <div class="row">
+            <form method="post" action="/jayblog/users/search">
+                <div class="row">
+                    <div class="col-xs-12 text-center"><p class="guardsman" id="adminSearchError"></p></div>
+                    <div class="col-sm-6 col-xs-12"><?= $this->Form->control('postId', $adminIdSearchAttr); ?></div>
+                    <div class="col-sm-6 col-xs-12"><?= $this->Form->control('keyword', $adminKeySearchAttr); ?></div>
+                </div>
+                <div class="row"><?= $this->Form->button(__('Search'), $adminSubmitAttr); ?></div>
+            </form>
+            <hr>
+        </div>
+        <!-- End Admin Search Form -->
+
+        <script type="text/javascript">
+            function adminSearchCheck() {
+                var postId = document.getElementById('postId').value;
+                var keyword = document.getElementById('keyword').value;
+                var error = document.getElementById('adminSearchError');
+                var submitBtn = document.getElementById('adminSubmit');
+
+                if (postId.length !== 0 && keyword.length !== 0) {
+                    error.innerHTML = 'Only 1 of the 2 searches is allow at a time.';
+                    submitBtn.disabled = true;
+                }
+                else if (postId.length !== 0 && keyword.length === 0) {
+                    if (parseInt(postId) !== 0 && parseInt(postId) !== 1) {
+                        error.innerHTML = '';
+                        submitBtn.disabled = false;
+                    }
+                    else {
+                        error.innerHTML = 'No posts found for the following ids: #0 and #1';
+                        submitBtn.disabled = true;
+                    }
+                }
+                else if (postId.length === 0 && keyword.length !== 0) {
+                    error.innerHTML = '';
+                    submitBtn.disabled = false;
+                }
+                else {
+                    error.innerHTML = '';
+                    submitBtn.disabled = true;
+                }
+            }
+        </script>
+
         <!-- Page mini-navigation: Tab-bar displaying tabs that toggle its corresponding view -->
         <ul class="nav nav-tabs">
             <li class="active"><a data-toggle="tab" href="#reviews">

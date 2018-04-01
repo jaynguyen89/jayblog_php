@@ -103,7 +103,7 @@ class RepliesController extends AppController
      */
     public function edit() {
         $this->autoRender = false;
-        $id = $this->request->query('cid');
+        $id = $this->request->query('rid');
         $pid = $this->request->query('pid');
 
         $reply = $this->Replies->get($id);
@@ -114,7 +114,7 @@ class RepliesController extends AppController
             $reply->status = true;
 
         if ($this->Replies->save($reply)) {
-            $this->Flash->success(__('The comment #'.$reply->id.' has been '.($pid ? 'suspended' : 'approved').' successfully.'));
+            $this->Flash->success(__('The reply #'.$reply->id.' has been '.($pid ? 'suspended' : 'approved').' successfully.'));
             return $this->redirect($this->request->referer());
         }
 
