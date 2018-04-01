@@ -1,66 +1,38 @@
-<?php
-/**
- * @var \App\View\AppView $this
- * @var \App\Model\Entity\Message $message
- */
-?>
-<nav class="large-3 medium-4 columns" id="actions-sidebar">
-    <ul class="side-nav">
-        <li class="heading"><?= __('Actions') ?></li>
-        <li><?= $this->Html->link(__('Edit Message'), ['action' => 'edit', $message->id]) ?> </li>
-        <li><?= $this->Form->postLink(__('Delete Message'), ['action' => 'delete', $message->id], ['confirm' => __('Are you sure you want to delete # {0}?', $message->id)]) ?> </li>
-        <li><?= $this->Html->link(__('List Messages'), ['action' => 'index']) ?> </li>
-        <li><?= $this->Html->link(__('New Message'), ['action' => 'add']) ?> </li>
-        <li><?= $this->Html->link(__('List Posts'), ['controller' => 'Posts', 'action' => 'index']) ?> </li>
-        <li><?= $this->Html->link(__('New Post'), ['controller' => 'Posts', 'action' => 'add']) ?> </li>
-    </ul>
-</nav>
-<div class="messages view large-9 medium-8 columns content">
-    <h3><?= h($message->id) ?></h3>
-    <table class="vertical-table">
-        <tr>
-            <th scope="row"><?= __('Post') ?></th>
-            <td><?= $message->has('post') ? $this->Html->link($message->post->title, ['controller' => 'Posts', 'action' => 'view', $message->post->id]) : '' ?></td>
-        </tr>
-        <tr>
-            <th scope="row"><?= __('Sender Name') ?></th>
-            <td><?= h($message->sender_name) ?></td>
-        </tr>
-        <tr>
-            <th scope="row"><?= __('Sender Email') ?></th>
-            <td><?= h($message->sender_email) ?></td>
-        </tr>
-        <tr>
-            <th scope="row"><?= __('Sender Phone') ?></th>
-            <td><?= h($message->sender_phone) ?></td>
-        </tr>
-        <tr>
-            <th scope="row"><?= __('Id') ?></th>
-            <td><?= $this->Number->format($message->id) ?></td>
-        </tr>
-        <tr>
-            <th scope="row"><?= __('Type') ?></th>
-            <td><?= $this->Number->format($message->type) ?></td>
-        </tr>
-        <tr>
-            <th scope="row"><?= __('Recieved On') ?></th>
-            <td><?= h($message->recieved_on) ?></td>
-        </tr>
-        <tr>
-            <th scope="row"><?= __('Is Oppened') ?></th>
-            <td><?= $message->is_oppened ? __('Yes') : __('No'); ?></td>
-        </tr>
-        <tr>
-            <th scope="row"><?= __('Active') ?></th>
-            <td><?= $message->active ? __('Yes') : __('No'); ?></td>
-        </tr>
-        <tr>
-            <th scope="row"><?= __('Flagged') ?></th>
-            <td><?= $message->flagged ? __('Yes') : __('No'); ?></td>
-        </tr>
-    </table>
-    <div class="row">
-        <h4><?= __('Content') ?></h4>
-        <?= $this->Text->autoParagraph(h($message->content)); ?>
-    </div>
+<div class="container">
+    <section id="content-1-9" class="content-1-9 content-block" style="min-height: 621px;">
+        <!-- Section title -->
+        <div class="container">
+            <div class="underlined-title">
+                <h1>Privacy Policy</h1>
+                <hr>
+                <p class="lead">Please take some times to read this Privacy Policy before browsing Jay's Blog. Thank you!</p>
+            </div>
+        </div>
+        <!-- End section title -->
+
+        <div class="row bg-offwhite" style="border-radius: 10px; padding: 10px; margin-bottom: 15px;">
+            <h4>1. Jay reserves the rights to any materials and resources that are published in this blog.</h4>
+            <div class="row bg-white" style="border-radius: 10px; padding: 10px; margin: 10px;">
+                <p>Details here</p>
+            </div>
+        </div>
+        <div class="row bg-offwhite" style="border-radius: 10px; padding: 10px; margin-bottom: 15px;">
+            <h4>2. Jay will respect your privacy.</h4>
+            <div class="row bg-white" style="border-radius: 10px; padding: 10px; margin: 10px;">
+                <p>Details here</p>
+            </div>
+        </div>
+        <div class="row bg-offwhite" style="border-radius: 10px; padding: 10px; margin-bottom: 15px;">
+            <h4>3. Jay appreciates your professionalism in commenting & replying in this blog.</h4>
+            <div class="row bg-white" style="border-radius: 10px; padding: 10px; margin: 10px;">
+                <p>Details here</p>
+            </div>
+        </div>
+        <div class="row bg-offwhite" style="border-radius: 10px; padding: 10px;">
+            <h4>4. Disclaimer</h4>
+            <div class="row bg-white" style="border-radius: 10px; padding: 10px; margin: 10px;">
+                <p>Details here</p>
+            </div>
+        </div>
+    </section>
 </div>

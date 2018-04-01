@@ -15,7 +15,7 @@ class MessagesController extends AppController
 {
     public function beforeFilter(Event $event) {
         parent::beforeFilter($event);
-        $this->Auth->allow(['add', 'suggestProject']);
+        $this->Auth->allow(['add', 'suggestProject', 'view']);
     }
 
     public function reviewMessage($id = null) {
@@ -41,11 +41,11 @@ class MessagesController extends AppController
 
             if (strlen(trim($data['content'])) == 0) {
                 $this->Flash->error(__('Oops! Your '.($data['form_id'] ? 'feature' : 'project').' suggestion seems to be blank. Please provide some content to continue.'));
-                return $this->redirect('/');
+                return $this->redirect($this->request->referer());
             }
             else if (!$this->checkWhiteSpaceString($data['content'])) {
                 $this->Flash->error(__('Oops! Your '.($data['form_id'] ? 'feature' : 'project').' suggestion seems to be bad formatted or all whitespaced. Please take a look at it again.'));
-                return $this->redirect('/');
+                return $this->redirect($this->request->referer());
             }
             else {
                 if ($data['form_id'] == 0) {
@@ -61,7 +61,7 @@ class MessagesController extends AppController
                         //$this->sendConfirmation(1, $data['sender_email'], ['name' => $data['sender_name'], 'post_title' => null, 'content' => $data['content']]);
 
                     $this->Flash->success(__('Hooray! Your '.($data['form_id'] ? 'feature' : 'project').' suggestion has been sent successfully.'));
-                    return $this->redirect('/');
+                    return $this->redirect($this->request->referer());
                 }
 
                 $this->Flash->error(__('Oops! Something went wrong with the server. Please try again later.'));
@@ -133,14 +133,7 @@ class MessagesController extends AppController
      * @return \Cake\Http\Response|void
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
-    public function view($id = null)
-    {
-        $message = $this->Messages->get($id, [
-            'contain' => ['Posts']
-        ]);
-
-        $this->set('message', $message);
-    }
+    public function view($id = null) { }
 
     /**
      * Add method

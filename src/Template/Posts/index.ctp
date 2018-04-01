@@ -78,40 +78,6 @@
     </section>
     <!-- End section -->
 
-    <!-- This section contains the modal popup displaying a form that allows feature suggestion -->
-    <div class="modal fade" id="suggestFeatureModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <!-- Popup header -->
-                <div class="modal-header" align="center">
-                    <?= $this->Html->image('jaydev.PNG', ['height' => '50px;', 'id' => 'img_logo']); ?>
-                </div>
-
-                <!-- Begin popup form -->
-                <div id="div-forms">
-                    <form id="login-form" method="post" action="/jayblog/messages/suggestProject">
-                        <div class="modal-body">
-                            <div id="div-login-msg"><h6><i class="fas fa-bullhorn" style="color: #3498DB;"></i> Please enter some optional information and your suggestion.</h6></div>
-                            <div class="row">
-                                <div class="text-center"><p id="featureFormError" class="small guardsman"></p></div>
-                                <input type="hidden" name="form_id"/>
-                                <input name="post_id" id="postIdInput" type="hidden"/>
-                                <div class="col-xs-12"><input id="postTitleInput" name="post_title" class="form-control" type="text" readonly></div>
-                                <div class="col-sm-6 col-xs-12" style="margin-top: 5px;"><input name="sender_name" id="featureSuggesterName" class="form-control" type="text" placeholder="Name" oninput="checkSuggestFeatureForm()" /></div>
-                                <div class="col-sm-6 col-xs-12" style="margin-top: 5px;"><input name="sender_email" id="featureSuggesterEmail" class="form-control" type="text" placeholder="Email" oninput="checkSuggestFeatureForm()" /></div>
-                                <div class="col-xs-12" style="margin-top: 5px;"><textarea name="content" id="featureIdea" class="form-control" rows="3" placeholder="Your feature idea ..." oninput="countSuggestCharacters()"></textarea></div>
-                                <div class="text-center"><p id="featureSuggestCount" class="small">1000 Chars Left</p></div>
-                            </div>
-                        </div>
-                        <div class="modal-footer"><button id="featureSubmit" type="submit" class="btn btn-outline btn-outline-sm outline-dark center-block" disabled style="margin: 0;">Send</button></div>
-                    </form>
-                </div>
-                <!-- End popup form -->
-            </div>
-        </div>
-    </div>
-    <!-- End modal popup -->
-
     <!-- Section contains past posts and projects -->
     <section id="content-1-9" class="content-1-9 content-block" style="padding-bottom: 10px;">
         <!-- Section title -->

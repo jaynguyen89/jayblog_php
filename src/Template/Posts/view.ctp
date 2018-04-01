@@ -5,16 +5,26 @@ $commentSubmit = ['id' => 'commentButton', 'class' => 'btn btn-outline btn-outli
 
 $user = $this->request->session()->read('Auth.User');
 
-$progress = $post->task_total ? round($post->task_done/$post->task_total, 2)*100 : 60;
+$progress = $post->task_total ? round($post->task_done/$post->task_total, 2)*100 : ($post->status == 0 ? 100 : ($post->status == 1 ? 50 : 15));
 $progressLabel = $progress < 25 ? 'danger' : ($progress < 50 ? 'warning' : ($progress < 75 ? 'info' : 'success'));
 ?>
 
 <div class="container">
+    <!-- Breadcrumb navigation pane
+    <ul class="breadcrumb">
+        <li><?= $this->Html->link('Home', '/'); ?></li>
+        <li>Posts</li>
+        <li><?= $this->Html->link('View', ['controller' => 'Posts', 'action' => 'view', $post->id]); ?></li>
+    </ul>
+    End breadcrumb -->
+
     <section id="content-1-9" class="content-1-9 content-block" style="padding-bottom: 10px;">
         <!-- Section title -->
         <div class="container">
             <div class="underlined-title">
-                <h1><?= $post->title; ?></h1><span class="label label-success">Completed</span>
+                <h1><?= $post->title; ?></h1>
+                <?= $post->status == 0 ? '<span class="label label-success">Completed</span>' :
+                ($post->status == 1 ? '<span class="label label-warning">Progressing</span>' : '<span class="label label-default">Proposed</span>'); ?>
                 <?php if ($user && !$post->active) { ?><span class="label label-danger" style="margin-left: 10px;">Suspended</span><?php } ?>
                 <hr>
                 <p class="lead"><?= $post->description; ?></p>
@@ -29,7 +39,7 @@ $progressLabel = $progress < 25 ? 'danger' : ($progress < 50 ? 'warning' : ($pro
                     <div role="progressbar" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"
                     class="progress-bar progress-bar-striped progress-bar-<?= $progressLabel; ?>"
                     style="width: <?= ($progress < 15 ? '15' : $progress); ?>%">
-                        Currently Working On
+                        <?= $progress == 100 ? 'Completed' : ($progress == 50 ? 'Currently Working On' : 'Proposed'); ?>
                     </div>
                 <?php } ?>
                 </div>

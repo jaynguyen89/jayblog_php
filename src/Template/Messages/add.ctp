@@ -7,10 +7,8 @@ $contentFieldAttr = ['class' => 'form-control', 'label' => false, 'placeholder' 
 <div class="container">
     <!-- Breadcrumb navigation pane -->
     <ul class="breadcrumb">
-        <li><a href="#">Home</a></li>
-        <li><a href="#">Pictures</a></li>
-        <li><a href="#">Summer 15</a></li>
-        <li>Italy</li>
+        <li><?= $this->Html->link('Home', '/'); ?></li>
+        <li><?= $this->Html->link('About', ['controller' => 'Messages', 'action' => 'add']); ?></li>
     </ul>
     <!-- End breadcrumb -->
 

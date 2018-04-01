@@ -37,7 +37,7 @@
                                     </div>
                                 </li>
                             </ul>
-                            <p class="small">Please click <a role="button" onclick="passDataToSuggestFeatureForm()" data-toggle="modal" data-target="#suggestFeatureModal">here</a> to suggest a feature or report a bug. Thanks!</p>
+                            <p class="small">Please click <a role="button" onclick="passDataToSuggestFeatureForm<?= $post['id']; ?>()" data-toggle="modal" data-target="#suggestFeatureModal">here</a> to suggest a feature or report a bug. Thanks!</p>
                         </div>
                     </div>
                     <div class="row">
@@ -47,6 +47,18 @@
                         </div>
                     </div>
                 </div>
+
+                <!-- JS code that is called when suggest link is clicked -->
+                <script type="text/javascript">
+                    function passDataToSuggestFeatureForm<?= $post['id']; ?>() {
+                        var postIdInput = document.getElementById('postIdInput');
+                        postIdInput.value = '<?= $post['id']; ?>';
+
+                        var postTitleInput = document.getElementById('postTitleInput');
+                        postTitleInput.value = '<?= $post['ptitle']; ?>';
+                    }
+                </script>
+                <!-- End JS -->
             <?php endforeach; } ?>
         </div>
     </section>

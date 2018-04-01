@@ -161,9 +161,46 @@ $active = (strpos($this->request->here, '/messages/add') != false ? '1' :
     <div class="container clearfix"><br/><br/><br/><br/><br/>
         <?= $this->Flash->render() ?>
         <?= $this->fetch('content') ?>
+
+        <?php if (!$user && (strpos($this->request->here, '/posts/') != false || Cake\Routing\Router::url('/', false) == '/jayblog/')) { ?>
+            <!-- This section contains the modal popup displaying a form that allows feature suggestion -->
+            <div class="modal fade" id="suggestFeatureModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <!-- Popup header -->
+                        <div class="modal-header" align="center">
+                            <?= $this->Html->image('jaydev.PNG', ['height' => '50px;', 'id' => 'img_logo']); ?>
+                        </div>
+
+                        <!-- Begin popup form -->
+                        <div id="div-forms">
+                            <form id="login-form" method="post" action="/jayblog/messages/suggestProject">
+                                <div class="modal-body">
+                                    <div id="div-login-msg"><h6><i class="fas fa-bullhorn" style="color: #3498DB;"></i> Please enter some optional information and your suggestion.</h6></div>
+                                    <div class="row">
+                                        <div class="text-center"><p id="featureFormError" class="small guardsman"></p></div>
+                                        <input type="hidden" name="form_id"/>
+                                        <input name="post_id" id="postIdInput" type="hidden"/>
+                                        <div class="col-xs-12"><input id="postTitleInput" name="post_title" class="form-control" type="text" readonly></div>
+                                        <div class="col-sm-6 col-xs-12" style="margin-top: 5px;"><input name="sender_name" id="featureSuggesterName" class="form-control" type="text" placeholder="Name" oninput="checkSuggestFeatureForm()" /></div>
+                                        <div class="col-sm-6 col-xs-12" style="margin-top: 5px;"><input name="sender_email" id="featureSuggesterEmail" class="form-control" type="text" placeholder="Email" oninput="checkSuggestFeatureForm()" /></div>
+                                        <div class="col-xs-12" style="margin-top: 5px;"><textarea name="content" id="featureIdea" class="form-control" rows="3" placeholder="Your feature idea ..." oninput="countSuggestCharacters()"></textarea></div>
+                                        <div class="text-center"><p id="featureSuggestCount" class="small">1000 Chars Left</p></div>
+                                    </div>
+                                </div>
+                                <div class="modal-footer"><button id="featureSubmit" type="submit" class="btn btn-outline btn-outline-sm outline-dark center-block" disabled style="margin: 0;">Send</button></div>
+                            </form>
+                        </div>
+                        <!-- End popup form -->
+                    </div>
+                </div>
+            </div>
+            <!-- End modal popup -->
+        <?php } ?>
     </div>
 
-    <?php if (strpos($this->request->here, '/messages/add') == false && strpos($this->request->here, '/users/') == false && !$user) {
+    <?php if (strpos($this->request->here, '/messages/add') == false && strpos($this->request->here, '/users/') == false &&
+        strpos($this->request->here, '/messages/view') == false && !$user) {
         $keywordFieldAttr = ['id' => 'keyword', 'placeholder' => 'Keyword', 'label' => false, 'type' => 'text', 'class' => 'form-control', 'oninput' => 'keywordFormCheck()'];
         $keywordSubmitAttr = ['id' => 'keywordSubmit', 'class' => 'btn btn-outline btn-outline-sm outline-dark', 'style' => 'margin: auto', 'disabled' => true];
         $monthFieldAttr = ['id' => 'month', 'empty' => 'Select Month', 'class' => 'form-control', 'onchange' => 'filterFormCheck()'];
@@ -285,15 +322,19 @@ $active = (strpos($this->request->here, '/messages/add') != false ? '1' :
         <!-- Section containing footer -->
         <div class="container footer-1-3">
             <!-- Section containing logo and social links -->
-            <div class="col-md-2 col-sm-4 col-xs-4">
+            <div class="col-md-3 col-sm-4 col-xs-4">
                 <?= $this->Html->image('jaydev.PNG', ['alt' => 'jaydeveloper', 'url' => '/', 'class' => 'brand-img img-responsive']); ?>
                 <q><i>No pain, no gain</i></q>
-                <ul class="social social-light">
+
+                <div class="row">
+                    <p class="margin-bottom0">www.linkedin.com/in/jay-developer</p>
+                    <p class="margin-top0">Tel: 0422 357 488</p>
+                </div>
+                <!--<ul class="social social-light">
                     <li><a href="#" target="_blank" title="Twitter"><i class="fab fa-twitter-square fa-3x"></i></a></li>
-                    <li><a role="button" title="Linkedin" target="_blank" onclick="window.open('www.linkedin.com/in/jay-developer', '_blank')"><i class="fab fa-linkedin fa-3x"></i></a></li>
+                    <li><a title="Linkedin" target="_blank" href="www.linkedin.com/in/jay-developer"><i class="fab fa-linkedin fa-3x"></i></a></li>
                     <li><a href="tel:+61422357488" title="Whatsapp"><i class="fab fa-whatsapp-square fa-3x"></i></a></li>
-                </ul>
-                <!-- /.social -->
+                </ul> -->
             </div>
             <!-- End social links -->
 
@@ -330,7 +371,13 @@ $active = (strpos($this->request->here, '/messages/add') != false ? '1' :
 
     <div class="copyright-bar-2">
         <div class="container text-center">
-            <p>Powered by Pinegrow<sup>©</sup> 2015 & Rails 5.1.4. Developed by Jay Nguyen. ALL RIGHTS RESERVED. <a href="#">Privacy Policy</a></p>
+            <p>Powered by CakePHP 3.5. Developed by Jay Nguyen. ALL RIGHTS RESERVED.
+                <a href="/jayblog/messages/view" style="color: lightskyblue !important;"
+                   onmouseover="this.style.color='#01447e'"
+                   onmouseout="this.style.color='lightskyblue'">
+                    Privacy Policy
+                </a>
+            </p>
         </div>
     </div>
 
