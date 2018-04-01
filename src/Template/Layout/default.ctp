@@ -140,6 +140,10 @@ $active = (strpos($this->request->here, '/messages/add') != false ? '1' :
                                             ['controller' => 'Users', 'action' => 'suspendedAssets'], ['escape' => false]); ?></li>
                                     <li><?= $this->Html->link($this->Html->tag('i', '', ['class' => 'fas fa-flag-checkered', 'style' => 'margin-right: 10px;']).'Highlightings',
                                             ['controller' => 'Users', 'action' => 'highlightedAssets'], ['escape' => false]); ?></li>
+                                    <li><?= $this->Html->link($this->Html->tag('i', '', ['class' => 'fas fa-calendar-plus', 'style' => 'margin-right: 10px;']).'New Post',
+                                            ['controller' => 'Posts', 'action' => 'add'], ['escape' => false]); ?></li>
+                                    <li><?= $this->Html->link($this->Html->tag('i', '', ['class' => 'fas fa-plus-circle', 'style' => 'margin-right: 10px;']).'New Category',
+                                            ['controller' => 'Categories', 'action' => 'add'], ['escape' => false]); ?></li>
                                     <li><?= $this->Html->link($this->Html->tag('i', '', ['class' => 'fas fa-user-times', 'style' => 'margin-right: 10px;']).'Sign Out',
                                             ['controller' => 'Users', 'action' => 'logout'], ['escape' => false]); ?></li>
                                 </ul>
@@ -374,7 +378,7 @@ $active = (strpos($this->request->here, '/messages/add') != false ? '1' :
                 });
             });
         </script>
-    <?php } else if ($user && strpos($this->request->here, '/posts/edit') != false) { ?>
+    <?php } else if ($user && (strpos($this->request->here, '/posts/edit') != false || strpos($this->request->here, '/posts/add') != false)) { ?>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.5.0/prism.min.js"></script>
         <script src="https://cdn.ckeditor.com/4.5.7/standard/ckeditor.js"></script>
 

@@ -172,18 +172,27 @@ class PostsController extends AppController {
      *
      * @return \Cake\Http\Response|null Redirects on successful add, renders view otherwise.
      */
-    public function add()
-    {
+    public function add() {
         $post = $this->Posts->newEntity();
-        if ($this->request->is('post')) {
-            $post = $this->Posts->patchEntity($post, $this->request->getData());
-            if ($this->Posts->save($post)) {
-                $this->Flash->success(__('The post has been saved.'));
 
-                return $this->redirect(['action' => 'index']);
+        if ($this->request->is('post')) {
+            $data = $this->request->getData();
+
+            if ($data['context']) {
+                $data['created_on'] = null;
+                $data['updated_on'] = null;
             }
-            $this->Flash->error(__('The post could not be saved. Please, try again.'));
+
+            $post = $this->Posts->patchEntity($post, $data);
+            if ($this->Posts->save($post)) {
+                $post = $this->readDatabase('SELECT MAX(id) as `id` FROM posts;');
+                $this->Flash->success(__('The new post has been saved.'));
+
+                return $this->redirect(['action' => 'view', $post[0]['id']]);
+            }
+            $this->Flash->error(__('Server went wrong. Please, try again.'));
         }
+
         $this->set(compact('post'));
     }
 
