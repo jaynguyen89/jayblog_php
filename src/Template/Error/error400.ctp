@@ -2,9 +2,9 @@
 use Cake\Core\Configure;
 use Cake\Error\Debugger;
 
-$this->layout = 'error';
+//$this->layout = 'error';
 
-if (Configure::read('debug')) :
+/*if (Configure::read('debug')) :
     $this->layout = 'dev_error';
 
     $this->assign('title', $message);
@@ -29,10 +29,15 @@ if (extension_loaded('xdebug')) :
 endif;
 
 $this->end();
-endif;
+endif;*/
 ?>
-<h2><?= h($message) ?></h2>
-<p class="error">
-    <strong><?= __d('cake', 'Error') ?>: </strong>
-    <?= __d('cake', 'The requested address {0} was not found on this server.', "<strong>'{$url}'</strong>") ?>
-</p>
+
+<div class="row text-center guardsman"><h1 style="font-size: 10em; font-weight: bold; margin-bottom: 0;">404</h1></div>
+<div class="row text-center"><h2 style="margin-top: 0;"><?= h($message) ?></h2></div>
+<div class="row text-center">
+    <p class="error">
+        <strong><?= __d('cake', 'Error') ?>: </strong>
+        <?= __d('cake', 'The requested address {0} was not found on this server.', "<strong>'{$url}'</strong>") ?>
+    </p>
+</div>
+

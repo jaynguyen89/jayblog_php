@@ -2,6 +2,7 @@
 namespace App\Controller;
 
 use App\Controller\AppController;
+use Cake\Datasource\Exception\RecordNotFoundException;
 use Cake\Event\Event;
 use Cake\I18n\Time;
 use Cake\ORM\TableRegistry;
@@ -130,7 +131,12 @@ class PostsController extends AppController {
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
     public function view($id = null) {
-        $post = $this->Posts->get($id);
+        try {
+            $post = $this->Posts->get($id);
+        } catch (RecordNotFoundException $exception) {
+            throw new RecordNotFoundException('ID #'.$id);
+        }
+
         $session = $this->request->session();
 
         $votes = $this->getVotes($id);

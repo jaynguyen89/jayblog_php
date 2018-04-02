@@ -2,7 +2,7 @@
 use Cake\Core\Configure;
 use Cake\Error\Debugger;
 
-$this->layout = 'error';
+/*$this->layout = 'error';
 
 if (Configure::read('debug')) :
     $this->layout = 'dev_error';
@@ -34,10 +34,14 @@ if (Configure::read('debug')) :
     endif;
 
     $this->end();
-endif;
+endif;*/
 ?>
-<h2><?= __d('cake', 'An Internal Error Has Occurred') ?></h2>
-<p class="error">
-    <strong><?= __d('cake', 'Error') ?>: </strong>
-    <?= h($message) ?>
-</p>
+
+<div class="row text-center guardsman"><h1 style="font-size: 10em; font-weight: bold; margin-bottom: 0;">500</h1></div>
+<div class="row text-center"><h2 style="margin-top: 0;"><?= h($message) ?></h2></div>
+<div class="row text-center">
+    <p class="error">
+        <strong><?= __d('cake', 'Error') ?>: </strong>
+        <?= __d('cake', 'Internal Server Error - Unknown Request - Record Not Found', "<strong>'{$url}'</strong>") ?>
+    </p>
+</div>

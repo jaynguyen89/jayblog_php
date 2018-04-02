@@ -5,12 +5,12 @@ $phoneFieldAttr = ['class' => 'form-control', 'label' => false, 'placeholder' =>
 $contentFieldAttr = ['class' => 'form-control', 'label' => false, 'placeholder' => 'Message', 'type' => 'text', 'id' => 'contactContent', 'oninput' => 'countContactContent()']; ?>
 
 <div class="container">
-    <!-- Breadcrumb navigation pane -->
+    <!-- Breadcrumb navigation pane
     <ul class="breadcrumb">
         <li><?= $this->Html->link('Home', '/'); ?></li>
         <li><?= $this->Html->link('About', ['controller' => 'Messages', 'action' => 'add']); ?></li>
     </ul>
-    <!-- End breadcrumb -->
+    End breadcrumb -->
 
     <!-- Section contains introductory information about the blog -->
     <section id="content-1-9" class="content-1-9 content-block">

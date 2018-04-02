@@ -3,6 +3,7 @@ namespace App\Controller;
 
 use App\Controller\AppController;
 use Cake\Utility\Security;
+use Cake\Event\Event;
 
 /**
  * Votes Controller
@@ -13,6 +14,11 @@ use Cake\Utility\Security;
  */
 class VotesController extends AppController
 {
+    public function beforeFilter(Event $event) {
+        parent::beforeFilter($event);
+        $this->Auth->allow(['add']);
+    }
+
     /**
      * Index method
      *
