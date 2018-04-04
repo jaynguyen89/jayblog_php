@@ -19,7 +19,7 @@ class AttachmentsController extends AppController
         $id = $this->request->query('pid');
         $form = $this->request->query('form');
 
-        $post = TableRegistry::get('Posts')->get($id);
+        $post = TableRegistry::get('posts')->get($id);
 
         if (!$form) {
             $files = $this->Attachments->find('all', ['conditions' => ['post_id' => $post->id, 'note <>' => 0]])->toArray();

@@ -54,6 +54,8 @@ $contentFieldAttr = ['class' => 'form-control', 'label' => false, 'placeholder' 
                     <p>Consolidate and develop new skills. Better to understand in deep with personal projects.</p>
                 </div>
             </div>
+        </div>
+        <div class="row">
             <div class="col-md-4 col-sm-12 col-xs-12 pad25">
                 <div class="col-xs-2">
                     <span class="fas fa-redo-alt fa-3x" style="color: #3498DB;"></span>
@@ -91,9 +93,13 @@ $contentFieldAttr = ['class' => 'form-control', 'label' => false, 'placeholder' 
         <!-- The outer row contains the whole section contents -->
         <div class="row">
             <!-- The image container taking 3 cols of the outer row -->
-            <div class="image-container col-md-4 pull-left">
-                <?= $this->Html->image('myphoto.jpg', ['class' => 'background-image-holder']); ?>
+            <div class="image-container col-md-4 col-sm-3 pull-left">
+                <div class="background-image-holder" style="background: url('../img/myphoto.jpg')">
+                </div>
             </div>
+            <!--<div class="image-container col-md-4 pull-left">
+                <?= $this->Html->image('myphoto.jpg', ['class' => 'background-image-holder']); ?>
+            </div>-->
             <!-- End image container -->
 
             <!-- The content container taking the rest 9 cols of the outer row -->
@@ -224,22 +230,22 @@ $contentFieldAttr = ['class' => 'form-control', 'label' => false, 'placeholder' 
             <fieldset style="border-color: #FFF0DD; padding-bottom: 0;">
                 <div id="contactFormError" class="guardsman small"></div>
                 <?= $this->Form->create($message); ?>
-                    <div class="row">
-                        <div class="col-sm-4 col-xs-12">
-                            <div class="form-group"><?= $this->Form->control('sender_name', $nameFieldAttr); ?></div>
-                        </div>
-                        <div class="col-sm-4 col-xs-12">
-                            <div class="form-group"><?= $this->Form->control('sender_email', $emailFieldAttr); ?></div>
-                        </div>
-                        <div class="col-sm-4 col-xs-12">
-                            <div class="form-group"><?= $this->Form->control('sender_phone', $phoneFieldAttr); ?></div>
-                        </div>
+                <div class="row">
+                    <div class="col-sm-4 col-xs-12">
+                        <div class="form-group"><?= $this->Form->control('sender_name', $nameFieldAttr); ?></div>
                     </div>
-                    <div class="form-group">
-                        <?= $this->Form->textarea('content', $contentFieldAttr); ?>
-                        <p id="contactCount" class="small" style="margin: 0;">10000 Chars Left</p>
-                        <div class="editContent"><?= $this->Form->button(__('Send'), ['id' => 'contactSubmitBtn', 'class' => 'btn btn-outline btn-outline-lg outline-dark', 'disabled' => true]); ?></div>
+                    <div class="col-sm-4 col-xs-12">
+                        <div class="form-group"><?= $this->Form->control('sender_email', $emailFieldAttr); ?></div>
                     </div>
+                    <div class="col-sm-4 col-xs-12">
+                        <div class="form-group"><?= $this->Form->control('sender_phone', $phoneFieldAttr); ?></div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <?= $this->Form->textarea('content', $contentFieldAttr); ?>
+                    <p id="contactCount" class="small" style="margin: 0;">10000 Chars Left</p>
+                    <div class="editContent"><?= $this->Form->button(__('Send'), ['id' => 'contactSubmitBtn', 'class' => 'btn btn-outline btn-outline-lg outline-dark', 'disabled' => true]); ?></div>
+                </div>
                 <?= $this->Form->end(); ?>
             </fieldset>
         </div>

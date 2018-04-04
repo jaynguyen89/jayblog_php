@@ -2,7 +2,7 @@
 $passwordFieldAttr = ['class' => 'form-control', 'label' => false, 'id' => 'password', 'type' => 'password', 'placeholder' => 'Password', 'style' => 'margin-top: 10px;', 'required' => true];
 $loginBtnAttr = ['class' => 'btn btn-outline btn-outline-sm outline-dark', 'type' => 'submit', 'id' => 'loginSubmit']; ?>
 
-<div class="container" style="min-height: 622px;">
+<div class="container" style="min-height: 621px;">
     <section id="content-1-9" class="content-1-9 content-block" style="padding-bottom: 10px;">
         <div class="row" style="margin-bottom: 20px;">
             <!-- Section title -->

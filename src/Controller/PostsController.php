@@ -28,7 +28,7 @@ class PostsController extends AppController {
      */
     public function index() {
         $latestPostFields = ['id', 'title', 'description', 'photo', 'status', 'created_on', 'updated_on'];
-        $latestPostConditions = ['ABS(DATEDIFF(NOW(), POSTS.created_on)) <=' => '90', 'POSTS.status <' => '2', 'active' => true];
+        $latestPostConditions = ['ABS(DATEDIFF(NOW(), created_on)) <=' => '90', 'status <' => '2', 'active' => true];
         $latestPosts = $this->Posts->find('all', ['conditions' => $latestPostConditions, 'fields' => $latestPostFields])->toArray();
 
         unset($latestPostFields);
@@ -47,7 +47,7 @@ class PostsController extends AppController {
 
             $categoriesByPost[$latestPost->id] = array();
             for ($i = 0; $i < count($typesByPost); $i++) {
-                $category = TableRegistry::get('Categories')->get($typesByPost[$i]->category_id);
+                $category = TableRegistry::get('categories')->get($typesByPost[$i]->category_id);
 
                 $category->main = ($typesByPost[$i]->main ? true : false);
                 array_push($categoriesByPost[$latestPost->id], $category);
@@ -56,10 +56,11 @@ class PostsController extends AppController {
             unset($typesByPost);
         endforeach;
 
+        $oldPostConditions = ['ABS(DATEDIFF(NOW(), created_on)) >' => '90', 'status <' => '2', 'active' => true];
         $oldPostFields = ['id', 'title', 'created_on'];
-        $order = ['POSTS.created_on' => 'DESC'];
+        $order = ['created_on' => 'DESC'];
         $oldPosts = $this->Posts->find('all', [
-            'conditions' => ['ABS(DATEDIFF(NOW(), POSTS.created_on)) >' => '90', 'POSTS.status <' => '3', 'active' => true],
+            'conditions' => $oldPostConditions,
             'fields' => $oldPostFields,
             'order' => $order
         ])->toArray();
@@ -67,15 +68,13 @@ class PostsController extends AppController {
         $oldInterestPosts = array();
         $oldProjectPosts = array();
         $oldOtherPosts = array();
-        $proposedPosts = array();
 
         foreach ($oldPosts as $oldPost):
-            if (count($oldInterestPosts) == 5 && count ($oldProjectPosts) == 5 &&
-                count($oldOtherPosts) == 5 && count($proposedPosts) == 5)
+            if (count($oldInterestPosts) == 4 && count ($oldProjectPosts) == 4 && count($oldOtherPosts) == 4)
                 break;
 
             $oldPostMainDistribution = $this->Posts->Distributions->find('all', ['conditions' => ['post_id' => $oldPost->id, 'main' => true]])->toArray();
-            $oldPostType = TableRegistry::get('Categories')->get($oldPostMainDistribution[0]->category_id);
+            $oldPostType = TableRegistry::get('categories')->get($oldPostMainDistribution[0]->category_id);
 
             $oldPost['category'] = $oldPostType->title;
             $oldPost['description'] = $oldPostType->description;
@@ -93,20 +92,21 @@ class PostsController extends AppController {
 
                     array_push($oldProjectPosts, $oldPost);
                     break;
-                case 2:
+                default:
                     if (count($oldOtherPosts) == 4)
                         continue;
 
                     array_push($oldOtherPosts, $oldPost);
                     break;
-                default:
-                    if (count($proposedPosts) == 4)
-                        continue;
-
-                    array_push($proposedPosts, $oldPost);
-                    break;
             endswitch;
         endforeach;
+
+        $proposedPosts = $this->Posts->find('all', [
+            'conditions' => ['ABS(DATEDIFF(NOW(), created_on)) >' => '90', 'status' => '2', 'active' => true],
+            'fields' => ['id', 'title', 'created_on'],
+            'order' => ['created_on' => 'DESC'],
+            'limit' => 4
+        ])->toArray();
 
         $this->set(compact('latestPosts', 'commentsByPost', 'likesByPost', 'categoriesByPost',
             'oldInterestPosts', 'oldProjectPosts', 'oldOtherPosts', 'proposedPosts'));
@@ -147,7 +147,7 @@ class PostsController extends AppController {
         $distributions = $this->Posts->Distributions->find('all', ['conditions' => ['post_id' => $post->id]]);
         $categories = array();
         foreach ($distributions as $distribution) {
-            $category = TableRegistry::get('Categories')->get($distribution->category_id);
+            $category = TableRegistry::get('categories')->get($distribution->category_id);
             $category['main'] = $distribution->main;
             array_push($categories, $category);
         }
@@ -158,11 +158,12 @@ class PostsController extends AppController {
         $query = $this->prepareQuery($post->id, 2);
 
         $suggestedPosts = $this->readDatabase($query);
-        $comments = $this->Posts->Comments->find('all', ['conditions' => ['post_id' => $post->id, 'active' => true], 'order' => ['COMMENTS.comment_date' => 'DESC']])->toArray();
+        $comments = $this->Posts->Comments->find('all', ['conditions' => ['post_id' => $post->id, 'active' => true], 'order' => ['comment_date' => 'DESC']])->toArray();
         $repliesByComment = array();
 
         foreach ($comments as $comment)
-            $repliesByComment[$comment->id] = $this->Posts->Comments->Replies->find('all', ['conditions' => ['comment_id' => $comment->id, 'active' => true], 'order' => ['REPLIES.reply_date' => 'DESC']])->toArray();
+            $repliesByComment[$comment->id] = $this->Posts->Comments->Replies->find('all', ['conditions' =>
+                ['comment_id' => $comment->id, 'active' => true], 'order' => ['reply_date' => 'DESC']])->toArray();
 
         $postDate = new \DateTime($post->created_on);
         $now = Time::now();
@@ -221,7 +222,7 @@ class PostsController extends AppController {
         $mainCate = array();
 
         if ($form) {
-            $categories = TableRegistry::get('Categories')->find('all')->toArray();
+            $categories = TableRegistry::get('categories')->find('all')->toArray();
             foreach ($categories as $category)
                 $mainCate[$category['id']] = false;
 
@@ -301,7 +302,7 @@ class PostsController extends AppController {
                         endforeach;
                     }
 
-                    $this->Flash->success(__('The post and its categories have been editted successfully.'));
+                    $this->Flash->success(__('The post and its categories have been edited successfully.'));
                     return $this->redirect(['action' => 'view', $post->id]);
                 }
 
@@ -311,7 +312,7 @@ class PostsController extends AppController {
                 $post = $this->Posts->patchEntity($post, $this->request->getData());
 
                 if ($this->Posts->save($post)) {
-                    $this->Flash->success(__('The post has been editted successfully.'));
+                    $this->Flash->success(__('The post has been edited successfully.'));
                     return $this->redirect(['action' => 'view', $post->id]);
                 }
 
@@ -492,7 +493,7 @@ class PostsController extends AppController {
             }
         }
         else {
-            $years = $this->readDatabase('SELECT DISTINCT YEAR(created_on) as created FROM Posts WHERE YEAR(created_on) <> 0 AND active = true;');
+            $years = $this->readDatabase('SELECT DISTINCT YEAR(created_on) as created FROM posts WHERE YEAR(created_on) <> 0 AND active = true;');
             $yearField = array();
             for ($i = 0; $i < count($years); $i++)
                 $yearField[$i] = $years[$i]['created'];
@@ -519,7 +520,7 @@ class PostsController extends AppController {
         switch ($context):
             case 0:
                 $query = 'SELECT p.id, p.title as ptitle, p.description as pdesc, p.status, p.photo, p.created_on
-                        FROM Posts p, Categories c, Distributions d
+                        FROM posts p, categories c, distributions d
                         WHERE p.id = d.post_id
                         AND c.id = d.category_id
                         AND c.id = '.$data.'
@@ -529,7 +530,7 @@ class PostsController extends AppController {
                 break;
             case 1:
                 $query = 'SELECT c.title as ctitle, c.description as cdesc, d.main
-                        FROM Posts p, Categories c, Distributions d
+                        FROM posts p, categories c, distributions d
                         WHERE p.id = d.post_id
                         AND c.id = d.category_id
                         AND p.id = '.$data.'
@@ -537,7 +538,7 @@ class PostsController extends AppController {
                 break;
             default:
                 $query = 'SELECT Posts.id, Posts.title, status, created_on, main, Categories.title as ctitle, Categories.description
-                        FROM Posts Posts, Distributions Distributions, Categories Categories
+                        FROM posts Posts, distributions Distributions, categories Categories
                         WHERE Posts.id = Distributions.post_id
                         AND Distributions.category_id = Categories.id
                         AND Distributions.main = 1

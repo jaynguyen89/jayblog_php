@@ -22,7 +22,7 @@ $progressLabel = $progress < 25 ? 'danger' : ($progress < 50 ? 'warning' : ($pro
         <!-- Section title -->
         <div class="container">
             <div class="underlined-title">
-                <h1><?= $post->title; ?></h1>
+                <h1><?= $user ? '#'.$post->id.': ' : ''; ?><?= $post->title; ?></h1>
                 <?= $post->status == 0 ? '<span class="label label-success">Completed</span>' :
                 ($post->status == 1 ? '<span class="label label-warning">Progressing</span>' : '<span class="label label-default">Proposed</span>'); ?>
                 <?php if ($user && !$post->active) { ?><span class="label label-danger" style="margin-left: 10px;">Suspended</span><?php } ?>
@@ -51,6 +51,10 @@ $progressLabel = $progress < 25 ? 'danger' : ($progress < 50 ? 'warning' : ($pro
             <?php if (!$photos) { ?>
                 <div class="col-md-9 col-sm-12 col-xs-12">
                     <?= $this->Html->image('sky_bulb.jpeg', ['alt' => 'pending', 'style' => 'border: 1px groove #3498DB; border-radius: 7px;']); ?>
+                </div>
+            <?php } else if (count($photos) == 1) { ?>
+                <div class="col-md-9 col-sm-12 col-xs-12">
+                    <?= $this->Html->image($photos[0]->file_name, ['alt' => $post->title, 'style' => 'border: 1px groove #3498DB; border-radius: 7px;']); ?>
                 </div>
             <?php } else { ?>
                 <!-- Left column displaying photo carousel -->
@@ -171,7 +175,13 @@ $progressLabel = $progress < 25 ? 'danger' : ($progress < 50 ? 'warning' : ($pro
                             <i class="<?= $fileIcons[$attachment->note - 1]; ?> fa-3x"></i>
                         </a>
                     </div>
+                    <!--<div class="col-md-4 col-sm-6 col-xs-2 center-block" style="margin-top: 10px;">
+                        <a target="_blank" href="/jayblog/files/<?= $post->id.'/'.$attachment->file_name; ?>" title="<?= $attachment->description; ?>">
+                            <i class="<?= $fileIcons[$attachment->note - 1]; ?> fa-3x"></i>
+                        </a>
+                    </div>-->
                     <?php endforeach; ?>
+
                 </div>
             </div>
             <!-- End attachments -->

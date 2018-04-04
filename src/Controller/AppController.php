@@ -79,7 +79,7 @@ class AppController extends Controller
     }
 
     public function beforeRender(Event $event) {
-        $years = $this->readDatabase('SELECT DISTINCT YEAR(created_on) as created FROM Posts WHERE YEAR(created_on) <> 0;');
+        $years = $this->readDatabase('SELECT DISTINCT YEAR(created_on) as created FROM posts WHERE YEAR(created_on) <> 0;');
 
         $postCountsByTime = array();
         $yearField = array();
@@ -88,7 +88,7 @@ class AppController extends Controller
                 $key = $number . '-' . $years[$i]['created'];
 
                 $conditions = ['YEAR(created_on)' => $years[$i]['created'], 'MONTH(created_on)' => $number];
-                $postCountsByTime[$key] = TableRegistry::get('Posts')->find('all', ['conditions' => $conditions])->count();
+                $postCountsByTime[$key] = TableRegistry::get('posts')->find('all', ['conditions' => $conditions])->count();
             endforeach;
 
             $yearField[$i] = $years[$i]['created'];
