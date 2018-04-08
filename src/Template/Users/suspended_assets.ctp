@@ -67,7 +67,7 @@ $removeBtnAttr = ['class' => 'btn btn-outline btn-outline-sm outline-light', 'st
                             <p class="pull-left"><b>Post #<?= $post->id; ?>: <?= $post->title; ?></b></p>
                             <p class="pull-right"><b><?= (new DateTime($post->created_on))->format('d/m/Y H:i'); ?></b></p>
                         </div>
-                        <form method="post" action="/jayblog/attachments/edit">
+                        <form method="post" action="/attachments/edit">
                             <div class="col-sm-10 col-xs-12 pull-left">
                                 <?php $fileIcons = ['fas fa-file-image', 'fas fa-file-word', 'fas fa-file-excel', 'fas fa-file-powerpoint', 'fas fa-file-archive',
                             'fas fa-file-code', 'fas fa-file-pdf', 'fas fa-file-video', 'fas fa-file-audio', 'fas fa-file-alt'];

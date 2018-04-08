@@ -1,3 +1,5 @@
+<?php $user = $this->request->session()->read('Auth.User'); ?>
+
 <div class="container">
     <!-- Section contains all projects and posts on programming languages -->
     <section id="content-1-9" class="content-1-9 content-block" style="padding-bottom: 10px;">
@@ -16,7 +18,7 @@
             <?php } else { foreach ($posts as $post): ?>
                 <div class="col-md-6 col-sm-6 col-xs-12" style="margin-bottom: 45px;">
                     <div class="header" style="margin-bottom: 5px;">
-                        <b style="font-size: 1.4em;"><?= $user ? '#'.$post->id.': ' : ''; ?><?= $post['ptitle']; ?></b>
+                        <b style="font-size: 1.4em;"><?= $user ? '#'.$post['id'].': ' : ''; ?><?= $post['ptitle']; ?></b>
                         <span class="label <?= $post['status'] == 1 ? 'label-success' : ($post['status'] == 2 ? 'label-warning' : 'label-info'); ?> pull-right">
                             <?= $post['status'] == 1 ? 'Completed' : ($post['status'] == 2 ? 'Proposed' : 'Progressing'); ?>
                         </span>

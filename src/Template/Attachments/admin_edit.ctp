@@ -2,7 +2,7 @@
     <div class="container">
         <div class="row" style="min-height: 622px;">
             <h2>Admin: Jay Nguyen</h2>
-            <form method="post" action="/jayblog/attachments/admin-edit?pid=<?= $post->id; ?>&amp;form=0">
+            <form method="post" action="/attachments/admin-edit?pid=<?= $post->id; ?>&amp;form=0">
             <fieldset>
                 <legend><b><?= $post->title; ?>:</b> <?= __('Edit Files') ?></legend>
                 <?php $i = 0; foreach ($files as $file): ?>
@@ -81,7 +81,7 @@
     <div class="container">
         <div class="row" style="min-height: 622px;">
             <h2>Admin: Jay Nguyen</h2>
-            <form method="post" action="/jayblog/attachments/admin-edit?pid=<?= $post->id; ?>&amp;form=1">
+            <form method="post" action="/attachments/admin-edit?pid=<?= $post->id; ?>&amp;form=1">
                 <fieldset>
                     <legend><b><?= $post->title; ?>:</b> <?= __('Edit Gallery') ?></legend>
                     <?php $i = 0; foreach ($photos as $photo): ?>

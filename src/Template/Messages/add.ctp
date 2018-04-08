@@ -150,7 +150,7 @@ $contentFieldAttr = ['class' => 'form-control', 'label' => false, 'placeholder' 
                     <!-- Content No.2 Contact me -->
                     <div class="col-md-4">
                         <div style="margin: 10px;">
-                            <h1>Highlighted</h1>
+                            <h2>Highlighted</h2>
                             <div class="row">
                                 <div class="panel-group" id="accordion">
                                     <div class="panel panel-default">
@@ -230,22 +230,22 @@ $contentFieldAttr = ['class' => 'form-control', 'label' => false, 'placeholder' 
             <fieldset style="border-color: #FFF0DD; padding-bottom: 0;">
                 <div id="contactFormError" class="guardsman small"></div>
                 <?= $this->Form->create($message); ?>
-                <div class="row">
-                    <div class="col-sm-4 col-xs-12">
-                        <div class="form-group"><?= $this->Form->control('sender_name', $nameFieldAttr); ?></div>
+                    <div class="row">
+                        <div class="col-sm-4 col-xs-12">
+                            <div class="form-group"><?= $this->Form->control('sender_name', $nameFieldAttr); ?></div>
+                        </div>
+                        <div class="col-sm-4 col-xs-12">
+                            <div class="form-group"><?= $this->Form->control('sender_email', $emailFieldAttr); ?></div>
+                        </div>
+                        <div class="col-sm-4 col-xs-12">
+                            <div class="form-group"><?= $this->Form->control('sender_phone', $phoneFieldAttr); ?></div>
+                        </div>
                     </div>
-                    <div class="col-sm-4 col-xs-12">
-                        <div class="form-group"><?= $this->Form->control('sender_email', $emailFieldAttr); ?></div>
+                    <div class="form-group">
+                        <?= $this->Form->textarea('content', $contentFieldAttr); ?>
+                        <p id="contactCount" class="small" style="margin: 0;">10000 Chars Left</p>
+                        <div class="editContent"><?= $this->Form->button(__('Send'), ['id' => 'contactSubmitBtn', 'class' => 'btn btn-outline btn-outline-lg outline-dark', 'disabled' => true]); ?></div>
                     </div>
-                    <div class="col-sm-4 col-xs-12">
-                        <div class="form-group"><?= $this->Form->control('sender_phone', $phoneFieldAttr); ?></div>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <?= $this->Form->textarea('content', $contentFieldAttr); ?>
-                    <p id="contactCount" class="small" style="margin: 0;">10000 Chars Left</p>
-                    <div class="editContent"><?= $this->Form->button(__('Send'), ['id' => 'contactSubmitBtn', 'class' => 'btn btn-outline btn-outline-lg outline-dark', 'disabled' => true]); ?></div>
-                </div>
                 <?= $this->Form->end(); ?>
             </fieldset>
         </div>

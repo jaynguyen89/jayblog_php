@@ -1,14 +1,9 @@
 // This piece if JS code disables right-click on the site
-/*document.onmousedown=disableclick;
-status='Right Click Disabled';
-function disableclick(event)
-{
+document.onmousedown=disableclick;
+function disableclick(event) {
     if(event.button == 2)
-    {
-        alert(status);
         return false;
-    }
-}*/
+}
 
 //The below scripts validate input data for the Project Suggestion Form on footer
 const emailValidator = /^([a-zA-Z0-9_.-])+@(([a-zA-Z0-9-])+.)+([a-zA-Z0-9]{2,4})+$/;

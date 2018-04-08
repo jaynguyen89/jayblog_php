@@ -17,7 +17,7 @@ $loginBtnAttr = ['class' => 'btn btn-outline btn-outline-sm outline-dark', 'type
             <!-- Card containing login form -->
             <div class="card" style="width: 50%; margin: auto;">
                 <p class="guardsman" id="loginError"></p>
-                <form method="post" action="/jayblog/users/login">
+                <form method="post" action="/users/login">
                     <div class="row">
                         <div class="col-xs-12"><?= $this->Form->control('username', $usernameFieldAttr) ?></div>
                         <div class="col-xs-12"><?= $this->Form->control('password', $passwordFieldAttr) ?></div>

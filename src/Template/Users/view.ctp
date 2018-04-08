@@ -8,7 +8,7 @@ $adminSubmitAttr = ['id' => 'adminSubmit', 'style' => 'margin-left: 15px;', 'cla
 
         <!-- Admin Search Form -->
         <div class="row">
-            <form method="post" action="/jayblog/users/search">
+            <form method="post" action="/users/search">
                 <div class="row">
                     <div class="col-xs-12 text-center"><p class="guardsman" id="adminSearchError"></p></div>
                     <div class="col-sm-6 col-xs-12"><?= $this->Form->control('postId', $adminIdSearchAttr); ?></div>

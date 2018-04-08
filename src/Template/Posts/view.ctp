@@ -5,8 +5,8 @@ $commentSubmit = ['id' => 'commentButton', 'class' => 'btn btn-outline btn-outli
 
 $user = $this->request->session()->read('Auth.User');
 
-$progress = $post->task_total ? round($post->task_done/$post->task_total, 2)*100 : ($post->status == 0 ? 100 : ($post->status == 1 ? 50 : 15));
-$progressLabel = $progress < 25 ? 'danger' : ($progress < 50 ? 'warning' : ($progress < 75 ? 'info' : 'success'));
+$progress = $post->task_total ? round($post->task_done/$post->task_total, 2)*100 : ($post->status == 0 ? 100 : ($post->status == 1 ? 100 : ($post->status == 2 ? 15 : 50)));
+$progressLabel = $progress <= 25 ? 'danger' : ($progress <= 50 ? 'warning' : ($progress <= 75 ? 'info' : 'success'));
 ?>
 
 <div class="container">
@@ -38,7 +38,7 @@ $progressLabel = $progress < 25 ? 'danger' : ($progress < 50 ? 'warning' : ($pro
                 <?php } else { ?>
                     <div role="progressbar" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"
                     class="progress-bar progress-bar-striped progress-bar-<?= $progressLabel; ?>"
-                    style="width: <?= ($progress < 15 ? '15' : $progress); ?>%">
+                    style="width: <?= $progress; ?>%">
                         <?= $progress == 100 ? 'Completed' : ($progress == 50 ? 'Currently Working On' : 'Proposed'); ?>
                     </div>
                 <?php } ?>
@@ -50,11 +50,11 @@ $progressLabel = $progress < 25 ? 'danger' : ($progress < 50 ? 'warning' : ($pro
         <div class="row">
             <?php if (!$photos) { ?>
                 <div class="col-md-9 col-sm-12 col-xs-12">
-                    <?= $this->Html->image('sky_bulb.jpeg', ['alt' => 'pending', 'style' => 'border: 1px groove #3498DB; border-radius: 7px;']); ?>
+                    <?= $this->Html->image('sky_bulb.jpeg', ['alt' => 'pending', 'class' => 'img-responsive', 'style' => 'border: 1px groove #3498DB; border-radius: 7px;']); ?>
                 </div>
             <?php } else if (count($photos) == 1) { ?>
                 <div class="col-md-9 col-sm-12 col-xs-12">
-                    <?= $this->Html->image($photos[0]->file_name, ['alt' => $post->title, 'style' => 'border: 1px groove #3498DB; border-radius: 7px;']); ?>
+                    <img src="/files/<?= $post->id.'/'.$photos[0]->file_name; ?>" alt="<?= $photos[0]->description; ?>" class="img-responsive" style="border: 1px groove #3498DB; border-radius: 7px;"/>
                 </div>
             <?php } else { ?>
                 <!-- Left column displaying photo carousel -->
@@ -72,7 +72,7 @@ $progressLabel = $progress < 25 ? 'danger' : ($progress < 50 ? 'warning' : ($pro
                         <div class="carousel-inner">
                             <?php for ($i = 0; $i < count($photos); $i++) { ?>
                             <div class="item <?= $i ? '' : 'active'; ?>">
-                                <img src="/jayblog/files/2/<?= $photos[$i]->file_name; ?>" alt="<?= $post->title; ?>" style="border: 1px groove #3498DB; border-radius: 7px;"/>
+                                <img src="/files/<?= $post->id.'/'.$photos[$i]->file_name; ?>" alt="<?= $post->title; ?>" style="border: 1px groove #3498DB; border-radius: 7px;"/>
                                 <div class="carousel-caption">
                                     <h3 style="font-weight: bold; color: #3498DB;"><?= $photos[$i]->description; ?></h3>
                                 </div>
@@ -170,17 +170,19 @@ $progressLabel = $progress < 25 ? 'danger' : ($progress < 50 ? 'warning' : ($pro
                         'fas fa-file-code', 'fas fa-file-pdf', 'fas fa-file-video', 'fas fa-file-audio', 'fas fa-file-alt'];
 
                     foreach ($attachments as $attachment): ?>
-                    <div class="col-md-4 col-sm-6 col-xs-2 center-block" style="margin-top: 10px;">
-                        <a target="_blank" href="<?= $attachment->file_name; ?>" title="<?= $attachment->description; ?>">
-                            <i class="<?= $fileIcons[$attachment->note - 1]; ?> fa-3x"></i>
-                        </a>
-                    </div>
-                    <!--<div class="col-md-4 col-sm-6 col-xs-2 center-block" style="margin-top: 10px;">
-                        <a target="_blank" href="/jayblog/files/<?= $post->id.'/'.$attachment->file_name; ?>" title="<?= $attachment->description; ?>">
-                            <i class="<?= $fileIcons[$attachment->note - 1]; ?> fa-3x"></i>
-                        </a>
-                    </div>-->
-                    <?php endforeach; ?>
+                    <?php if (strpos($attachment->file_name, 'ttps://www')) { ?>
+                        <div class="col-md-4 col-sm-6 col-xs-2 center-block" style="margin-top: 10px;">
+                            <a target="_blank" href="<?= $attachment->file_name; ?>" title="<?= $attachment->description; ?>">
+                                <i class="<?= $fileIcons[$attachment->note - 1]; ?> fa-3x"></i>
+                            </a>
+                        </div>
+                    <?php } else { ?>
+                        <div class="col-md-4 col-sm-6 col-xs-2 center-block" style="margin-top: 10px;">
+                            <a target="_blank" href="/jayblog/files/<?= $post->id.'/'.$attachment->file_name; ?>" title="<?= $attachment->description; ?>">
+                                <i class="<?= $fileIcons[$attachment->note - 1]; ?> fa-3x"></i>
+                            </a>
+                        </div>
+                    <?php } endforeach; ?>
 
                 </div>
             </div>
@@ -206,7 +208,7 @@ $progressLabel = $progress < 25 ? 'danger' : ($progress < 50 ? 'warning' : ($pro
                                 <tr>
                                     <th><?= $i + 1; ?></th>
                                     <td class="small"><a data-toggle="tooltip" title="<?= $suggestedPosts[$i]['ctitle']; ?>" style="margin-right: 5px;"><i class="<?= $suggestedPosts[$i]['description']; ?>"></i></a> <?= $suggestedPosts[$i]['ctitle']; ?></td>
-                                    <td><?= $suggestedPosts[$i]['title']; ?></td>
+                                    <td><?= $this->Html->link($suggestedPosts[$i]['title'], ['controller' => 'Posts', 'action' => 'view', $suggestedPosts[$i]['id']]); ?></td>
                                     <td><?= $suggestedPosts[$i]['status'] ? '<span class="label label-success">Completed</span>' : '<span class="label label-info">Progressing</span>'; ?></td>
                                     <td><?= (new DateTime($suggestedPosts[$i]['created_on']))->format('d/m/Y H:i'); ?></td>
                                 </tr>

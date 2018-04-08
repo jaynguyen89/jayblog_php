@@ -1643,7 +1643,7 @@ Version: 1.0
 }
 
 .content-2-8 .image-container .background-image-holder {
-	background: no-repeat bottom center;
+	background: url('../img/myphoto.jpg') no-repeat bottom center;
 	height: 100%;
 }
 

@@ -1,9 +1,11 @@
+<?php $user = $this->request->session()->read('Auth.User'); ?>
+
 <div class="container">
     <!-- Breadcrumb navigation pane
     <ul class="breadcrumb">
         <li><?= $this->Html->link('Home', '/'); ?></li>
         <li>Posts</li>
-        <li><?= $this->Html->link('iOS Applications', ['controller' => 'Posts', 'action' => 'iosProject']); ?></li>
+        <li><?= $this->Html->link('Android Applications', ['controller' => 'Posts', 'action' => 'androidProject']); ?></li>
     </ul>
     End breadcrumb -->
 
@@ -12,9 +14,9 @@
         <!-- Section title -->
         <div class="container">
             <div class="underlined-title">
-                <h1>Projects: iOS Applications</h1>
+                <h1>Posts: My Projects</h1>
                 <hr>
-                <p class="lead">Section contains Jay's researches and practices on various kinds of iOS Applications.</p>
+                <p class="lead">Section contains Jay's researches and practices on various kinds of Projects.</p>
             </div>
         </div>
         <!-- End section title -->
@@ -23,7 +25,7 @@
             <?php foreach ($posts as $post): ?>
                 <div class="col-md-6 col-sm-6 col-xs-12" style="margin-bottom: 45px;">
                     <div class="header" style="margin-bottom: 5px;">
-                        <b style="font-size: 1.4em;"><?= $user ? '#'.$post->id.': ' : ''; ?><?= $post['ptitle']; ?></b>
+                        <b style="font-size: 1.4em;"><?= $user ? '#'.$post['id'].': ' : ''; ?><?= $post['ptitle']; ?></b>
                         <span class="label <?= $post['status'] == 1 ? 'label-success' : ($post['status'] == 2 ? 'label-warning' : 'label-info'); ?> pull-right">
                             <?= $post['status'] == 1 ? 'Completed' : ($post['status'] == 2 ? 'Proposed' : 'Progressing'); ?>
                         </span>

@@ -17,8 +17,7 @@ use Cake\ORM\TableRegistry;
 class PostsController extends AppController {
     public function beforeFilter(Event $event) {
         parent::beforeFilter($event);
-        $this->Auth->allow(['index', 'view', 'androidProject', 'apiInterest', 'cloudOthers', 'computerProject', 'frameworkInterest',
-            'iosProject', 'newsOthers', 'programmingInterest', 'projectSearch', 'softwareInterest', 'tiptrickOthers', 'webProject']);
+        $this->Auth->allow(['index', 'view', 'interestPosts', 'projectPosts', 'newsOthers', 'tiptrickOthers']);
     }
 
     /**
@@ -57,7 +56,7 @@ class PostsController extends AppController {
         endforeach;
 
         $oldPostConditions = ['ABS(DATEDIFF(NOW(), created_on)) >' => '90', 'status <' => '2', 'active' => true];
-        $oldPostFields = ['id', 'title', 'created_on'];
+        $oldPostFields = ['id', 'title', 'status', 'created_on'];
         $order = ['created_on' => 'DESC'];
         $oldPosts = $this->Posts->find('all', [
             'conditions' => $oldPostConditions,
@@ -70,7 +69,7 @@ class PostsController extends AppController {
         $oldOtherPosts = array();
 
         foreach ($oldPosts as $oldPost):
-            if (count($oldInterestPosts) == 4 && count ($oldProjectPosts) == 4 && count($oldOtherPosts) == 4)
+            if (count($oldInterestPosts) == 5 && count ($oldProjectPosts) == 5 && count($oldOtherPosts) == 3)
                 break;
 
             $oldPostMainDistribution = $this->Posts->Distributions->find('all', ['conditions' => ['post_id' => $oldPost->id, 'main' => true]])->toArray();
@@ -81,19 +80,19 @@ class PostsController extends AppController {
 
             switch ($oldPostType->type):
                 case 0:
-                    if (count($oldInterestPosts) == 4)
+                    if (count($oldInterestPosts) == 5)
                         continue;
 
                     array_push($oldInterestPosts, $oldPost);
                     break;
                 case 1:
-                    if (count($oldProjectPosts) == 4)
+                    if (count($oldProjectPosts) == 5)
                         continue;
 
                     array_push($oldProjectPosts, $oldPost);
                     break;
                 default:
-                    if (count($oldOtherPosts) == 4)
+                    if (count($oldOtherPosts) == 3)
                         continue;
 
                     array_push($oldOtherPosts, $oldPost);
@@ -105,7 +104,7 @@ class PostsController extends AppController {
             'conditions' => ['ABS(DATEDIFF(NOW(), created_on)) >' => '90', 'status' => '2', 'active' => true],
             'fields' => ['id', 'title', 'created_on'],
             'order' => ['created_on' => 'DESC'],
-            'limit' => 4
+            'limit' => 3
         ])->toArray();
 
         $this->set(compact('latestPosts', 'commentsByPost', 'likesByPost', 'categoriesByPost',
@@ -368,8 +367,8 @@ class PostsController extends AppController {
         return $categoriesByPost;
     }
 
-    public function programmingInterest() {
-        $query = $this->prepareQuery(array_search('Programming Language', parent::POST_TYPES), 0);
+    public function interestPosts() {
+        $query = $this->prepareQuery(0, 2);
 
         $posts = $this->readDatabase($query);
         $categoriesByPost = $this->getCategoriesByPost($posts);
@@ -377,71 +376,8 @@ class PostsController extends AppController {
         $this->set(compact('posts', 'categoriesByPost'));
     }
 
-    public function frameworkInterest() {
-        $query = $this->prepareQuery(array_search('Frameworks', parent::POST_TYPES), 0);
-
-        $posts = $this->readDatabase($query);
-        $categoriesByPost = $this->getCategoriesByPost($posts);
-
-        $this->set(compact('posts', 'categoriesByPost'));
-    }
-
-    public function apiInterest() {
-        $query = $this->prepareQuery(array_search('APIs', parent::POST_TYPES), 0);
-
-        $posts = $this->readDatabase($query);
-        $categoriesByPost = $this->getCategoriesByPost($posts);
-
-        $this->set(compact('posts', 'categoriesByPost'));
-    }
-
-    public function softwareInterest() {
-        $query = $this->prepareQuery(array_search('Tools & Software', parent::POST_TYPES), 0);
-
-        $posts = $this->readDatabase($query);
-        $categoriesByPost = $this->getCategoriesByPost($posts);
-
-        $this->set(compact('posts', 'categoriesByPost'));
-    }
-
-    public function webProject() {
-        $query = $this->prepareQuery(array_search('Web Application', parent::POST_TYPES), 0);
-
-        $posts = $this->readDatabase($query);
-        $categoriesByPost = $this->getCategoriesByPost($posts);
-
-        $this->set(compact('posts', 'categoriesByPost'));
-    }
-
-    public function computerProject() {
-        $query = $this->prepareQuery(array_search('Computer Application', parent::POST_TYPES), 0);
-
-        $posts = $this->readDatabase($query);
-        $categoriesByPost = $this->getCategoriesByPost($posts);
-
-        $this->set(compact('posts', 'categoriesByPost'));
-    }
-
-    public function iosProject() {
-        $query = $this->prepareQuery(array_search('iOS Application', parent::POST_TYPES), 0);
-
-        $posts = $this->readDatabase($query);
-        $categoriesByPost = $this->getCategoriesByPost($posts);
-
-        $this->set(compact('posts', 'categoriesByPost'));
-    }
-
-    public function androidProject() {
-        $query = $this->prepareQuery(array_search('Android Application', parent::POST_TYPES), 0);
-
-        $posts = $this->readDatabase($query);
-        $categoriesByPost = $this->getCategoriesByPost($posts);
-
-        $this->set(compact('posts', 'categoriesByPost'));
-    }
-
-    public function cloudOthers() {
-        $query = $this->prepareQuery(array_search('Server & Clouds', parent::POST_TYPES), 0);
+    public function projectPosts() {
+        $query = $this->prepareQuery(1, 2);
 
         $posts = $this->readDatabase($query);
         $categoriesByPost = $this->getCategoriesByPost($posts);
@@ -535,6 +471,16 @@ class PostsController extends AppController {
                         AND c.id = d.category_id
                         AND p.id = '.$data.'
                         AND p.active = true;';
+                break;
+            case 2:
+                $query = 'SELECT p.id, p.title as ptitle, p.description as pdesc, p.status, p.photo, p.created_on
+                        FROM posts p, categories c, distributions d
+                        WHERE p.id = d.post_id
+                        AND d.category_id = c.id
+                        AND d.main = 1
+                        AND c.type = '.$data.'
+                        AND p.active = 1
+                        order by p.created_on desc;';
                 break;
             default:
                 $query = 'SELECT Posts.id, Posts.title, status, created_on, main, Categories.title as ctitle, Categories.description
