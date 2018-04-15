@@ -17,7 +17,7 @@ use Cake\ORM\TableRegistry;
 class PostsController extends AppController {
     public function beforeFilter(Event $event) {
         parent::beforeFilter($event);
-        $this->Auth->allow(['index', 'view', 'othersView', 'interestPosts', 'projectPosts', 'newsOthers', 'tiptrickOthers']);
+        $this->Auth->allow(['index', 'view', 'othersView', 'projectSearch', 'interestPosts', 'projectPosts', 'newsOthers', 'tiptrickOthers']);
     }
 
     /**
@@ -450,9 +450,10 @@ class PostsController extends AppController {
                 $keywords = explode(' ', $data['keyword']);
 
                 foreach ($keywords as $keyword):
-                    $records = $this->readDatabase('SELECT p.id, p.title as ptitle, p.description as pdesc, p.status, p.photo, p.created_on
+                    $records = $this->readDatabase('SELECT p.id, p.title as ptitle, p.description as pdesc, p.note, p.status, p.photo, p.created_on
                                                 FROM posts p 
                                                 WHERE p.title LIKE \'%'.$keyword.'%\'
+                                                AND p.status < 2
                                                 AND p.active = true;');
 
                     if ($records) {
@@ -472,10 +473,11 @@ class PostsController extends AppController {
             for ($i = 0; $i < count($years); $i++)
                 $yearField[$i] = $years[$i]['created'];
 
-            $posts = $this->readDatabase('SELECT p.id, p.title as ptitle, p.description as pdesc, p.status, p.photo, p.created_on
+            $posts = $this->readDatabase('SELECT p.id, p.title as ptitle, p.description as pdesc, p.note, p.status, p.photo, p.created_on
                                                 FROM posts p 
                                                 WHERE YEAR(created_on) = '.$yearField[$data['year']].' 
                                                 AND MONTH(created_on) = '.$data['month'].'
+                                                AND p.status < 2
                                                 AND p.active = true;');
         }
 
@@ -503,7 +505,7 @@ class PostsController extends AppController {
                         ORDER BY p.created_on DESC;';
                 break;
             case 1:
-                $query = 'SELECT c.title as ctitle, c.description as cdesc, d.main
+                $query = 'SELECT c.type, c.title as ctitle, c.description as cdesc, d.main
                         FROM posts p, categories c, distributions d
                         WHERE p.id = d.post_id
                         AND c.id = d.category_id

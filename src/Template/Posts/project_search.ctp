@@ -30,37 +30,26 @@
                                 <li class="list-group-item">Posted on: <b class="pull-right"><?= (new DateTime($post['created_on']))->format('d/m/Y H:i'); ?></b></li>
                                 <li class="list-group-item">Type:
                                     <div class="pull-right">
-                                        <?php foreach ($categoriesByPost[$post['id']] as $category):
-                                            if ($category['main'])
+                                        <?php $viewType = 0; foreach ($categoriesByPost[$post['id']] as $category):
+                                            if ($category['main']) {
+                                                $viewType = ($category['type'] == 2 ? 1 : 0);
                                                 echo '<a data-toggle="tooltip" title="'.$category['ctitle'].'" style="margin-right: 5px;"><i class="'.$category['cdesc'].' fa-2x"></i></a>';
-                                            else
+                                            } else
                                                 echo '<a data-toggle="tooltip" title="'.$category['ctitle'].'"><i class="'.$category['cdesc'].' fa-2x" style="color: gray; margin-right: 5px;" onmouseover="this.style.color=\'dimgray\'" onmouseout="this.style.color=\'gray\'"></i></a>';
                                         endforeach; ?>
                                     </div>
                                 </li>
                             </ul>
-                            <p class="small">Please click <a role="button" onclick="passDataToSuggestFeatureForm<?= $post['id']; ?>()" data-toggle="modal" data-target="#suggestFeatureModal">here</a> to suggest a feature or report a bug. Thanks!</p>
+                            <p class="small"><?= $post['note'] ? $post['note'] : 'N/A'; ?></p>
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-sm-9 col-xs-9"><?= $post['pdesc']; ?></div>
                         <div class="col-sm-3 col-xs-3">
-                            <?= $this->Html->link('Open', ['action' => 'view', $post['id']], ['class' => 'btn btn-outline btn-outline-sm outline-dark']); ?>
+                            <?= $this->Html->link('Open', ['action' => ($viewType ? 'othersView' : 'view'), $post['id']], ['class' => 'btn btn-outline btn-outline-sm outline-dark']); ?>
                         </div>
                     </div>
                 </div>
-
-                <!-- JS code that is called when suggest link is clicked -->
-                <script type="text/javascript">
-                    function passDataToSuggestFeatureForm<?= $post['id']; ?>() {
-                        var postIdInput = document.getElementById('postIdInput');
-                        postIdInput.value = '<?= $post['id']; ?>';
-
-                        var postTitleInput = document.getElementById('postTitleInput');
-                        postTitleInput.value = '<?= $post['ptitle']; ?>';
-                    }
-                </script>
-                <!-- End JS -->
             <?php endforeach; } ?>
         </div>
     </section>
