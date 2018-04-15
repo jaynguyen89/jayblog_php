@@ -43,7 +43,7 @@
                     <div class="row">
                         <div class="col-sm-9 col-xs-9"><?= $post['pdesc']; ?></div>
                         <div class="col-sm-3 col-xs-3">
-                            <?= $this->Html->link('Open', ['action' => 'view', $post['id']], ['class' => 'btn btn-outline btn-outline-sm outline-dark']); ?>
+                            <?= $this->Html->link('Open', ['controller' => 'Posts', 'action' => 'view', $post['id']], ['class' => 'btn btn-outline btn-outline-sm outline-dark']); ?>
                         </div>
                     </div>
                 </div>

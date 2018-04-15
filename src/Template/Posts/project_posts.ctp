@@ -26,8 +26,8 @@
                 <div class="col-md-6 col-sm-6 col-xs-12" style="margin-bottom: 45px;">
                     <div class="header" style="margin-bottom: 5px;">
                         <b style="font-size: 1.4em;"><?= $user ? '#'.$post['id'].': ' : ''; ?><?= $post['ptitle']; ?></b>
-                        <span class="label <?= $post['status'] == 1 ? 'label-success' : ($post['status'] == 2 ? 'label-warning' : 'label-info'); ?> pull-right">
-                            <?= $post['status'] == 1 ? 'Completed' : ($post['status'] == 2 ? 'Proposed' : 'Progressing'); ?>
+                        <span class="label <?= $post['status'] == 0 ? 'label-success' : ($post['status'] == 2 ? 'label-warning' : 'label-info'); ?> pull-right">
+                            <?= $post['status'] == 0 ? 'Completed' : ($post['status'] == 2 ? 'Proposed' : 'Progressing'); ?>
                         </span>
                     </div>
                     <div class="row">
@@ -46,7 +46,7 @@
                                     </div>
                                 </li>
                             </ul>
-                            <p class="small">Please click <a role="button" onclick="passDataToSuggestFeatureForm<?= $post['id']; ?>()" data-toggle="modal" data-target="#suggestFeatureModal">here</a> to suggest a feature or report a bug. Thanks!</p>
+                            <p class="small"><?= $post['note'] ? $post['note'] : 'N/A'; ?></p>
                         </div>
                     </div>
                     <div class="row">

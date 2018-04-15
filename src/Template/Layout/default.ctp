@@ -34,7 +34,7 @@ $cakeDescription = 'Jay\'s Blog - Dare to step';
 
     <link href="http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,400,300,600,700" rel="stylesheet">
     <link href="http://fonts.googleapis.com/css?family=Lato:300,400,700,300italic,400italic,700italic" rel="stylesheet">
-    <script defer src="https://use.fontawesome.com/releases/v5.0.6/js/all.js"></script>
+    <script defer src="https://use.fontawesome.com/releases/v5.0.9/js/all.js"></script>
 
     <?php if (strpos($this->request->here, '/posts/view/')) { ?>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.5.0/themes/prism.min.css">
@@ -49,9 +49,9 @@ $cakeDescription = 'Jay\'s Blog - Dare to step';
 $user = $session->read('Auth.User');
 $active = (strpos($this->request->here, '/messages/add') != false ? '1' :
     (strpos($this->request->here, '/posts/view/') != false ? '-1' :
-        ((strpos($this->request->here, '/posts/interestPosts') != false || strpos($this->request->here, '/posts/projectPosts') != false) ? '2' :
-                ((strpos($this->request->here, '/posts/news-others') != false || strpos($this->request->here, '/posts/tiptrick-others') != false) ? '4' :
-                    ((strpos($this->request->here, '/users/suspended-assets') != false || strpos($this->request->here, '/users/highlighted-assets') != false ) ? '5' : '0'))))); ?>
+        ((strpos($this->request->here, '/posts/interest-posts') != false || strpos($this->request->here, '/posts/project-posts') != false) ? '2' :
+            ((strpos($this->request->here, '/posts/news-others') != false || strpos($this->request->here, '/posts/tiptrick-others') != false) ? '3' :
+                ((strpos($this->request->here, '/users/suspended-assets') != false || strpos($this->request->here, '/users/highlighted-assets') != false ) ? '4' : '0'))))); ?>
     <header id="header-2" class="soft-scroll header-2">
         <nav class="main-nav navbar navbar-default navbar-fixed-top">
             <!-- Container DIV wrapping the whole navbar and staying fixed to the top of site -->
@@ -91,11 +91,9 @@ $active = (strpos($this->request->here, '/messages/add') != false ? '1' :
                         <!-- End Dropdown -->
 
                         <!-- Dropdown menu for Other contents -->
-                        <li class="nav-item dropdown <?= $active == 4 ? 'active' : ''; ?>">
+                        <li class="nav-item dropdown <?= $active == 3 ? 'active' : ''; ?>">
                             <a class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-delay="0" data-close-others="false" href="#">Others <i class="fa fa-angle-down"></i></a>
                             <ul class="dropdown-menu" style="background-color: lightgray">
-                                <li><?= $this->Html->link($this->Html->tag('i', '', ['class' => 'fas fa-code-branch', 'style' => 'margin-right: 10px;']).'Version Control',
-                                        ['controller' => 'Posts', 'action' => 'vcsOthers'], ['escape' => false]); ?></li>-->
                                 <li><?= $this->Html->link($this->Html->tag('i', '', ['class' => 'far fa-newspaper', 'style' => 'margin-right: 10px;']).'IT News',
                                     ['controller' => 'Posts', 'action' => 'newsOthers'], ['escape' => false]); ?></li>
                                 <li><?= $this->Html->link($this->Html->tag('i', '', ['class' => 'far fa-lightbulb', 'style' => 'margin-right: 10px;']).'Tips & Tricks',
@@ -111,7 +109,7 @@ $active = (strpos($this->request->here, '/messages/add') != false ? '1' :
                         </li>
                         <?php if ($user) { ?>
                             <!-- Dropdown menu for Other contents -->
-                            <li class="nav-item dropdown <?= $active == 5 ? 'active' : ''; ?>">
+                            <li class="nav-item dropdown <?= $active == 4 ? 'active' : ''; ?>">
                                 <a class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-delay="0" data-close-others="false" href="#">Actions <i class="fa fa-angle-down"></i></a>
                                 <ul class="dropdown-menu" style="background-color: lightgray">
                                     <li><?= $this->Html->link($this->Html->tag('i', '', ['class' => 'fas fa-calendar-times', 'style' => 'margin-right: 10px;']).'Suspendings',
@@ -139,42 +137,6 @@ $active = (strpos($this->request->here, '/messages/add') != false ? '1' :
     <div class="container clearfix"><br/><br/><br/><br/><br/>
         <?= $this->Flash->render() ?>
         <?= $this->fetch('content') ?>
-
-        <?php if (!$user && (strpos($this->request->here, '/posts/') != false || Cake\Routing\Router::url('/', false) == '/')) { ?>
-            <!-- This section contains the modal popup displaying a form that allows feature suggestion -->
-            <div class="modal fade" id="suggestFeatureModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <!-- Popup header -->
-                        <div class="modal-header" align="center">
-                            <?= $this->Html->image('jaydev.PNG', ['height' => '50px;', 'id' => 'img_logo']); ?>
-                        </div>
-
-                        <!-- Begin popup form -->
-                        <div id="div-forms">
-                            <form id="login-form" method="post" action="/messages/suggestProject">
-                                <div class="modal-body">
-                                    <div id="div-login-msg"><h6><i class="fas fa-bullhorn" style="color: #3498DB;"></i> Please enter some optional information and your suggestion.</h6></div>
-                                    <div class="row">
-                                        <div class="text-center"><p id="featureFormError" class="small guardsman"></p></div>
-                                        <input type="hidden" name="form_id"/>
-                                        <input name="post_id" id="postIdInput" type="hidden"/>
-                                        <div class="col-xs-12"><input id="postTitleInput" name="post_title" class="form-control" type="text" readonly></div>
-                                        <div class="col-sm-6 col-xs-12" style="margin-top: 5px;"><input name="sender_name" id="featureSuggesterName" class="form-control" type="text" placeholder="Name" oninput="checkSuggestFeatureForm()" /></div>
-                                        <div class="col-sm-6 col-xs-12" style="margin-top: 5px;"><input name="sender_email" id="featureSuggesterEmail" class="form-control" type="text" placeholder="Email" oninput="checkSuggestFeatureForm()" /></div>
-                                        <div class="col-xs-12" style="margin-top: 5px;"><textarea name="content" id="featureIdea" class="form-control" rows="3" placeholder="Your feature idea ..." oninput="countSuggestCharacters()"></textarea></div>
-                                        <div class="text-center"><p id="featureSuggestCount" class="small">1000 Chars Left</p></div>
-                                    </div>
-                                </div>
-                                <div class="modal-footer"><button id="featureSubmit" type="submit" class="btn btn-outline btn-outline-sm outline-dark center-block" disabled style="margin: 0;">Send</button></div>
-                            </form>
-                        </div>
-                        <!-- End popup form -->
-                    </div>
-                </div>
-            </div>
-            <!-- End modal popup -->
-        <?php } ?>
     </div>
 
     <?php if (!strpos($this->request->here, 'messages/add') && !strpos($this->request->here, 'users') && !$user) {
@@ -299,24 +261,24 @@ $active = (strpos($this->request->here, '/messages/add') != false ? '1' :
         <!-- Section containing footer -->
         <div class="container footer-1-3">
             <!-- Section containing logo and social links -->
-            <div class="col-md-3 col-sm-4 col-xs-4">
+            <div class="col-md-3 col-sm-4 col-xs-12">
                 <?= $this->Html->image('jaydev.PNG', ['alt' => 'jaydeveloper', 'url' => '/', 'class' => 'brand-img img-responsive']); ?>
                 <q><i>No pain, no gain</i></q>
 
                 <div class="row">
-                    <p class="margin-bottom0">www.linkedin.com/in/jay-developer</p>
-                    <p class="margin-top0">Tel: 0422 357 488</p>
+                    <p class="margin-bottom0"><i class="fab fa-linkedin fa-2x" style="color: #3498DB;"></i> www.linkedin.com/in/jay-developer</p>
+                    <p class="margin-top0"><a href="Tel: 0422357488"><i class="fas fa-phone-square fa-2x"></i> 0422 357 488</a></p>
                 </div>
                 <!-- <ul class="social social-light">
                     <li><a href="#" target="_blank" title="Twitter"><i class="fab fa-twitter-square fa-3x"></i></a></li>
                     <li><a title="Linkedin" target="_blank" href="www.linkedin.com/in/jay-developer"><i class="fab fa-linkedin fa-3x"></i></a></li>
-                    <li><a href="tel:+61422357488" title="Whatsapp"><i class="fab fa-whatsapp-square fa-3x"></i></a></li>
+                    <li><a href="tel:+61422357488" title="Telephone"><i class="fab fa-whatsapp-square fa-3x"></i></a></li>
                 </ul> -->
             </div>
             <!-- End social links -->
 
             <!-- Section containing suggest form -->
-            <div class="col-md-8 col-sm-8 col-xs-8 pull-right">
+            <div class="col-md-8 col-sm-8 col-xs-12 pull-right">
                 <p><i class="fas fa-bomb pomegranate"></i> Got a project idea? Please suggest me.<br><p id="suggestPostError" class="guardsman small"></p></p>
                 <div class="row">
                     <!-- Suggest form -->
@@ -368,9 +330,7 @@ $active = (strpos($this->request->here, '/messages/add') != false ? '1' :
     <script src="https://cdn.ckeditor.com/4.5.7/standard/ckeditor.js"></script>
     <script type="text/javascript">$(function () { CKEDITOR.replace('editor1'); });</script>
 
-    <?php if (strpos($this->request->here, '/posts/view/') != false && !$user) { ?>
-        <script src="https://cdn.ckeditor.com/4.5.7/standard/ckeditor.js"></script>
-
+    <?php if (!$user) { ?>
         <script type="text/javascript">
             var commentCheck = false;
 

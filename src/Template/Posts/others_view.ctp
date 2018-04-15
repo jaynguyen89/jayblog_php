@@ -4,9 +4,6 @@ $emailFieldAtt = ['class' => 'form-control', 'label' => false, 'placeholder' => 
 $commentSubmit = ['id' => 'commentButton', 'class' => 'btn btn-outline btn-outline-md outline-dark', 'disabled' => true, 'style' => 'margin-top: 0;'];
 
 $user = $this->request->session()->read('Auth.User');
-
-$progress = $post->task_total ? round($post->task_done/$post->task_total, 2)*100 : ($post->status == 0 ? 100 : ($post->status == 0 ? 100 : ($post->status == 2 ? 15 : 50)));
-$progressLabel = $progress <= 25 ? 'danger' : ($progress <= 50 ? 'warning' : ($progress <= 75 ? 'info' : 'success'));
 ?>
 
 <div class="container">
@@ -23,151 +20,51 @@ $progressLabel = $progress <= 25 ? 'danger' : ($progress <= 50 ? 'warning' : ($p
         <div class="container">
             <div class="underlined-title">
                 <h1><?= $user ? '#'.$post->id.': ' : ''; ?><?= $post->title; ?></h1>
-                <?= $post->status == 0 ? '<span class="label label-success">Completed</span>' :
-                ($post->status == 1 ? '<span class="label label-warning">Progressing</span>' : '<span class="label label-default">Proposed</span>'); ?>
-                <?php if ($user && !$post->active) { ?><span class="label label-danger" style="margin-left: 10px;">Suspended</span><?php } ?>
                 <hr>
                 <p class="lead"><?= $post->description; ?></p>
-                <div class="progress">
-                <?php if ($post->task_total) { ?>
-                    <div role="progressbar" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"
-                    class="progress-bar progress-bar-striped progress-bar-<?= $progressLabel; ?>"
-                    style="width: <?= ($progress < 15 ? '15' : $progress); ?>%">
-                        <?= $post->task_done.'/'.$post->task_total; ?> Tasks Done (<?= $progress; ?>%)
-                    </div>
-                <?php } else { ?>
-                    <div role="progressbar" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"
-                    class="progress-bar progress-bar-striped progress-bar-<?= $progressLabel; ?>"
-                    style="width: <?= $progress; ?>%">
-                        <?= $progress == 100 ? 'Completed' : ($progress == 50 ? 'Currently Working On' : 'Proposed'); ?>
-                    </div>
-                <?php } ?>
-                </div>
             </div>
         </div>
         <!-- End section title -->
 
         <div class="row">
-            <?php if (!$photos) { ?>
-                <div class="col-md-9 col-sm-12 col-xs-12">
-                    <?= $this->Html->image('sky_bulb.jpeg', ['alt' => 'pending', 'class' => 'img-responsive', 'style' => 'border: 1px groove #3498DB; border-radius: 7px;']); ?>
-                </div>
-            <?php } else if (count($photos) == 1) { ?>
-                <div class="col-md-9 col-sm-12 col-xs-12">
-                    <img src="/files/<?= $post->id.'/'.$photos[0]->file_name; ?>" alt="<?= $photos[0]->description; ?>" class="img-responsive" style="border: 1px groove #3498DB; border-radius: 7px;"/>
-                </div>
-            <?php } else { ?>
-                <!-- Left column displaying photo carousel -->
-                <div class="col-md-9 col-sm-12 col-xs-12">
-                    <div id="myCarousel" class="carousel slide" data-ride="carousel">
-                        <!-- Photo carousel indicator dots -->
-                        <ol class="carousel-indicators">
-                            <?php for ($i = 0; $i < count($photos); $i++)
-                                echo $i ? '<li data-target="#myCarousel" data-slide-to="'.$i.'"></li>' :
-                                          '<li data-target="#myCarousel" data-slide-to="'.$i.'" class="active"></li>'; ?>
-                        </ol>
-                        <!-- End carousel -->
-
-                        <!-- Carousel photos container -->
-                        <div class="carousel-inner">
-                            <?php for ($i = 0; $i < count($photos); $i++) { ?>
-                            <div class="item <?= $i ? '' : 'active'; ?>">
-                                <img src="/files/<?= $post->id.'/'.$photos[$i]->file_name; ?>" alt="<?= $post->title; ?>" style="border: 1px groove #3498DB; border-radius: 7px;"/>
-                                <div class="carousel-caption">
-                                    <h3 style="font-weight: bold; color: #3498DB;"><?= $photos[$i]->description; ?></h3>
-                                </div>
-                            </div>
-                            <?php } ?>
-                        </div>
-                        <!-- End photo carousel -->
-
-                        <!-- Left and right controls -->
-                        <a class="left carousel-control" href="#myCarousel" data-slide="prev">
-                            <span class="glyphicon glyphicon-chevron-left"></span>
-                            <span class="sr-only">Previous</span>
-                        </a>
-                        <a class="right carousel-control" href="#myCarousel" data-slide="next">
-                            <span class="glyphicon glyphicon-chevron-right"></span>
-                            <span class="sr-only">Next</span>
-                        </a>
-                        <!-- End carousel controls -->
-                    </div>
-                </div>
-                <!-- End left column -->
-            <?php } ?>
-
-            <!-- Right column displaying general project information -->
-            <div class="col-md-3 col-sm-12 col-xs-12">
-                <div class="row">
-                    <!-- General project info -->
-                    <div class="col-xs-12">
-                        <ul class="list-group list-group-flush">
-                            <li class="list-group-item">Posted on: <b class="pull-right"><?= (new DateTime($post->created_on))->format('d/m/Y H:i'); ?></b></li>
-                            <li class="list-group-item">Updated: <b class="pull-right"><?= (new DateTime($post->updated_on))->format('d/m/Y H:i'); ?></b></li>
-                            <li class="list-group-item">Task total: <b class="pull-right"><?= $post->task_total; ?></b></li>
-                            <li class="list-group-item">Task done: <b class="pull-right"><?= $post->task_done; ?></b></li>
-                            <li class="list-group-item">Type:
-                                <div class="pull-right">
-                                    <?php foreach ($categories as $category):
-                                        if ($category['main'])
-                                            echo '<a data-toggle="tooltip" title="'.$category->title.'" style="margin-right: 5px;"><i class="'.$category->description.' fa-2x"></i></a>';
-                                        else
-                                            echo '<a data-toggle="tooltip" title="'.$category->title.'"><i class="'.$category->description.' fa-2x" style="color: gray; margin-right: 5px;" onmouseover="this.style.color=\'dimgray\'" onmouseout="this.style.color=\'gray\'"></i></a>';
-                                    endforeach; ?>
-                                </div></li>
-                            <li class="list-group-item">Up vote: <b><?= $session->read('Post.up_vote'); ?></b>
-                                <?= $this->Form->postLink(
-                                    $this->Html->tag('i', '', ['class' => 'fas fa-thumbs-up fa-2x pull-right']),
-                                    ['controller' => 'Votes', 'action' => 'add', '?' => ['pid' => $post->id, 'sign' => 1]],
-                                    ['role' => 'button', 'escape' => false, 'confirm' => __('Since no login was required, your IP Address may be recorded. This approach is to prevent visitors voting multiple times on 1 post.\n\nNo personal information will be collected. Your IP Address will be securely encrypted.\n\nContinue to vote up for {0}?', $post->title)]); ?></li>
-                            <li class="list-group-item">Down vote: <b><?= $session->read('Post.down_vote'); ?></b>
-                                <?= $this->Form->postLink(
-                                    $this->Html->tag('i', '', ['class' => 'fas fa-thumbs-down fa-2x pull-right']),
-                                    ['controller' => 'Votes', 'action' => 'add', '?' => ['pid' => $post->id, 'sign' => 0]],
-                                    ['role' => 'button', 'escape' => false, 'confirm' => __('Since no login was required, your IP Address may be recorded. This approach is to prevent visitors voting multiple times on 1 post.\n\nNo personal information will be collected. Your IP Address will be securely encrypted.\n\nContinue to vote down for {0}?', $post->title)]); ?></li>
-                        </ul>
-                    </div>
-                    <!-- End project info -->
-
-                    <?php if ($user) { ?>
-                    <div class="row">
-                        <div class="col-xs-6">
-                            <?= $this->Html->link('Edit Board', ['controller' => 'Posts', 'action' => 'edit', '?' => ['pid' => $post->id, 'form' => '1']],
-                                ['class' => 'btn btn-outline btn-outline-sm outline-dark']); ?>
-                        </div>
-                        <div class="col-xs-6">
-                            <?= $this->Form->postLink('Reset Votes', ['controller' => 'Votes', 'action' => 'edit', $post->id],
-                                ['class' => 'btn btn-outline btn-outline-sm outline-light', 'confirm' => __('All votes will be reset for {0}. Continue?', $post->title)]); ?>
-                        </div>
-                    </div>
-                    <?php } ?>
-
-                    <!-- Optional admin notes on project -->
-                    <div class="col-xs-12">
-                        <p class="small">Please click <a role="button" data-toggle="modal" data-target="#suggestFeatureModal">here</a> to suggest something on this post. Thanks!</p>
-                        <h5><i class="fas fa-pencil-alt" style="color: #3498DB;"></i> Notes</h5>
-                        <p class="small"><?= $post->note ? $post->note : 'N/A'; ?></p>
-                    </div>
-                    <!-- End notes -->
-                </div>
+            <!-- Left column displaying general project information -->
+            <div class="col-md-4 col-sm-8 col-xs-12">
+                <!-- General project info -->
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item">Posted on: <b class="pull-right"><?= (new DateTime($post->created_on))->format('d/m/Y H:i'); ?></b></li>
+                    <li class="list-group-item">Type:
+                        <div class="pull-right"><a data-toggle="tooltip" title="<?= $category->title; ?>" style="margin-right: 5px;"><i class="<?= $category->description; ?> fa-2x"></i></a></div>
+                    </li>
+                    <li class="list-group-item">Up vote: <b><?= $session->read('Post.up_vote'); ?></b>
+                        <?= $this->Form->postLink(
+                            $this->Html->tag('i', '', ['class' => 'fas fa-thumbs-up fa-2x pull-right']),
+                            ['controller' => 'Votes', 'action' => 'add', '?' => ['pid' => $post->id, 'sign' => 1]],
+                            ['role' => 'button', 'escape' => false, 'confirm' => __('Since no login was required, your IP Address may be recorded. This approach is to prevent visitors voting multiple times on 1 post.\n\nNo personal information will be collected. Your IP Address will be securely encrypted.\n\nContinue to vote up for {0}?', $post->title)]); ?></li>
+                    <li class="list-group-item">Down vote: <b><?= $session->read('Post.down_vote'); ?></b>
+                        <?= $this->Form->postLink(
+                            $this->Html->tag('i', '', ['class' => 'fas fa-thumbs-down fa-2x pull-right']),
+                            ['controller' => 'Votes', 'action' => 'add', '?' => ['pid' => $post->id, 'sign' => 0]],
+                            ['role' => 'button', 'escape' => false, 'confirm' => __('Since no login was required, your IP Address may be recorded. This approach is to prevent visitors voting multiple times on 1 post.\n\nNo personal information will be collected. Your IP Address will be securely encrypted.\n\nContinue to vote down for {0}?', $post->title)]); ?></li>
+                </ul>
+                <!-- End project info -->
             </div>
-            <!-- End right column -->
-        </div>
-
-        <!-- Section containing project description and attachments -->
-        <div class="row" style="margin-top: 15px;">
-            <!-- Project description -->
-            <div class="col-md-9 col-sm-9 col-xs-12">
-                <h4><i class="fas fa-clipboard" style="color: #3498DB;"></i> Project Description</h4>
-                <p class="medium"><?= $post->content; ?></p>
+            <!-- End left column -->
+            
+            <!-- Middle column displaying suggestion and note -->
+            <div class="col-md-4 col-sm-4 col-xs-12">
+                <p class="small">Please click <a role="button" data-toggle="modal" data-target="#suggestFeatureModal">here</a> to suggest something on this post. Thanks!</p>
+                <h5><i class="fas fa-pencil-alt" style="color: #3498DB;"></i> Notes</h5>
+                <p class="small"><?= $post->note ? $post->note : 'N/A'; ?></p>
             </div>
-            <!-- End project description -->
-
-            <!-- Attachments -->
-            <div class="col-md-3 col-sm-3 col-xs-12">
+            <!-- End middle column -->
+            
+            <!-- Right column displaying project's attachments -->
+            <div class="col-md-4 col-sm-12 col-xs-12">
                 <h4><i class="fas fa-paperclip" style="color: #3498DB;"></i> File Attachments</h4>
+                <!-- The attachments -->
                 <div class="row">
-                    <?php $fileIcons = ['fas fa-file-image', 'fas fa-file-word', 'fas fa-file-excel', 'fas fa-file-powerpoint', 'fas fa-file-archive',
+                    <?php if ($attachments) {
+                    $fileIcons = ['fas fa-file-image', 'fas fa-file-word', 'fas fa-file-excel', 'fas fa-file-powerpoint', 'fas fa-file-archive',
                         'fas fa-file-code', 'fas fa-file-pdf', 'fas fa-file-video', 'fas fa-file-audio', 'fas fa-file-alt'];
 
                     foreach ($attachments as $attachment): ?>
@@ -183,11 +80,38 @@ $progressLabel = $progress <= 25 ? 'danger' : ($progress <= 50 ? 'warning' : ($p
                                 <i class="<?= $fileIcons[$attachment->note - 1]; ?> fa-3x"></i>
                             </a>
                         </div>
-                    <?php } endforeach; ?>
-
+                    <?php } endforeach;
+                    } else
+                        echo '<p>No attachments found for this post.</p>'; ?>
+                </div>
+                <!-- attachments -->
+            </div>
+            <!-- End right column -->
+            
+            <!-- Row containing admin managing buttons -->
+            <?php if ($user) { ?>
+            <div class="row">
+                <div class="col-xs-6">
+                    <?= $this->Html->link('Edit Board', ['controller' => 'Posts', 'action' => 'edit', '?' => ['pid' => $post->id, 'form' => '1']],
+                        ['class' => 'btn btn-outline btn-outline-sm outline-dark']); ?>
+                </div>
+                <div class="col-xs-6">
+                    <?= $this->Form->postLink('Reset Votes', ['controller' => 'Votes', 'action' => 'edit', $post->id],
+                        ['class' => 'btn btn-outline btn-outline-sm outline-light', 'confirm' => __('All votes will be reset for {0}. Continue?', $post->title)]); ?>
                 </div>
             </div>
-            <!-- End attachments -->
+            <?php } ?>
+            <!-- End admin row -->
+        </div>
+
+        <!-- Section containing the main post content -->
+        <div class="row" style="margin-top: 15px;">
+            <!-- Post content -->
+            <div class="col-xs-12">
+                <h4><i class="fas fa-clipboard" style="color: #3498DB;"></i> Post Content</h4>
+                <p class="medium"><?= $post->content; ?></p>
+            </div>
+            <!-- content -->
         </div>
         <!-- End section -->
 

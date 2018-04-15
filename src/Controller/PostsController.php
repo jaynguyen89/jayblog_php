@@ -17,7 +17,7 @@ use Cake\ORM\TableRegistry;
 class PostsController extends AppController {
     public function beforeFilter(Event $event) {
         parent::beforeFilter($event);
-        $this->Auth->allow(['index', 'view', 'interestPosts', 'projectPosts', 'newsOthers', 'tiptrickOthers']);
+        $this->Auth->allow(['index', 'view', 'othersView', 'interestPosts', 'projectPosts', 'newsOthers', 'tiptrickOthers']);
     }
 
     /**
@@ -26,9 +26,9 @@ class PostsController extends AppController {
      * @return \Cake\Http\Response|void
      */
     public function index() {
-        $latestPostFields = ['id', 'title', 'description', 'photo', 'status', 'created_on', 'updated_on'];
-        $latestPostConditions = ['ABS(DATEDIFF(NOW(), created_on)) <=' => '90', 'status <' => '2', 'active' => true];
-        $latestPosts = $this->Posts->find('all', ['conditions' => $latestPostConditions, 'fields' => $latestPostFields])->toArray();
+        $latestPostFields = ['id', 'title', 'description', 'photo', 'note', 'status', 'created_on', 'updated_on'];
+        $latestPostConditions = ['ABS(DATEDIFF(NOW(), created_on)) <=' => '120', 'status <' => '2', 'active' => true];
+        $latestPosts = $this->Posts->find('all', ['conditions' => $latestPostConditions, 'fields' => $latestPostFields, 'order' => ['created_on' => 'DESC']])->toArray();
 
         unset($latestPostFields);
         unset($latestPostConditions);
@@ -55,7 +55,7 @@ class PostsController extends AppController {
             unset($typesByPost);
         endforeach;
 
-        $oldPostConditions = ['ABS(DATEDIFF(NOW(), created_on)) >' => '90', 'status <' => '2', 'active' => true];
+        $oldPostConditions = ['ABS(DATEDIFF(NOW(), created_on)) >' => '120', 'status <' => '2', 'active' => true];
         $oldPostFields = ['id', 'title', 'status', 'created_on'];
         $order = ['created_on' => 'DESC'];
         $oldPosts = $this->Posts->find('all', [
@@ -101,7 +101,7 @@ class PostsController extends AppController {
         endforeach;
 
         $proposedPosts = $this->Posts->find('all', [
-            'conditions' => ['ABS(DATEDIFF(NOW(), created_on)) >' => '90', 'status' => '2', 'active' => true],
+            'conditions' => ['ABS(DATEDIFF(NOW(), created_on)) <=' => '90', 'status' => '2', 'active' => true],
             'fields' => ['id', 'title', 'created_on'],
             'order' => ['created_on' => 'DESC'],
             'limit' => 3
@@ -154,7 +154,7 @@ class PostsController extends AppController {
         $photos = $this->Posts->Attachments->find('all', ['conditions' => ['post_id' => $post->id, 'note' => 0, 'active' => true]])->toArray();
         $attachments = $this->Posts->Attachments->find('all', ['conditions' => ['post_id' => $post->id, 'note <>' => 0, 'active' => true]])->toArray();
 
-        $query = $this->prepareQuery($post->id, 2);
+        $query = $this->prepareQuery($post->id, 3);
 
         $suggestedPosts = $this->readDatabase($query);
         $comments = $this->Posts->Comments->find('all', ['conditions' => ['post_id' => $post->id, 'active' => true], 'order' => ['comment_date' => 'DESC']])->toArray();
@@ -171,6 +171,44 @@ class PostsController extends AppController {
         $isCommentable = $diff > 180 ? false : true;
 
         $this->set(compact('post', 'categories', 'photos', 'attachments', 'suggestedPosts', 'comments', 'repliesByComment', 'isCommentable'));
+    }
+    
+    public function othersView($id = null) {
+        try {
+            $post = $this->Posts->get($id);
+        } catch (RecordNotFoundException $exception) {
+            throw new RecordNotFoundException('ID #'.$id);
+        }
+
+        $session = $this->request->session();
+
+        $votes = $this->getVotes($id);
+
+        $session->write('Post.up_vote', $votes['upvote']);
+        $session->write('Post.down_vote', $votes['downvote']);
+
+        $distribution = $this->Posts->Distributions->find('all', ['conditions' => ['post_id' => $post->id, 'main' => true]])->first();
+        $category = TableRegistry::get('categories')->get($distribution->category_id);
+        
+        $attachments = $this->Posts->Attachments->find('all', ['conditions' => ['post_id' => $post->id, 'note <>' => 0, 'active' => true]])->toArray();
+
+        $query = $this->prepareQuery($post->id, 3);
+
+        $suggestedPosts = $this->readDatabase($query);
+        $comments = $this->Posts->Comments->find('all', ['conditions' => ['post_id' => $post->id, 'active' => true], 'order' => ['comment_date' => 'DESC']])->toArray();
+        $repliesByComment = array();
+
+        foreach ($comments as $comment)
+            $repliesByComment[$comment->id] = $this->Posts->Comments->Replies->find('all', ['conditions' =>
+                ['comment_id' => $comment->id, 'active' => true], 'order' => ['reply_date' => 'DESC']])->toArray();
+
+        $postDate = new \DateTime($post->created_on);
+        $now = Time::now();
+
+        $diff = $now->diff($postDate)->days;
+        $isCommentable = $diff > 180 ? false : true;
+
+        $this->set(compact('post', 'category', 'photos', 'attachments', 'suggestedPosts', 'comments', 'repliesByComment', 'isCommentable'));
     }
 
     /**
@@ -473,7 +511,7 @@ class PostsController extends AppController {
                         AND p.active = true;';
                 break;
             case 2:
-                $query = 'SELECT p.id, p.title as ptitle, p.description as pdesc, p.status, p.photo, p.created_on
+                $query = 'SELECT p.id, p.title as ptitle, p.description as pdesc, p.note, p.status, p.photo, p.created_on
                         FROM posts p, categories c, distributions d
                         WHERE p.id = d.post_id
                         AND d.category_id = c.id

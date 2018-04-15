@@ -3,6 +3,7 @@ namespace App\Controller;
 
 use App\Controller\AppController;
 use Cake\Event\Event;
+use Cake\ORM\TableRegistry;
 
 /**
  * Messages Controller
@@ -168,8 +169,10 @@ class MessagesController extends AppController
                 $this->Flash->error(__('Oops! Something went wrong with the server. Please try again later.'));
             }
         }
+        
+        $categories = TableRegistry::get('categories')->find('all')->toArray();
 
-        $this->set(compact('message'));
+        $this->set(compact('message', 'categories'));
     }
 
     /**

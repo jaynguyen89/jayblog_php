@@ -6,8 +6,7 @@
             <div class="underlined-title">
                 <h1>My latest work</h1>
                 <hr>
-                <p class="lead">Find here for the projects and researches that Jay was working on in the last 3 months.<br/>
-                    A project is considered <span class="label label-success">Completed</span> if at least 90% of its product backlog items are completed.</p>
+                <p class="lead">A project is considered <span class="label label-success" style="font-size: 0.65em;">Completed</span> if at least 90% of its product backlog items are done.</p>
             </div>
         </div>
         <!-- End section title -->
@@ -19,7 +18,7 @@
                 <!-- Card containing a single project -->
                 <div class="card">
                     <!-- Project title -->
-                    <h3 class="card-header"><b><?= $latestPost->title; ?></b><?= ($latestPost->status == 1) ? '<span class="label label-info pull-right" style="font-size: 0.65em;">Progressing</span>' : '<span class="label label-success pull-right" style="font-size: 0.65em;">Completed</span>' ?></h3>
+                    <h3 class="card-header"><b><?= $latestPost->title; ?></b></h3>
 
                     <!-- Row containing general project information -->
                     <div class="row">
@@ -28,6 +27,9 @@
                         </div>
                         <div class="col-md-5 col-sm-5 col-xs-12">
                             <ul class="list-group list-group-flush">
+                                <li class="list-group-item">Status: 
+                                    <?= ($latestPost->status == 1) ? '<span class="label label-info pull-right" style="font-size: 1em;">Progressing</span>' : '<span class="label label-success pull-right" style="font-size: 1em;">Completed</span>' ?>
+                                </li>
                                 <li class="list-group-item">Posted on: <b class="pull-right"><?= (new DateTime($latestPost->created_on))->format('d/m/Y H:i'); ?></b></li>
                                 <li class="list-group-item">Updated: <b class="pull-right"><?= (new DateTime($latestPost->updated_on))->format('d/m/Y H:i'); ?></b></li>
                                 <li class="list-group-item">Comments: <b class="pull-right"><?= $commentsByPost[$latestPost->id]; ?></b></li>
@@ -42,7 +44,7 @@
                                             endforeach; ?>
                                     </div></li>
                             </ul>
-                            <p class="small">Please click <a role="button" onclick="passDataToSuggestFeatureForm<?= $latestPost->id; ?>()" data-toggle="modal" data-target="#suggestFeatureModal">here</a> to suggest a feature or report a bug. Thanks!</p>
+                            <p class="small"><?= $latestPost->note ? $latestPost->note : 'N/A'; ?></p>
                         </div>
                     </div>
                     <!-- End row of general project info -->
@@ -85,12 +87,12 @@
             <div class="underlined-title">
                 <h1>Find out more</h1>
                 <hr>
-                <p class="lead">Quickly have a look at some latest posts and projects that are older than 3 months.</p>
+                <p class="lead" style="margin-bottom: 0;">Those projects that are older than 3 months.</p>
             </div>
         </div>
         <!-- End section title -->
 
-        <div class="row" style="margin: 5px;">
+        <div class="row" style="margin: 0 5px 0 5px;">
             <div class="row">
                 <div class="row">
                     <div class="col-xs-6"><h4><b>My Posts</b></h4></div>
@@ -121,7 +123,7 @@
                                         <th><?= $i + 1; ?></th>
                                         <td class="small"><a data-toggle="tooltip" title="<?= $oldInterestPosts[$i]->category; ?>" style="margin-right: 5px;"><i class="<?= $oldInterestPosts[$i]->description; ?>"></i></a> <?= $oldInterestPosts[$i]->category; ?></td>
                                         <td><?= $this->Html->link($oldInterestPosts[$i]->title, ['controller' => 'Posts', 'action' => 'view', $oldInterestPosts[$i]->id]); ?></td>
-                                        <td><?= $oldInterestPosts[$i]->status ? '<span class="label label-success">Completed</span>' : '<span class="label label-info">Progressing</span>'; ?></td>
+                                        <td><?= $oldInterestPosts[$i]->status ? '<span class="label label-info">Progressing</span>' : '<span class="label label-success">completed</span>'; ?></td>
                                         <td><?= (new DateTime($oldInterestPosts[$i]->created_on))->format('d/m/Y H:i'); ?></td>
                                     </tr>
                                 <?php $j = $i; }
@@ -131,7 +133,7 @@
                                         <th><?= $j + 2; ?></th>
                                         <td class="small"><a data-toggle="tooltip" title="<?= $oldProjectPosts[$i]->category; ?>" style="margin-right: 5px;"><i class="<?= $oldProjectPosts[$i]->description; ?>"></i></a> <?= $oldProjectPosts[$i]->category; ?></td>
                                         <td><?= $this->Html->link($oldProjectPosts[$i]->title, ['controller' => 'Posts', 'action' => 'view', $oldProjectPosts[$i]->id]); ?></td>
-                                        <td><?= $oldProjectPosts[$i]->status ? '<span class="label label-success">Completed</span>' : '<span class="label label-info">Progressing</span>'; ?></td>
+                                        <td><?= $oldProjectPosts[$i]->status ? '<span class="label label-info">Progressing</span>' : '<span class="label label-success">Completed</span>'; ?></td>
                                         <td><?= (new DateTime($oldProjectPosts[$i]->created_on))->format('d/m/Y H:i'); ?></td>
                                     </tr>
                                 <?php $j++; }
@@ -151,10 +153,6 @@
                               <button class="dropdown-toggle" role="button" data-toggle="dropdown">See more
                               <span class="caret"></span></button>
                               <ul class="dropdown-menu">
-                                <li><?= $this->Html->link($this->Html->tag('i', '', ['class' => 'fas fa-cloud-upload-alt', 'style' => 'margin-right: 10px;']).'Servers & Clouds',
-                                        ['controller' => 'Posts', 'action' => 'cloudOthers'], ['escape' => false]); ?></li>
-                                <!--<li><?= $this->Html->link($this->Html->tag('i', '', ['class' => 'fas fa-code-branch', 'style' => 'margin-right: 10px;']).'Version Control',
-                                        ['controller' => 'Posts', 'action' => 'vcsOthers'], ['escape' => false]); ?></li>-->
                                 <li><?= $this->Html->link($this->Html->tag('i', '', ['class' => 'far fa-newspaper', 'style' => 'margin-right: 10px;']).'IT News',
                                     ['controller' => 'Posts', 'action' => 'newsOthers'], ['escape' => false]); ?></li>
                                 <li><?= $this->Html->link($this->Html->tag('i', '', ['class' => 'far fa-lightbulb', 'style' => 'margin-right: 10px;']).'Tips & Tricks',

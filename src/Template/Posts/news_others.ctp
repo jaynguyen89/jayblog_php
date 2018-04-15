@@ -16,7 +16,7 @@
             <div class="underlined-title">
                 <h1>Others: IT News</h1>
                 <hr>
-                <p class="lead">Section contains Jay's researches and practices on various kinds of IT News.</p>
+                <p class="lead">Section contains Jay's readings and interests in new IT Technologies.</p>
             </div>
         </div>
         <!-- End section title -->
@@ -46,28 +46,15 @@
                                     </div>
                                 </li>
                             </ul>
-                            <p class="small">Please click <a role="button" onclick="passDataToSuggestFeatureForm<?= $post['id']; ?>()" data-toggle="modal" data-target="#suggestFeatureModal">here</a> to suggest a feature or report a bug. Thanks!</p>
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-sm-9 col-xs-9"><?= $post['pdesc']; ?></div>
                         <div class="col-sm-3 col-xs-3">
-                            <?= $this->Html->link('Open', ['action' => 'view', $post['id']], ['class' => 'btn btn-outline btn-outline-sm outline-dark']); ?>
+                            <?= $this->Html->link('Open', ['action' => 'othersView', $post['id']], ['class' => 'btn btn-outline btn-outline-sm outline-dark']); ?>
                         </div>
                     </div>
                 </div>
-
-                <!-- JS code that is called when suggest link is clicked -->
-                <script type="text/javascript">
-                    function passDataToSuggestFeatureForm<?= $post['id']; ?>() {
-                        var postIdInput = document.getElementById('postIdInput');
-                        postIdInput.value = '<?= $post['id']; ?>';
-
-                        var postTitleInput = document.getElementById('postTitleInput');
-                        postTitleInput.value = '<?= $post['ptitle']; ?>';
-                    }
-                </script>
-                <!-- End JS -->
             <?php endforeach; ?>
         </div>
     </section>

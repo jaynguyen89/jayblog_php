@@ -13,7 +13,7 @@ $contentFieldAttr = ['class' => 'form-control', 'label' => false, 'placeholder' 
     End breadcrumb -->
 
     <!-- Section contains introductory information about the blog -->
-    <section id="content-1-9" class="content-1-9 content-block">
+    <section id="content-1-6" class="content-1-6 content-block">
         <!-- Section title -->
         <div class="underlined-title">
             <h1>About this blog</h1>
@@ -85,6 +85,25 @@ $contentFieldAttr = ['class' => 'form-control', 'label' => false, 'placeholder' 
             </div>
         </div>
         <!-- End section contents -->
+        
+        <div class="row text-center">
+            <h2>Post Categories</h2>
+        </div>
+        
+        <?php $i = 0; foreach($categories as $category): ?>
+        <!-- Categories list -->
+        <?= ($i % 4 == 0) ? '<div class="row client-row"><div class="row-wrapper">' : ''; ?>
+            <div class="col-md-3 col-sm-6 col-xs-6">
+                <i class="<?= $category->description; ?> fa-3x" style="margin-bottom: -20px; color: #3498DB;"></i><p style="margin-top: 0"><?= $category->title; ?></p>
+            </div>
+        <?php if ($i == count($categories) - 1) { ?>
+            <div class="col-md-3 col-sm-6 col-xs-6">
+                <i class="fas fa-gift fa-3x" style="margin-bottom: -20px; color: #3498DB;"></i><p style="margin-top: 0">Enthusiasm</p>
+            </div>
+        <?php } ?>
+        <?= ($i == 3 || $i == 7 || $i == 11 || $i == count($categories) - 1) ? '</div></div>' : ''; ?>
+        <!-- end categories -->
+        <?php $i++; endforeach; ?>
     </section>
     <!-- End introductory section -->
 
