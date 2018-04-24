@@ -444,6 +444,9 @@ class PostsController extends AppController {
     public function projectSearch() {
         $data = $this->request->getData();
         $posts = array();
+        
+        if (!isset($data['form_id']) || !isset($data['keyword']))
+            throw new RecordNotFoundException('Request Data Missing');
 
         if ($data['form_id'] == 0) {
             if ($this->checkWhiteSpaceString($data['keyword'])) {

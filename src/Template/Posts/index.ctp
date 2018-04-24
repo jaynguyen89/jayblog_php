@@ -36,10 +36,11 @@
                                 <li class="list-group-item">Likes: <b class="pull-right"><?= $likesByPost[$latestPost->id]; ?></b></li>
                                 <li class="list-group-item">Type:
                                     <div class="pull-right">
-                                        <?php foreach ($categoriesByPost[$latestPost->id] as $category):
-                                            if ($category->main)
+                                        <?php $mainCategory = null; foreach ($categoriesByPost[$latestPost->id] as $category):
+                                            if ($category->main) {
+                                                $mainCategory = $category;
                                                 echo '<a data-toggle="tooltip" title="'.$category->title.'" style="margin-right: 5px;"><i class="'.$category->description.' fa-2x"></i></a>';
-                                            else
+                                            } else
                                                 echo '<a data-toggle="tooltip" title="'.$category->title.'"><i class="'.$category->description.' fa-2x" style="color: gray; margin-right: 5px;" onmouseover="this.style.color=\'dimgray\'" onmouseout="this.style.color=\'gray\'"></i></a>';
                                             endforeach; ?>
                                     </div></li>
@@ -67,7 +68,7 @@
                             <div class="col-md-10 col-sm-10 col-xs-12">
                                 <p class="card-text"><?= $latestPost->description; ?></p>
                             </div>
-                            <div class="col-md-2 col-sm-2 col-xs-12"><?= $this->Html->link('Open', ['action' => 'view', $latestPost->id], ['class' => 'btn btn-outline btn-outline-sm outline-dark']); ?></div>
+                            <div class="col-md-2 col-sm-2 col-xs-12"><?= $this->Html->link('Open', ['action' => ($mainCategory->type == 2 ? 'othersView' : 'view'), $latestPost->id], ['class' => 'btn btn-outline btn-outline-sm outline-dark']); ?></div>
                         </div>
                     </div>
                     <!-- End row of brief project intro -->
@@ -171,7 +172,7 @@
                                 <tr>
                                     <th scope="row"><?= $i + 1; ?></th>
                                     <td class="text-center"><?= '<a data-toggle="tooltip" title="'.$oldOtherPosts[$i]->category.'" style="margin-right: 5px;"><i class="'.$oldOtherPosts[$i]->description.'"></i></a>';?></td>
-                                    <td><?= $this->Html->link($oldOtherPosts[$i]->title, ['action' => 'view', $oldOtherPosts[$i]->id]); ?></td>
+                                    <td><?= $this->Html->link($oldOtherPosts[$i]->title, ['action' => 'othersView', $oldOtherPosts[$i]->id]); ?></td>
                                 </tr>
                             <?php } ?>
                             </tbody>
@@ -191,7 +192,7 @@
                                 <tr>
                                     <th scope="row"><?= $i + 1; ?></th>
                                     <td class="text-center"><?= '<a data-toggle="tooltip" title="'.$proposedPosts[$i]->category.'" style="margin-right: 5px;"><i class="'.$proposedPosts[$i]->description.'"></i></a>';?></td>
-                                    <td><?= $this->Html->link($proposedPosts[$i]->title, ['action' => 'view', $proposedPosts[$i]->id]); ?></td>
+                                    <td><?= $this->Html->link($proposedPosts[$i]->title, ['action' => 'othersView', $proposedPosts[$i]->id]); ?></td>
                                 </tr>
                             <?php } ?>
                             </tbody>
